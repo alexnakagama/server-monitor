@@ -5,4 +5,6 @@ type memoryStats struct {
 	available uint64
 }
 
+func readMemoryStats() (memoryStats, error) {}
+
 func MemoryUsage() (float64, error) {}
