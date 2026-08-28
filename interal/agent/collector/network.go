@@ -11,4 +11,6 @@ type cpuStats struct {
 	steal   uint64
 }
 
+func readCPUStats() (cpuStats, error) {}
+
 func CPUUsage() (float64, error) {}
