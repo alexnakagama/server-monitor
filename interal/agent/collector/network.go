@@ -102,7 +102,9 @@ func totalCPU(stats cpuStats) uint64 {
 		stats.steal
 }
 
-func idleCPU(stats cpuStats) uint64 {}
+func idleCPU(stats cpuStats) uint64 {
+	return stats.idle + stats.iowait
+}
 
 func CPUUsage() (float64, error) {
 	first, err := readCPUStats()
