@@ -118,4 +118,11 @@ func CPUUsage() (float64, error) {
 	if err != nil {
 		return 0, err
 	}
+
+	total := totalCPU(second) - totalCPU(first)
+	idle := idleCPU(second) - idleCPU(first)
+
+	usage := float64(total-idle) / float64(total) * 100
+
+	return usage, nil
 }
