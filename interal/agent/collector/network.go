@@ -6,6 +6,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type cpuStats struct {
@@ -90,4 +91,18 @@ func readCPUStats() (cpuStats, error) {
 	}, nil
 }
 
-func CPUUsage() (float64, error) {}
+func totalCPU(stats cpuStats) uint64 {}
+
+func CPUUsage() (float64, error) {
+	first, err := readCPUStats()
+	if err != nil {
+		return 0, err
+	}
+
+	time.Sleep(500 * time.Millisecond)
+
+	second, err := readCPUStats()
+	if err != nil {
+		return 0, err
+	}
+}
