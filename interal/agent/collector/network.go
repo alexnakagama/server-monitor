@@ -91,7 +91,16 @@ func readCPUStats() (cpuStats, error) {
 	}, nil
 }
 
-func totalCPU(stats cpuStats) uint64 {}
+func totalCPU(stats cpuStats) uint64 {
+	return stats.user +
+		stats.nice +
+		stats.system +
+		stats.idle +
+		stats.iowait +
+		stats.irq +
+		stats.softirq +
+		stats.steal
+}
 
 func CPUUsage() (float64, error) {
 	first, err := readCPUStats()
