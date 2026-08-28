@@ -102,6 +102,8 @@ func totalCPU(stats cpuStats) uint64 {
 		stats.steal
 }
 
+func idleCPU(stats cpuStats) uint64 {}
+
 func CPUUsage() (float64, error) {
 	first, err := readCPUStats()
 	if err != nil {
