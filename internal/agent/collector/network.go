@@ -5,6 +5,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type networkStats struct {
@@ -61,4 +62,24 @@ func readNetworkStats() (networkStats, error) {
 	}, nil
 }
 
-func NetworkUsage() (networkStats, error)
+func NetworkUsage() (networkStats, error) {
+	first, err := readNetworkStats()
+	if err != nil {
+		return networkStats{}, err
+	}
+
+	time.Sleep(time.Second)
+
+	second, err := readNetworkStats()
+	if err != nil {
+		return networkStats{}, err
+	}
+
+	received := second.received - first.received
+	sent := second.sent - first.sent
+
+	return networkStats{
+		received: received,
+		sent:     sent,
+	}, nil
+}
