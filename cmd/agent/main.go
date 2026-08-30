@@ -18,6 +18,12 @@ func main() {
 		log.Fatal(err)
 	}
 
+	disk, err := collector.DiskUsage()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	fmt.Printf("CPU: %.2f%%\n", cpu)
 	fmt.Printf("Memory: %.2f%%\n", memory)
+	fmt.Printf("Disk: %.2f%%\n", disk)
 }
