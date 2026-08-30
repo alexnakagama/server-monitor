@@ -1,17 +1,13 @@
 package main
 
 import (
-	"fmt"
-	"log"
+	"time"
 
-	"github.com/alexnakagama/server-monitor/internal/agent/collector"
+	"github.com/alexnakagama/server-monitor/internal/agent"
 )
 
 func main() {
-	metric, err := collector.CollectMetrics()
-	if err != nil {
-		log.Fatal(err)
-	}
+	agent := agent.New(5 * time.Second)
 
-	fmt.Printf("%+v\n", metric)
+	agent.Run()
 }
