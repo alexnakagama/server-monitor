@@ -1,8 +1,62 @@
 package collector
 
+import (
+	"bufio"
+	"os"
+	"strconv"
+	"strings"
+)
+
 type networkStats struct {
 	received uint64
 	sent     uint64
 }
 
-func readNetworkStats() (networkStats, error)
+func readNetworkStats() (networkStats, error) {
+	file, err := os.Open("/proc/net/dev")
+	if err != nil {
+		return networkStats{}, err
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+
+	var received uint64
+	var sent uint64
+
+	for scanner.Scan() {
+		fields := strings.Fields(scanner.Text())
+
+		if len(fields) < 10 {
+			continue
+		}
+
+		iface := strings.TrimSuffix(fields[0], ":")
+
+		if iface == "lo" {
+			continue
+		}
+
+		rx, err := strconv.ParseUint(fields[1], 10, 64)
+		if err != nil {
+			return networkStats{}, err
+		}
+
+		tx, err := strconv.ParseUint(fields[9], 10, 64)
+		if err != nil {
+			return networkStats{}, err
+		}
+
+		received += rx
+		sent += tx
+	}
+
+	if err := scanner.Err(); err != nil {
+		return networkStats{}, err
+	}
+
+	return networkStats{
+		received: received,
+		sent:     sent,
+	}, nil
+}
