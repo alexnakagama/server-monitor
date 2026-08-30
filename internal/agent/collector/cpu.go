@@ -21,7 +21,7 @@ type cpuStats struct {
 }
 
 func readCPUStats() (cpuStats, error) {
-	file, err := os.Open("proc/stat")
+	file, err := os.Open("/proc/stat")
 	if err != nil {
 		return cpuStats{}, err
 	}
