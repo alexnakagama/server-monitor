@@ -6,5 +6,8 @@ type Agent struct {
 	interval time.Duration
 }
 
-func New() *Agent {
+func New(interval time.Duration) *Agent {
+	return &Agent{
+		interval: interval,
+	}
 }
