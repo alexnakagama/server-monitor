@@ -60,3 +60,5 @@ func readNetworkStats() (networkStats, error) {
 		sent:     sent,
 	}, nil
 }
+
+func NetworkUsage() (networkStats, error)
