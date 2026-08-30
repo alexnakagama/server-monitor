@@ -56,4 +56,15 @@ func readMemoryStats() (memoryStats, error) {
 	}, nil
 }
 
-func MemoryUsage() (float64, error) {}
+func MemoryUsage() (float64, error) {
+	stats, err := readMemoryStats()
+	if err != nil {
+		return 0, err
+	}
+
+	used := stats.total - stats.available
+
+	usage := float64(used) / float64(stats.total) * 100
+
+	return usage, nil
+}
