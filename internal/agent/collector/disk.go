@@ -24,4 +24,14 @@ func readDiskStats() (diskStats, error) {
 	}, nil
 }
 
-func DiskUsage() (float64, error)
+func DiskUsage() (float64, error) {
+	disk, err := readDiskStats()
+	if err != nil {
+		return 0, err
+	}
+
+	used := disk.total - disk.free
+	usage := float64(used) / float64(disk.total) * 100
+
+	return usage, nil
+}
