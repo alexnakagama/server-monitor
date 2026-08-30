@@ -9,8 +9,8 @@ import (
 )
 
 type networkStats struct {
-	received uint64
-	sent     uint64
+	Received uint64
+	Sent     uint64
 }
 
 func readNetworkStats() (networkStats, error) {
@@ -57,8 +57,8 @@ func readNetworkStats() (networkStats, error) {
 	}
 
 	return networkStats{
-		received: received,
-		sent:     sent,
+		Received: received,
+		Sent:     sent,
 	}, nil
 }
 
@@ -75,11 +75,11 @@ func NetworkUsage() (networkStats, error) {
 		return networkStats{}, err
 	}
 
-	received := second.received - first.received
-	sent := second.sent - first.sent
+	received := second.Received - first.Received
+	sent := second.Sent - first.Sent
 
 	return networkStats{
-		received: received,
-		sent:     sent,
+		Received: received,
+		Sent:     sent,
 	}, nil
 }

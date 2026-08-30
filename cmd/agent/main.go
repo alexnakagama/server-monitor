@@ -23,7 +23,14 @@ func main() {
 		log.Fatal(err)
 	}
 
+	network, err := collector.NetworkUsage()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	fmt.Printf("CPU: %.2f%%\n", cpu)
 	fmt.Printf("Memory: %.2f%%\n", memory)
 	fmt.Printf("Disk: %.2f%%\n", disk)
+	fmt.Printf("Nw recieved: %d bytes\n", network.received)
+	fmt.Printf("Nw sent: %d\n", network.sent)
 }
