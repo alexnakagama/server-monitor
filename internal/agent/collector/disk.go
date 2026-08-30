@@ -5,4 +5,6 @@ type diskStats struct {
 	free  uint64
 }
 
+func readDiskStats() (float64, error)
+
 func DiskUsage() (float64, error)
