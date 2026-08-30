@@ -8,15 +8,15 @@ import (
 	"time"
 )
 
-type networkStats struct {
+type NetworkStats struct {
 	Received uint64
 	Sent     uint64
 }
 
-func readNetworkStats() (networkStats, error) {
+func readNetworkStats() (NetworkStats, error) {
 	file, err := os.Open("/proc/net/dev")
 	if err != nil {
-		return networkStats{}, err
+		return NetworkStats{}, err
 	}
 	defer file.Close()
 
@@ -32,6 +32,10 @@ func readNetworkStats() (networkStats, error) {
 			continue
 		}
 
+		if !strings.HasSuffix(fields[0], ":") {
+			continue
+		}
+
 		iface := strings.TrimSuffix(fields[0], ":")
 
 		if iface == "lo" {
@@ -40,12 +44,12 @@ func readNetworkStats() (networkStats, error) {
 
 		rx, err := strconv.ParseUint(fields[1], 10, 64)
 		if err != nil {
-			return networkStats{}, err
+			return NetworkStats{}, err
 		}
 
 		tx, err := strconv.ParseUint(fields[9], 10, 64)
 		if err != nil {
-			return networkStats{}, err
+			return NetworkStats{}, err
 		}
 
 		received += rx
@@ -53,32 +57,32 @@ func readNetworkStats() (networkStats, error) {
 	}
 
 	if err := scanner.Err(); err != nil {
-		return networkStats{}, err
+		return NetworkStats{}, err
 	}
 
-	return networkStats{
+	return NetworkStats{
 		Received: received,
 		Sent:     sent,
 	}, nil
 }
 
-func NetworkUsage() (networkStats, error) {
+func NetworkUsage() (NetworkStats, error) {
 	first, err := readNetworkStats()
 	if err != nil {
-		return networkStats{}, err
+		return NetworkStats{}, err
 	}
 
 	time.Sleep(time.Second)
 
 	second, err := readNetworkStats()
 	if err != nil {
-		return networkStats{}, err
+		return NetworkStats{}, err
 	}
 
 	received := second.Received - first.Received
 	sent := second.Sent - first.Sent
 
-	return networkStats{
+	return NetworkStats{
 		Received: received,
 		Sent:     sent,
 	}, nil
