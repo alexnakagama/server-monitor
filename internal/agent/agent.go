@@ -5,3 +5,6 @@ import "time"
 type Agent struct {
 	interval time.Duration
 }
+
+func New() *Agent {
+}
