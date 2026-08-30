@@ -11,3 +11,5 @@ func New(interval time.Duration) *Agent {
 		interval: interval,
 	}
 }
+
+func (a *Agent) Run() {}
