@@ -18,6 +18,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println("CPU: %.2f%%\n", cpu)
-	fmt.Println("Memory: %.2f%%\n", memory)
+	fmt.Printf("CPU: %.2f%%\n", cpu)
+	fmt.Printf("Memory: %.2f%%\n", memory)
 }
