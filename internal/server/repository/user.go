@@ -17,4 +17,19 @@ func NewUserRepository(db *pgxpool.Pool) *UserRepository {
 	}
 }
 
-func (r *UserRepository) Create(ctx context.Context, user model.User) error {}
+func (r *UserRepository) Create(ctx context.Context, user model.User) error {
+	query := `
+		INSERT INTO users (username, email, password_hash)
+		VALUES ($1, $2, $3)
+	`
+
+	_, err := r.db.Exec(
+		ctx,
+		query,
+		user.Username,
+		user.Email,
+		user.PasswordHash,
+	)
+
+	return err
+}
