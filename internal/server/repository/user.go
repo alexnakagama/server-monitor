@@ -108,3 +108,5 @@ func (r *UserRepository) Delete(ctx context.Context, id int) error {
 
 	return nil
 }
+
+func (r *UserRepository) Update(ctx context.Context, user model.User) error {}
