@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"errors"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -90,4 +91,23 @@ func (r *UserRepository) GetUserByEmail(ctx context.Context, email string) (mode
 	return user, nil
 }
 
-func (r *UserRepository) Delete(ctx context.Context, id int) error {}
+func (r *UserRepository) Delete(ctx context.Context, id int) error {
+	query := `
+		DELETE FROM users
+		WHERE id = $1
+	`
+
+	result, err := r.db.Exec(
+		ctx, query, id,
+	)
+
+	if err != nil {
+		return err
+	}
+
+	if result.RowsAffected() == 0 {
+		return errors.New("user not found")
+	}
+
+	return nil
+}
