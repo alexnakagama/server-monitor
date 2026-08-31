@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"errors"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
 )
@@ -21,5 +22,17 @@ type UserService struct {
 func NewUserService(repo UserRepository) *UserService {
 	return &UserService{
 		repository: repo,
+	}
+}
+
+func (s *UserService) Register(ctx context.Context, username string, email string, password string) error {
+	_, err := s.repository.GetByUsername(ctx, username)
+	if err != nil {
+		return errors.New("username already exists")
+	}
+
+	_, err = s.repository.GetByEmail(ctx, email)
+	if err != nil {
+		return errors.New("email already exists")
 	}
 }
