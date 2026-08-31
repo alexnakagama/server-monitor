@@ -35,7 +35,7 @@ func (r *UserRepository) Create(ctx context.Context, user model.User) error {
 	return err
 }
 
-func (r *UserRepository) GetUserByUsername(ctx context.Context, username string) (model.User, error) {
+func (r *UserRepository) GetByUsername(ctx context.Context, username string) (model.User, error) {
 	var user model.User
 
 	query := `
@@ -63,7 +63,7 @@ func (r *UserRepository) GetUserByUsername(ctx context.Context, username string)
 	return user, nil
 }
 
-func (r *UserRepository) GetUserByEmail(ctx context.Context, email string) (model.User, error) {
+func (r *UserRepository) GetByEmail(ctx context.Context, email string) (model.User, error) {
 	var user model.User
 
 	query := `
