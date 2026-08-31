@@ -31,4 +31,4 @@ type RegisterRequest struct {
 	Password string `json:"password"`
 }
 
-func (h *UserHandler) HandleCreate(w http.ResponseWriter, r *http.Request) {}
+func (h *UserHandler) HandleRegister(w http.ResponseWriter, r *http.Request) {}
