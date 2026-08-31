@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"net/http"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
 )
@@ -23,3 +24,5 @@ func NewUserHandler(repo UserRespository) *UserHandler {
 		repository: repo,
 	}
 }
+
+func (h *UserHandler) HandlerCreate(w http.ResponseWriter, r *http.Request) {}
