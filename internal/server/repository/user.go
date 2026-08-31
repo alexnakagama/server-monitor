@@ -61,3 +61,5 @@ func (r *UserRepository) GetUserByUsername(ctx context.Context, username string)
 
 	return user, nil
 }
+
+func (r *UserRepository) GetUserByEmail(ctx context.Context, email string) (model.User, error) {}
