@@ -109,4 +109,29 @@ func (r *UserRepository) Delete(ctx context.Context, id int) error {
 	return nil
 }
 
-func (r *UserRepository) Update(ctx context.Context, user model.User) error {}
+func (r *UserRepository) Update(ctx context.Context, user model.User) error {
+	query := `
+		UPDATE users
+		SET username = $1,
+		    email = $2
+		WHERE id = $3
+	`
+
+	result, err := r.db.Exec(
+		ctx,
+		query,
+		user.Username,
+		user.Email,
+		user.ID,
+	)
+
+	if err != nil {
+		return err
+	}
+
+	if result.RowsAffected() == 0 {
+		return errors.New("user not found")
+	}
+
+	return nil
+}
