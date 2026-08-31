@@ -25,4 +25,4 @@ func NewUserHandler(repo UserRespository) *UserHandler {
 	}
 }
 
-func (h *UserHandler) HandlerCreate(w http.ResponseWriter, r *http.Request) {}
+func (h *UserHandler) HandleCreate(w http.ResponseWriter, r *http.Request) {}
