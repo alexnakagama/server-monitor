@@ -7,4 +7,7 @@ type UserRepository struct {
 }
 
 func NewUserRepository(db *pgxpool.Pool) *UserRepository {
+	return &UserRepository{
+		db: db,
+	}
 }
