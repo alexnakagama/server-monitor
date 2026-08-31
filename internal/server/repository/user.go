@@ -89,3 +89,5 @@ func (r *UserRepository) GetUserByEmail(ctx context.Context, email string) (mode
 
 	return user, nil
 }
+
+func (r *UserRepository) Delete(ctx context.Context, id int) error {}
