@@ -97,10 +97,7 @@ func (r *UserRepository) Delete(ctx context.Context, id int) error {
 		WHERE id = $1
 	`
 
-	result, err := r.db.Exec(
-		ctx, query, id,
-	)
-
+	result, err := r.db.Exec(ctx, query, id)
 	if err != nil {
 		return err
 	}
