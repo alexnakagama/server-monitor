@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
+	"github.com/alexnakagama/server-monitor/internal/server/service"
 )
 
 type UserRespository interface {
@@ -16,12 +17,12 @@ type UserRespository interface {
 }
 
 type UserHandler struct {
-	repository UserRespository
+	service *service.UserService
 }
 
-func NewUserHandler(repo UserRespository) *UserHandler {
+func NewUserHandler(service *service.UserService) *UserHandler {
 	return &UserHandler{
-		repository: repo,
+		service: service,
 	}
 }
 
