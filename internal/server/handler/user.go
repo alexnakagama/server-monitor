@@ -47,6 +47,8 @@ func (h *UserHandler) HandleRegister(w http.ResponseWriter, r *http.Request) {
 }
 
 type LoginRequest struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
 func (h *UserHandler) HandleLogin(w http.ResponseWriter, r *http.Request) {
