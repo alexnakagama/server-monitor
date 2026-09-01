@@ -1,3 +1,6 @@
+include .env
+export
+
 migrate-up:
 	migrate -path db/migrations -database "$(DATABASE_URL)" up
 
