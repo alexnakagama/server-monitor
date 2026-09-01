@@ -45,3 +45,6 @@ func (h *UserHandler) HandleRegister(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusCreated)
 }
+
+func (h *UserHandler) HandleLogin(w http.ResponseWriter, r *http.Request) {
+}
