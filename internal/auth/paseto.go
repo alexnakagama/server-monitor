@@ -26,3 +26,5 @@ func (p *PasetoManager) CreateToken(userID int) (string, error) {
 
 	return token.V4Encrypt(p.key, nil), nil
 }
+
+func (p *PasetoManager) VerifyToken(token string) (int, error) {}
