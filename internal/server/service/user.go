@@ -15,6 +15,7 @@ type UserRepository interface {
 	GetByEmail(ctx context.Context, email string) (model.User, error)
 	Delete(ctx context.Context, id int) error
 	Update(ctx context.Context, user model.User) error
+	GetByID(ctx context.Context, id int) (model.User, error)
 }
 
 type UserService struct {
@@ -84,3 +85,5 @@ func (s *UserService) Login(ctx context.Context, username string, password strin
 
 	return token, nil
 }
+
+func (s *UserService) GetByID(ctx context.Context, id int) (model.User, error) {}
