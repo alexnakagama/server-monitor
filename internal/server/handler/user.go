@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/alexnakagama/server-monitor/internal/auth"
 	"github.com/alexnakagama/server-monitor/internal/server/service"
 )
 
@@ -73,4 +74,5 @@ func (h *UserHandler) HandleLogin(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func (h *UserHandler) HandleProfile(w http.ResponseWriter, r *http.Request) {}
+func (h *UserHandler) HandleProfile(w http.ResponseWriter, r *http.Request) {
+}

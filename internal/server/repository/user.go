@@ -146,3 +146,5 @@ func (r *UserRepository) Update(ctx context.Context, user model.User) error {
 
 	return nil
 }
+
+func (r *UserRepository) GetByID(ctx context.Context, id int) (model.User, error) {}
