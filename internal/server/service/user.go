@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 
+	"github.com/alexnakagama/server-monitor/internal/auth"
 	"github.com/alexnakagama/server-monitor/internal/model"
 	apperrors "github.com/alexnakagama/server-monitor/internal/server/repository"
 )
@@ -17,12 +18,14 @@ type UserRepository interface {
 }
 
 type UserService struct {
-	repository UserRepository
+	repository    UserRepository
+	pasetoManager *auth.PasetoManager
 }
 
-func NewUserService(repo UserRepository) *UserService {
+func NewUserService(repo UserRepository, pasetoManager *auth.PasetoManager) *UserService {
 	return &UserService{
-		repository: repo,
+		repository:    repo,
+		pasetoManager: pasetoManager,
 	}
 }
 
