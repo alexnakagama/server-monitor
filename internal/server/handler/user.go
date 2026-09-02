@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 
@@ -81,8 +82,6 @@ func (h *UserHandler) HandleProfile(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "user not found", http.StatusInternalServerError)
 		return
 	}
-
-	fmt.Println("userid: ", userID)
 
 	user, err := h.service.GetByID(r.Context(), userID)
 	if err != nil {
