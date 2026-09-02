@@ -6,6 +6,9 @@ import (
 	"net/http"
 	"os"
 
+	"aidanwoods.dev/go-paseto"
+
+	"github.com/alexnakagama/server-monitor/internal/auth"
 	"github.com/alexnakagama/server-monitor/internal/server/db"
 	"github.com/alexnakagama/server-monitor/internal/server/handler"
 	"github.com/alexnakagama/server-monitor/internal/server/repository"
@@ -30,13 +33,21 @@ func main() {
 	}
 	defer database.Close()
 
+	key, err := paseto.V4SymmetricKeyFromHex(os.Getenv("PASETO_KEY"))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	pasetoManager := auth.NewPasetoManager(key)
+
 	userRepository := repository.NewUserRepository(database)
-	userService := service.NewUserService(userRepository)
+	userService := service.NewUserService(userRepository, pasetoManager)
 	userHandler := handler.NewUserHandler(userService)
 
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("POST /users", userHandler.HandleRegister)
+	mux.HandleFunc("POST /login", userHandler.HandleLogin)
 
 	server := http.Server{
 		Addr:    ":8080",
