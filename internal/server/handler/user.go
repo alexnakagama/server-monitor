@@ -72,3 +72,5 @@ func (h *UserHandler) HandleLogin(w http.ResponseWriter, r *http.Request) {
 		"token": token,
 	})
 }
+
+func (h *UserHandler) HandleProfile(w http.ResponseWriter, r *http.Request) {}
