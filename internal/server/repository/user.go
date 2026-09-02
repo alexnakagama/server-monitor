@@ -18,6 +18,8 @@ func NewUserRepository(db *pgxpool.Pool) *UserRepository {
 	}
 }
 
+var ErrUserNotFound = errors.New("user not found")
+
 func (r *UserRepository) Create(ctx context.Context, user model.User) error {
 	query := `
 		INSERT INTO users (username, email, password_hash)
