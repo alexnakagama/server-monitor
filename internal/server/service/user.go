@@ -61,3 +61,5 @@ func (s *UserService) Register(ctx context.Context, username string, email strin
 
 	return s.repository.Create(ctx, user)
 }
+
+func (s *UserService) Login(ctx context.Context, username string, password string) (string, error) {}
