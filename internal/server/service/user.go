@@ -86,4 +86,6 @@ func (s *UserService) Login(ctx context.Context, username string, password strin
 	return token, nil
 }
 
-func (s *UserService) GetByID(ctx context.Context, id int) (model.User, error) {}
+func (s *UserService) GetByID(ctx context.Context, id int) (model.User, error) {
+	return s.repository.GetByID(ctx, id)
+}
