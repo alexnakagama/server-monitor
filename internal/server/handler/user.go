@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"hash/maphash"
 	"net/http"
 
 	"github.com/alexnakagama/server-monitor/internal/server/service"
@@ -52,4 +53,23 @@ type LoginRequest struct {
 }
 
 func (h *UserHandler) HandleLogin(w http.ResponseWriter, r *http.Request) {
+	var req LoginRequest
+
+	err := json.NewDecoder(r.Body).Decode(&req)
+	if err != nil {
+		http.Error(w, "invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	token, err := h.service.Login(r.Context(), req.Username, req.Password)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusUnauthorized)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+
+	json.NewEncoder(w).Encode(map[string]string{
+		"token": token,
+	})
 }
