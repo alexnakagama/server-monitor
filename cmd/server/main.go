@@ -51,7 +51,10 @@ func main() {
 	mux.HandleFunc("POST /login", userHandler.HandleLogin)
 
 	// private endpoints
-	// here
+	mux.Handle("GET /profile", auth.AuthMiddleware(
+		pasetoManager,
+		http.HandlerFunc(userHandler.HandleProfile),
+	))
 
 	server := http.Server{
 		Addr:    ":8080",
