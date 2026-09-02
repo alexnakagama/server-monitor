@@ -91,6 +91,10 @@ func (r *UserRepository) GetByEmail(ctx context.Context, email string) (model.Us
 		&user.CreatedAt,
 	)
 
+	if errors.Is(err, pgx.ErrNoRows) {
+		return model.User{}, ErrUserNotFound
+	}
+
 	if err != nil {
 		return model.User{}, err
 	}
@@ -120,7 +124,7 @@ func (r *UserRepository) Update(ctx context.Context, user model.User) error {
 	query := `
 		UPDATE users
 		SET username = $1,
-		    email = $2
+		email = $2
 		WHERE id = $3
 	`
 
