@@ -2,8 +2,10 @@ package service
 
 import (
 	"crypto/rand"
+	"crypto/subtle"
 	"encoding/base64"
 	"fmt"
+	"strings"
 
 	"golang.org/x/crypto/argon2"
 )
@@ -31,4 +33,31 @@ func HashPassword(password string) (string, error) {
 	), nil
 }
 
-func VerifyPassword(password string, encodedHash string) bool {}
+func VerifyPassword(password string, encodedHash string) bool {
+	parts := strings.Split(encodedHash, ":")
+
+	if len(parts) != 2 {
+		return false
+	}
+
+	salt, err := base64.RawStdEncoding.DecodeString(parts[0])
+	if err != nil {
+		return false
+	}
+
+	expectedHash, err := base64.RawStdEncoding.DecodeString(parts[1])
+	if err != nil {
+		return false
+	}
+
+	actualHash := argon2.IDKey(
+		[]byte(password),
+		salt,
+		1,
+		64*1024,
+		4,
+		32,
+	)
+
+	return subtle.ConstantTimeCompare(actualHash, expectedHash) == 1
+}
