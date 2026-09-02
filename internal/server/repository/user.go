@@ -5,6 +5,7 @@ import (
 	"errors"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -57,6 +58,10 @@ func (r *UserRepository) GetByUsername(ctx context.Context, username string) (mo
 		&user.PasswordHash,
 		&user.CreatedAt,
 	)
+
+	if errors.Is(err, pgx.ErrNoRows) {
+		return model.User{}, ErrUserNotFound
+	}
 
 	if err != nil {
 		return model.User{}, err
