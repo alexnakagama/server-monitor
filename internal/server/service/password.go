@@ -30,3 +30,5 @@ func HashPassword(password string) (string, error) {
 		base64.RawStdEncoding.EncodeToString(hash),
 	), nil
 }
+
+func VerifyPassword(password string, encodedHash string) bool {}
