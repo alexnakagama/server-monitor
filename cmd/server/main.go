@@ -46,8 +46,12 @@ func main() {
 
 	mux := http.NewServeMux()
 
+	// public endpoints
 	mux.HandleFunc("POST /users", userHandler.HandleRegister)
 	mux.HandleFunc("POST /login", userHandler.HandleLogin)
+
+	// private endpoints
+	// here
 
 	server := http.Server{
 		Addr:    ":8080",
