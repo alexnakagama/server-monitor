@@ -75,4 +75,18 @@ func (h *UserHandler) HandleLogin(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *UserHandler) HandleProfile(w http.ResponseWriter, r *http.Request) {
+	userID, ok := auth.UserIDFromContext(r.Context())
+	if !ok {
+		http.Error(w, "user not found", http.StatusInternalServerError)
+		return
+	}
+
+	user, err := h.service.GetByID(r.Context(), userID)
+	if err != nil {
+		http.Error(w, "user not found", http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(user)
 }
