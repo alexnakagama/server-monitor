@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	"hash/maphash"
 	"net/http"
 
 	"github.com/alexnakagama/server-monitor/internal/server/service"
