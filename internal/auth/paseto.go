@@ -17,7 +17,7 @@ func NewPasetoManager(key paseto.V4SymmetricKey) *PasetoManager {
 	}
 }
 
-func (p *PasetoManager) CreateToken(userID int64) (string, error) {
+func (p *PasetoManager) CreateToken(userID int) (string, error) {
 	token := paseto.NewToken()
 
 	token.SetString("user_id", fmt.Sprintf("%d", userID))

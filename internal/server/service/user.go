@@ -62,4 +62,25 @@ func (s *UserService) Register(ctx context.Context, username string, email strin
 	return s.repository.Create(ctx, user)
 }
 
-func (s *UserService) Login(ctx context.Context, username string, password string) (string, error) {}
+func (s *UserService) Login(ctx context.Context, username string, password string) (string, error) {
+	user, err := s.repository.GetByUsername(ctx, username)
+	if err != nil {
+		return "", errors.New("invalid credentials")
+	}
+
+	match, err := VerifyPassword(password, user.PasswordHash)
+	if err != nil {
+		return "", err
+	}
+
+	if !match {
+		return "", errors.New("invalid credentials")
+	}
+
+	token, err := s.pasetoManager.CreateToken(user.ID)
+	if err != nil {
+		return "", err
+	}
+
+	return token, nil
+}
