@@ -1,63 +1,11 @@
 package service
 
-import (
-	"crypto/rand"
-	"crypto/subtle"
-	"encoding/base64"
-	"fmt"
-	"strings"
-
-	"golang.org/x/crypto/argon2"
-)
+import "github.com/alexedwards/argon2id"
 
 func HashPassword(password string) (string, error) {
-	salt := make([]byte, 16)
-
-	if _, err := rand.Read(salt); err != nil {
-		return "", err
-	}
-
-	hash := argon2.IDKey(
-		[]byte(password),
-		salt,
-		1,
-		64*1024,
-		4,
-		32,
-	)
-
-	return fmt.Sprintf(
-		"%s:%s",
-		base64.RawStdEncoding.EncodeToString(salt),
-		base64.RawStdEncoding.EncodeToString(hash),
-	), nil
+	return argon2id.CreateHash(password, argon2id.DefaultParams)
 }
 
-func VerifyPassword(password string, encodedHash string) bool {
-	parts := strings.Split(encodedHash, ":")
-
-	if len(parts) != 2 {
-		return false
-	}
-
-	salt, err := base64.RawStdEncoding.DecodeString(parts[0])
-	if err != nil {
-		return false
-	}
-
-	expectedHash, err := base64.RawStdEncoding.DecodeString(parts[1])
-	if err != nil {
-		return false
-	}
-
-	actualHash := argon2.IDKey(
-		[]byte(password),
-		salt,
-		1,
-		64*1024,
-		4,
-		32,
-	)
-
-	return subtle.ConstantTimeCompare(actualHash, expectedHash) == 1
+func VerifyPassword(password, hash string) (bool, error) {
+	return argon2id.ComparePasswordAndHash(password, hash)
 }
