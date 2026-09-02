@@ -1,6 +1,9 @@
 package auth
 
 import (
+	"fmt"
+	"time"
+
 	"aidanwoods.dev/go-paseto"
 )
 
@@ -14,4 +17,12 @@ func NewPasetoManager(key paseto.V4SymmetricKey) *PasetoManager {
 	}
 }
 
-func (p *PasetoManager) CreateToken(userID int64) (string, error) {}
+func (p *PasetoManager) CreateToken(userID int64) (string, error) {
+	token := paseto.NewToken()
+
+	token.SetString("user_id", fmt.Sprintf("%d", userID))
+	token.SetIssuedAt(time.Now())
+	token.SetExpiration(time.Now().Add(24 * time.Hour))
+
+	return token.V4Encrypt(p.key, nil), nil
+}
