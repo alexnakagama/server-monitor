@@ -161,6 +161,7 @@ func (r *UserRepository) GetByID(ctx context.Context, id int) (model.User, error
 		query,
 		id,
 	).Scan(
+		&user.ID,
 		&user.Username,
 		&user.Email,
 		&user.CreatedAt,
