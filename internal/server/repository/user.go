@@ -147,4 +147,32 @@ func (r *UserRepository) Update(ctx context.Context, user model.User) error {
 	return nil
 }
 
-func (r *UserRepository) GetByID(ctx context.Context, id int) (model.User, error) {}
+func (r *UserRepository) GetByID(ctx context.Context, id int) (model.User, error) {
+	var user model.User
+
+	query := `
+		SELECT id, username, email, password_hash, created_at
+		FROM users
+		WHERE id = $1
+	`
+
+	err := r.db.QueryRow(
+		ctx,
+		query,
+		id,
+	).Scan(
+		&user.Username,
+		&user.Email,
+		&user.CreatedAt,
+	)
+
+	if errors.Is(err, pgx.ErrNoRows) {
+		return model.User{}, ErrUserNotFound
+	}
+
+	if err != nil {
+		return model.User{}, err
+	}
+
+	return user, nil
+}
