@@ -114,7 +114,7 @@ func (r *UserRepository) Delete(ctx context.Context, id int) error {
 	}
 
 	if result.RowsAffected() == 0 {
-		return errors.New("user not found")
+		return ErrUserNotFound
 	}
 
 	return nil
@@ -141,7 +141,7 @@ func (r *UserRepository) Update(ctx context.Context, user model.User) error {
 	}
 
 	if result.RowsAffected() == 0 {
-		return errors.New("user not found")
+		return ErrUserNotFound
 	}
 
 	return nil
