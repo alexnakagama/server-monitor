@@ -13,3 +13,5 @@ func NewPasetoManager(key paseto.V4SymmetricKey) *PasetoManager {
 		key: key,
 	}
 }
+
+func (p *PasetoManager) CreateToken(userID int64) (string, error) {}
