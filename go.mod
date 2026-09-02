@@ -3,13 +3,13 @@ module github.com/alexnakagama/server-monitor
 go 1.27.0
 
 require (
+	aidanwoods.dev/go-paseto v1.6.0
 	github.com/jackc/pgx/v5 v5.10.0
 	github.com/joho/godotenv v1.5.1
 	golang.org/x/crypto v0.55.0
 )
 
 require (
-	aidanwoods.dev/go-paseto v1.6.0 // indirect
 	aidanwoods.dev/go-result v0.3.1 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
