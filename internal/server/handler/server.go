@@ -61,6 +61,11 @@ func (h *ServerHandler) HandleGetByName(w http.ResponseWriter, r *http.Request) 
 
 	server, err := h.service.GetByName(r.Context(), name)
 	if err != nil {
+		if errors.Is(err, errors_custom.ErrServerNotFound) {
+			http.Error(w, "server not found", http.StatusNotFound)
+			return
+		}
+
 		http.Error(w, "server not found", http.StatusNotFound)
 		return
 	}
