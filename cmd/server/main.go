@@ -85,6 +85,11 @@ func main() {
 		http.HandlerFunc(serverHandler.HandleGetByHostname),
 	))
 
+	mux.Handle("DELETE /servers/hostname/{hostname}", auth.AuthMiddleware(
+		pasetoManager,
+		http.HandlerFunc(serverHandler.HandleDeleteByHostname),
+	))
+
 	server := http.Server{
 		Addr:    ":8080",
 		Handler: mux,
