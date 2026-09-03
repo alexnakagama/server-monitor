@@ -54,6 +54,8 @@ func main() {
 	mux.HandleFunc("POST /users/register", userHandler.HandleRegister)
 	mux.HandleFunc("POST /users/login", userHandler.HandleLogin)
 
+	mux.HandleFunc("POST /server", serverHandler.HandleCreate)
+
 	// private endpoints
 	mux.Handle("GET /users/profile/me", auth.AuthMiddleware(
 		pasetoManager,
