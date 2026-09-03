@@ -132,6 +132,11 @@ func (h *ServerHandler) HandleGetByHostname(w http.ResponseWriter, r *http.Reque
 
 	server, err := h.service.GetByHostname(r.Context(), hostname)
 	if err != nil {
+		if errors.Is(err, errors_custom.ErrServerNotFound) {
+			http.Error(w, "server not found", http.StatusNotFound)
+			return
+		}
+
 		http.Error(w, "failed to get server", http.StatusInternalServerError)
 		return
 	}
