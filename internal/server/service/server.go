@@ -14,7 +14,11 @@ type ServerService struct {
 	repository ServerRepository
 }
 
-func NewServerService(repository ServerRepository) *ServerService {}
+func NewServerService(repository ServerRepository) *ServerService {
+	return &ServerService{
+		repository: repository,
+	}
+}
 
 func (s *ServerService) Create(ctx context.Context, name string, hostname string, os string) error {
 	server := model.Server{
