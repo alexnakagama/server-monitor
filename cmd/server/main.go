@@ -50,7 +50,7 @@ func main() {
 
 	mux := http.NewServeMux()
 
-	// public endpoints
+	// the only public endpoints, register and login
 	mux.HandleFunc("POST /users/register", userHandler.HandleRegister)
 	mux.HandleFunc("POST /users/login", userHandler.HandleLogin)
 
