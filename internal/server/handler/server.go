@@ -1,6 +1,10 @@
 package handler
 
-import "github.com/alexnakagama/server-monitor/internal/server/service"
+import (
+	"net/http"
+
+	"github.com/alexnakagama/server-monitor/internal/server/service"
+)
 
 type ServerHandler struct {
 	service *service.ServerService
@@ -17,3 +21,5 @@ type CreateServerRequest struct {
 	Hostname string `json:"hostname"`
 	OS       string `json:"os"`
 }
+
+func (h *ServerHandler) HandleCreate(w http.ResponseWriter, r *http.Request) {}
