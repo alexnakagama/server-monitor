@@ -50,3 +50,5 @@ func (s *ServerService) GetByOS(ctx context.Context, os string) ([]model.Server,
 func (s *ServerService) GetByHostname(ctx context.Context, hostname string) (model.Server, error) {
 	return s.repository.GetByHostname(ctx, hostname)
 }
+
+func (s *ServerService) DeleteByHostname(ctx context.Context, hostname string) error {}
