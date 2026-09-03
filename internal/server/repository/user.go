@@ -5,6 +5,7 @@ import (
 	"errors"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
+	"github.com/alexnakagama/server-monitor/internal/server/errors_custom"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -18,8 +19,6 @@ func NewUserRepository(db *pgxpool.Pool) *UserRepository {
 		db: db,
 	}
 }
-
-var ErrUserNotFound = errors.New("user not found")
 
 func (r *UserRepository) Create(ctx context.Context, user model.User) error {
 	query := `
@@ -60,7 +59,7 @@ func (r *UserRepository) GetByUsername(ctx context.Context, username string) (mo
 	)
 
 	if errors.Is(err, pgx.ErrNoRows) {
-		return model.User{}, ErrUserNotFound
+		return model.User{}, errors_custom.ErrUserNotFound
 	}
 
 	if err != nil {
