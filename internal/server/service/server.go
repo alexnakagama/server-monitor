@@ -41,4 +41,6 @@ func (s *ServerService) GetAll(ctx context.Context) ([]model.Server, error) {
 	return s.repository.GetAll(ctx)
 }
 
-func (s *ServerService) GetByOS(ctx context.Context, os string) ([]model.Server, error) {}
+func (s *ServerService) GetByOS(ctx context.Context, os string) ([]model.Server, error) {
+	return s.repository.GetByOS(ctx, os)
+}
