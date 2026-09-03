@@ -105,4 +105,17 @@ func (h *ServerHandler) HandleGetByOS(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	responses := make([]ServerResponse, 0, len(servers))
+
+	for _, server := range servers {
+		responses = append(responses, ServerResponse{
+			Name:      server.Name,
+			Hostname:  server.Hostname,
+			OS:        server.OS,
+			CreatedAt: server.CreatedAt,
+		})
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(responses)
 }
