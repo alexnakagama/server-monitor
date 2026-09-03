@@ -169,3 +169,6 @@ func (r *ServerRepository) GetByHostname(ctx context.Context, hostname string) (
 
 	return server, nil
 }
+
+func (r *ServerRepository) DeleteByName(ctx context.Context, name string) error {
+}
