@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/alexnakagama/server-monitor/internal/server/service"
@@ -22,4 +23,25 @@ type CreateServerRequest struct {
 	OS       string `json:"os"`
 }
 
-func (h *ServerHandler) HandleCreate(w http.ResponseWriter, r *http.Request) {}
+func (h *ServerHandler) HandleCreate(w http.ResponseWriter, r *http.Request) {
+	var req CreateServerRequest
+
+	err := json.NewDecoder(r.Body).Decode(&req)
+	if err != nil {
+		http.Error(w, "invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	err = h.service.Create(
+		r.Context(),
+		req.Name,
+		req.Hostname,
+		req.OS,
+	)
+	if err != nil {
+		http.Error(w, "failed to create a server", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+}
