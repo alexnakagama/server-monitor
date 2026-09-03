@@ -202,3 +202,6 @@ func (r *ServerRepository) DeleteByHostname(ctx context.Context, hostname string
 
 	return nil
 }
+
+func (r *ServerRepository) UpdateByHostname(ctx context.Context, hostname string, name string, os string) error {
+}
