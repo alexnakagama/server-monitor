@@ -77,7 +77,7 @@ func (h *ServerHandler) HandleGetByName(w http.ResponseWriter, r *http.Request) 
 func (h *ServerHandler) HandleGetAll(w http.ResponseWriter, r *http.Request) {
 	servers, err := h.service.GetAll(r.Context())
 	if err != nil {
-		http.Error(w, "servers not found", http.StatusNotFound)
+		http.Error(w, "failed to get servers", http.StatusInternalServerError)
 		return
 	}
 
