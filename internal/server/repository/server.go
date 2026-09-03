@@ -62,4 +62,42 @@ func (r *ServerRepository) GetByName(ctx context.Context, name string) (model.Se
 	return server, nil
 }
 
-func (r *ServerRepository) GetAll(ctx context.Context) ([]model.Server, error) {}
+func (r *ServerRepository) GetAll(ctx context.Context) ([]model.Server, error) {
+	query := `
+		SELECT id, name, hostname, os, created_at
+		FROM servers
+		ORDER BY id
+	`
+
+	rows, err := r.db.Query(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var servers []model.Server
+
+	for rows.Next() {
+		var server model.Server
+
+		err := rows.Scan(
+			&server.ID,
+			&server.Name,
+			&server.Hostname,
+			&server.OS,
+			&server.CreatedAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		servers = append(servers, server)
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return nil, err
+	}
+
+	return servers, nil
+}
