@@ -31,4 +31,6 @@ func (s *ServerService) Create(ctx context.Context, name string, hostname string
 	return s.repository.Create(ctx, server)
 }
 
-func (s *ServerService) GetByName(ctx context.Context, name string) (model.Server, error) {}
+func (s *ServerService) GetByName(ctx context.Context, name string) (model.Server, error) {
+	return s.repository.GetByName(ctx, name)
+}
