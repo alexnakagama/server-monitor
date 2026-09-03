@@ -3,6 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
+	"time"
 
 	"github.com/alexnakagama/server-monitor/internal/server/service"
 )
@@ -44,4 +45,11 @@ func (h *ServerHandler) HandleCreate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusCreated)
+}
+
+type ServerResponse struct {
+	Name      string    `json:"name"`
+	Hostname  string    `json:"hostname"`
+	OS        string    `json:"os"`
+	CreatedAt time.Time `json:"created_at"`
 }
