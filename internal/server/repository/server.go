@@ -6,4 +6,8 @@ type ServerRepository struct {
 	db *pgxpool.Pool
 }
 
-func NewServerRepository(db *pgxpool.Pool) *ServerRepository {}
+func NewServerRepository(db *pgxpool.Pool) *ServerRepository {
+	return &ServerRepository{
+		db: db,
+	}
+}
