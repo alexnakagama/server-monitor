@@ -53,3 +53,5 @@ type ServerResponse struct {
 	OS        string    `json:"os"`
 	CreatedAt time.Time `json:"created_at"`
 }
+
+func (h *ServerHandler) HandleGetByName(w http.ResponseWriter, r *http.Request) {}
