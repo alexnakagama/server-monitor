@@ -1,6 +1,11 @@
 package repository
 
-import "github.com/jackc/pgx/v5/pgxpool"
+import (
+	"context"
+
+	"github.com/alexnakagama/server-monitor/internal/model"
+	"github.com/jackc/pgx/v5/pgxpool"
+)
 
 type ServerRepository struct {
 	db *pgxpool.Pool
@@ -11,3 +16,5 @@ func NewServerRepository(db *pgxpool.Pool) *ServerRepository {
 		db: db,
 	}
 }
+
+func (r *ServerRepository) Create(ctx context.Context, server model.Server) error {}
