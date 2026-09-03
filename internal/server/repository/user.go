@@ -140,7 +140,7 @@ func (r *UserRepository) Update(ctx context.Context, user model.User) error {
 	}
 
 	if result.RowsAffected() == 0 {
-		return ErrUserNotFound
+		return errors_custom.ErrUserNotFound
 	}
 
 	return nil
