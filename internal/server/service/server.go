@@ -13,6 +13,7 @@ type ServerRepository interface {
 	GetByOS(ctx context.Context, os string) ([]model.Server, error)
 	GetByHostname(ctx context.Context, hostname string) (model.Server, error)
 	DeleteByHostname(ctx context.Context, hostname string) error
+	UpdateByHostname(ctx context.Context, hostname string, name string, os string) error
 }
 
 type ServerService struct {
