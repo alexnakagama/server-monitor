@@ -8,6 +8,7 @@ import (
 
 type ServerRepository interface {
 	Create(ctx context.Context, server model.Server) error
+	GetByName(ctx context.Context, name string) (model.Server, error)
 }
 
 type ServerService struct {
