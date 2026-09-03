@@ -61,3 +61,5 @@ func (r *ServerRepository) GetByName(ctx context.Context, name string) (model.Se
 
 	return server, nil
 }
+
+func (r *ServerRepository) GetAll(ctx context.Context) ([]model.Server, error) {}
