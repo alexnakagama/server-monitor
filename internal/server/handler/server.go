@@ -158,3 +158,8 @@ func (h *ServerHandler) HandleDeleteByHostname(w http.ResponseWriter, r *http.Re
 
 	w.WriteHeader(http.StatusNoContent)
 }
+
+type UpdateServerRequest struct {
+	Name string `json:"name"`
+	OS   string `json:"os"`
+}
