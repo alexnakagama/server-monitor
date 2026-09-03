@@ -6,4 +6,8 @@ type ServerHandler struct {
 	service *service.ServerService
 }
 
-func NewServerHandler(service *service.ServerService) *ServerHandler {}
+func NewServerHandler(service *service.ServerService) *ServerHandler {
+	return &ServerHandler{
+		service: service,
+	}
+}
