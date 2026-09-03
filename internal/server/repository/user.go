@@ -113,7 +113,7 @@ func (r *UserRepository) Delete(ctx context.Context, id int) error {
 	}
 
 	if result.RowsAffected() == 0 {
-		return ErrUserNotFound
+		return errors_custom.ErrUserNotFound
 	}
 
 	return nil
