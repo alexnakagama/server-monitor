@@ -14,4 +14,12 @@ type ServerService struct {
 	repository ServerRepository
 }
 
-func (s *ServerService) Create(ctx context.Context, name string, hostname string, os string) error {}
+func (s *ServerService) Create(ctx context.Context, name string, hostname string, os string) error {
+	server := model.Server{
+		Name:     name,
+		Hostname: hostname,
+		OS:       os,
+	}
+
+	return s.repository.Create(ctx, server)
+}
