@@ -36,4 +36,6 @@ func (s *ServerService) GetByName(ctx context.Context, name string) (model.Serve
 	return s.repository.GetByName(ctx, name)
 }
 
-func (s *ServerService) GetAll(ctx context.Context) ([]model.Server, error) {}
+func (s *ServerService) GetAll(ctx context.Context) ([]model.Server, error) {
+	return s.repository.GetAll(ctx)
+}
