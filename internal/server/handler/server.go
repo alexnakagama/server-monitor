@@ -96,4 +96,18 @@ func (h *ServerHandler) HandleGetAll(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(responses)
 }
 
-func (h *ServerHandler) HandleGetByOS(w http.ResponseWriter, r *http.Request) {}
+type ServerResponseForOS struct {
+	Name      string    `json:"name"`
+	Hostname  string    `json:"hostname"`
+	CreatedAt time.Time `json:"created_at"`
+}
+
+func (h *ServerHandler) HandleGetByOS(w http.ResponseWriter, r *http.Request) {
+	os := r.PathValue("os")
+
+	servers, err := h.service.GetByOS(r.Context(), os)
+	if err != nil {
+		http.Error(w, "failed to get servers", http.StatusInternalServerError)
+		return
+	}
+}
