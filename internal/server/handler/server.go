@@ -2,9 +2,11 @@ package handler
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 	"time"
 
+	"github.com/alexnakagama/server-monitor/internal/server/errors_custom"
 	"github.com/alexnakagama/server-monitor/internal/server/service"
 )
 
@@ -140,4 +142,19 @@ func (h *ServerHandler) HandleGetByHostname(w http.ResponseWriter, r *http.Reque
 	json.NewEncoder(w).Encode(response)
 }
 
-func (h *ServerHandler) HandleDeleteByHostname(w http.ResponseWriter, r *http.Request) {}
+func (h *ServerHandler) HandleDeleteByHostname(w http.ResponseWriter, r *http.Request) {
+	hostname := r.PathValue("hostname")
+
+	err := h.service.DeleteByHostname(r.Context(), hostname)
+	if err != nil {
+		if errors.Is(err, errors_custom.ErrServerNotFound) {
+			http.Error(w, "server not found", http.StatusNotFound)
+			return
+		}
+
+		http.Error(w, "failed to delete server", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
+}
