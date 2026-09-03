@@ -204,4 +204,27 @@ func (r *ServerRepository) DeleteByHostname(ctx context.Context, hostname string
 }
 
 func (r *ServerRepository) UpdateByHostname(ctx context.Context, hostname string, name string, os string) error {
+	query := `
+		UPDATE servers
+		SET name = $1,
+			os = $2
+		WHERE hostname = $3
+	`
+
+	result, err := r.db.Exec(
+		ctx,
+		query,
+		name,
+		hostname,
+		os,
+	)
+	if err != nil {
+		return err
+	}
+
+	if result.RowsAffected() == 0 {
+		return errors_custom.ErrServerNotFound
+	}
+
+	return nil
 }
