@@ -11,6 +11,7 @@ type ServerRepository interface {
 	GetByName(ctx context.Context, name string) (model.Server, error)
 	GetAll(ctx context.Context) ([]model.Server, error)
 	GetByOS(ctx context.Context, os string) ([]model.Server, error)
+	GetByHostname(ctx context.Context, hostname string) (model.Server, error)
 }
 
 type ServerService struct {
