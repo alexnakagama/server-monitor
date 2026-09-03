@@ -34,4 +34,30 @@ func (r *ServerRepository) Create(ctx context.Context, server model.Server) erro
 	return err
 }
 
-func (r *ServerRepository) GetByName(ctx context.Context, name string) (model.Server, error) {}
+func (r *ServerRepository) GetByName(ctx context.Context, name string) (model.Server, error) {
+	var server model.Server
+
+	query := `
+		SELECT id, name, hostname, os, created_at
+		FROM servers
+		WHERE name = $1
+	`
+
+	err := r.db.QueryRow(
+		ctx,
+		query,
+		name,
+	).Scan(
+		&server.ID,
+		&server.Name,
+		&server.Hostname,
+		&server.OS,
+		&server.CreatedAt,
+	)
+
+	if err != nil {
+		return model.Server{}, err
+	}
+
+	return server, nil
+}
