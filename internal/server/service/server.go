@@ -35,3 +35,5 @@ func (s *ServerService) Create(ctx context.Context, name string, hostname string
 func (s *ServerService) GetByName(ctx context.Context, name string) (model.Server, error) {
 	return s.repository.GetByName(ctx, name)
 }
+
+func (s *ServerService) GetAll(ctx context.Context) ([]model.Server, error) {}
