@@ -101,3 +101,5 @@ func (r *ServerRepository) GetAll(ctx context.Context) ([]model.Server, error) {
 
 	return servers, nil
 }
+
+func (r *ServerRepository) GetByOS(ctx context.Context, os string) ([]model.Server, error) {}
