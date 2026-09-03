@@ -120,4 +120,22 @@ func (h *ServerHandler) HandleGetByOS(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(responses)
 }
 
-func (h *ServerHandler) HandleGetByHostname(w http.ResponseWriter, r *http.Request) {}
+func (h *ServerHandler) HandleGetByHostname(w http.ResponseWriter, r *http.Request) {
+	hostname := r.PathValue("hostname")
+
+	server, err := h.service.GetByHostname(r.Context(), hostname)
+	if err != nil {
+		http.Error(w, "failed to get server", http.StatusInternalServerError)
+		return
+	}
+
+	response := ServerResponse{
+		Name:      server.Name,
+		Hostname:  server.Hostname,
+		OS:        server.OS,
+		CreatedAt: server.CreatedAt,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}
