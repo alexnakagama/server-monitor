@@ -45,3 +45,5 @@ func (s *ServerService) GetAll(ctx context.Context) ([]model.Server, error) {
 func (s *ServerService) GetByOS(ctx context.Context, os string) ([]model.Server, error) {
 	return s.repository.GetByOS(ctx, os)
 }
+
+func (s *ServerService) GetByHostname(ctx context.Context, hostname string) (model.Server, error) {}
