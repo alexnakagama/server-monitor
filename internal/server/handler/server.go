@@ -163,3 +163,5 @@ type UpdateServerRequest struct {
 	Name string `json:"name"`
 	OS   string `json:"os"`
 }
+
+func (h *ServerHandler) HandleUpdateByHostname(w http.ResponseWriter, r *http.Request) {}
