@@ -9,3 +9,7 @@ import (
 type ServerRepository interface {
 	Create(ctx context.Context, server model.Server) error
 }
+
+type ServerService struct {
+	repository ServerRepository
+}
