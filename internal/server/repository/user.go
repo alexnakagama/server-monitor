@@ -91,7 +91,7 @@ func (r *UserRepository) GetByEmail(ctx context.Context, email string) (model.Us
 	)
 
 	if errors.Is(err, pgx.ErrNoRows) {
-		return model.User{}, ErrUserNotFound
+		return model.User{}, errors_custom.ErrUserNotFound
 	}
 
 	if err != nil {
