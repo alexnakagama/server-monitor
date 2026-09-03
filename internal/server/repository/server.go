@@ -170,6 +170,10 @@ func (r *ServerRepository) GetByHostname(ctx context.Context, hostname string) (
 		&server.CreatedAt,
 	)
 
+	if errors.Is(err, pgx.ErrNoRows) {
+		return model.Server{}, errors_custom.ErrServerNotFound
+	}
+
 	if err != nil {
 		return model.Server{}, err
 	}
