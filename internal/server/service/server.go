@@ -51,4 +51,6 @@ func (s *ServerService) GetByHostname(ctx context.Context, hostname string) (mod
 	return s.repository.GetByHostname(ctx, hostname)
 }
 
-func (s *ServerService) DeleteByHostname(ctx context.Context, hostname string) error {}
+func (s *ServerService) DeleteByHostname(ctx context.Context, hostname string) error {
+	return s.repository.DeleteByHostname(ctx, hostname)
+}
