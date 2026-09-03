@@ -13,3 +13,5 @@ type ServerRepository interface {
 type ServerService struct {
 	repository ServerRepository
 }
+
+func (s *ServerService) Create(ctx context.Context, name string, hostname string, os string) error {}
