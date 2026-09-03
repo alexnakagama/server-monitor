@@ -2,9 +2,11 @@ package repository
 
 import (
 	"context"
+	"errors"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
 	"github.com/alexnakagama/server-monitor/internal/server/errors_custom"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -55,6 +57,10 @@ func (r *ServerRepository) GetByName(ctx context.Context, name string) (model.Se
 		&server.OS,
 		&server.CreatedAt,
 	)
+
+	if errors.Is(err, pgx.ErrNoRows) {
+		return model.Server{}, errors_custom.ErrServerNotFound
+	}
 
 	if err != nil {
 		return model.Server{}, err
