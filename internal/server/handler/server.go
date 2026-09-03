@@ -164,4 +164,32 @@ type UpdateServerRequest struct {
 	OS   string `json:"os"`
 }
 
-func (h *ServerHandler) HandleUpdateByHostname(w http.ResponseWriter, r *http.Request) {}
+func (h *ServerHandler) HandleUpdateByHostname(w http.ResponseWriter, r *http.Request) {
+	hostname := r.PathValue("hostname")
+
+	var req UpdateServerRequest
+
+	err := json.NewDecoder(r.Body).Decode(&req)
+	if err != nil {
+		http.Error(w, "invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	err = h.service.UpdateByHostname(
+		r.Context(),
+		hostname,
+		req.Name,
+		req.OS,
+	)
+	if err != nil {
+		if errors.Is(err, errors_custom.ErrServerNotFound) {
+			http.Error(w, "server not found", http.StatusNotFound)
+			return
+		}
+
+		http.Error(w, "failed to update server", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
+}
