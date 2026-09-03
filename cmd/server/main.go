@@ -65,6 +65,11 @@ func main() {
 		http.HandlerFunc(serverHandler.HandleCreate),
 	))
 
+	mux.Handle("GET /server/{name}", auth.AuthMiddleware(
+		pasetoManager,
+		http.HandlerFunc(serverHandler.HandleGetByName),
+	))
+
 	server := http.Server{
 		Addr:    ":8080",
 		Handler: mux,
