@@ -54,4 +54,22 @@ type ServerResponse struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
-func (h *ServerHandler) HandleGetByName(w http.ResponseWriter, r *http.Request) {}
+func (h *ServerHandler) HandleGetByName(w http.ResponseWriter, r *http.Request) {
+	name := r.PathValue("name")
+
+	server, err := h.service.GetByName(r.Context(), name)
+	if err != nil {
+		http.Error(w, "server not found", http.StatusNotFound)
+		return
+	}
+
+	response := ServerResponse{
+		Name:      server.Name,
+		Hostname:  server.Hostname,
+		OS:        server.OS,
+		CreatedAt: server.CreatedAt,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}
