@@ -168,7 +168,7 @@ func (r *UserRepository) GetByID(ctx context.Context, id int) (model.User, error
 	)
 
 	if errors.Is(err, pgx.ErrNoRows) {
-		return model.User{}, ErrUserNotFound
+		return model.User{}, errors_custom.ErrUserNotFound
 	}
 
 	if err != nil {
