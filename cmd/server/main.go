@@ -44,6 +44,10 @@ func main() {
 	userService := service.NewUserService(userRepository, pasetoManager)
 	userHandler := handler.NewUserHandler(userService)
 
+	serverRepository := repository.NewServerRepository(database)
+	serverService := service.NewServerService(serverRepository)
+	serverHandler := handler.NewServerHandler(serverService)
+
 	mux := http.NewServeMux()
 
 	// public endpoints
