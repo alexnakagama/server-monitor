@@ -119,3 +119,5 @@ func (h *ServerHandler) HandleGetByOS(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(responses)
 }
+
+func (h *ServerHandler) HandleGetByHostname(w http.ResponseWriter, r *http.Request) {}
