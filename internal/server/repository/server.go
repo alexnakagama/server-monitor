@@ -17,4 +17,19 @@ func NewServerRepository(db *pgxpool.Pool) *ServerRepository {
 	}
 }
 
-func (r *ServerRepository) Create(ctx context.Context, server model.Server) error {}
+func (r *ServerRepository) Create(ctx context.Context, server model.Server) error {
+	query := `
+		INSERT INTO servers (name, hostname, os)
+		VALUES ($1, $2, $3)
+	`
+
+	_, err := r.db.Exec(
+		ctx,
+		query,
+		server.Name,
+		server.Hostname,
+		server.OS,
+	)
+
+	return err
+}
