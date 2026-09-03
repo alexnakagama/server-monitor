@@ -60,12 +60,12 @@ func main() {
 		http.HandlerFunc(userHandler.HandleProfile),
 	))
 
-	mux.Handle("POST /server", auth.AuthMiddleware(
+	mux.Handle("POST /servers", auth.AuthMiddleware(
 		pasetoManager,
 		http.HandlerFunc(serverHandler.HandleCreate),
 	))
 
-	mux.Handle("GET /server/{name}", auth.AuthMiddleware(
+	mux.Handle("GET /servers/{name}", auth.AuthMiddleware(
 		pasetoManager,
 		http.HandlerFunc(serverHandler.HandleGetByName),
 	))
