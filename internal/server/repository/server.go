@@ -2,13 +2,11 @@ package repository
 
 import (
 	"context"
-	"errors"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
+	"github.com/alexnakagama/server-monitor/internal/server/errors_custom"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
-
-var ErrServerNotFound = errors.New("server not found")
 
 type ServerRepository struct {
 	db *pgxpool.Pool
@@ -189,7 +187,7 @@ func (r *ServerRepository) DeleteByHostname(ctx context.Context, hostname string
 	}
 
 	if result.RowsAffected() == 0 {
-		return ErrServerNotFound
+		return errors_custom.ErrServerNotFound
 	}
 
 	return nil
