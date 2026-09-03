@@ -141,3 +141,6 @@ func (r *ServerRepository) GetByOS(ctx context.Context, os string) ([]model.Serv
 
 	return servers, nil
 }
+
+func (r *ServerRepository) GetByHostname(ctx context.Context, hostname string) ([]model.Server, error) {
+}
