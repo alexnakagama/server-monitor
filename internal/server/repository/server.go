@@ -33,3 +33,5 @@ func (r *ServerRepository) Create(ctx context.Context, server model.Server) erro
 
 	return err
 }
+
+func (r *ServerRepository) GetByName(ctx context.Context, name string) (model.Server, error) {}
