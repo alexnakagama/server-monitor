@@ -11,3 +11,9 @@ func NewServerHandler(service *service.ServerService) *ServerHandler {
 		service: service,
 	}
 }
+
+type CreateServerRequest struct {
+	Name     string `json:"name"`
+	Hostname string `json:"hostname"`
+	OS       string `json:"os"`
+}
