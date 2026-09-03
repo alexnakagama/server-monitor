@@ -5,6 +5,7 @@ import (
 
 	"github.com/alexnakagama/server-monitor/internal/model"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/lib/pq/hstore"
 )
 
 type ServerRepository struct {
@@ -143,4 +144,41 @@ func (r *ServerRepository) GetByOS(ctx context.Context, os string) ([]model.Serv
 }
 
 func (r *ServerRepository) GetByHostname(ctx context.Context, hostname string) ([]model.Server, error) {
+	query := `
+		SELECT id, name, hostname, os, created_at
+		FROM servers
+		WHERE hostname = $1
+	`
+
+	rows, err := r.db.Query(ctx, query, hostname)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var servers []model.Server
+
+	for rows.Next() {
+		var server model.Server
+
+		err := rows.Scan(
+			&server.ID,
+			&server.Name,
+			&server.Hostname,
+			&server.OS,
+			&server.CreatedAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		servers = append(servers, server)
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return nil, err
+	}
+
+	return servers, nil
 }
