@@ -74,4 +74,24 @@ func (h *ServerHandler) HandleGetByName(w http.ResponseWriter, r *http.Request) 
 	json.NewEncoder(w).Encode(response)
 }
 
-func (h *ServerHandler) HandleGetAll(w http.ResponseWriter, r *http.Request) {}
+func (h *ServerHandler) HandleGetAll(w http.ResponseWriter, r *http.Request) {
+	servers, err := h.service.GetAll(r.Context())
+	if err != nil {
+		http.Error(w, "servers not found", http.StatusNotFound)
+		return
+	}
+
+	responses := make([]ServerResponse, 0, len(servers))
+
+	for _, server := range servers {
+		responses = append(responses, ServerResponse{
+			Name:      server.Name,
+			Hostname:  server.Hostname,
+			OS:        server.OS,
+			CreatedAt: server.CreatedAt,
+		})
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(responses)
+}
