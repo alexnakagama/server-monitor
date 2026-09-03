@@ -102,4 +102,42 @@ func (r *ServerRepository) GetAll(ctx context.Context) ([]model.Server, error) {
 	return servers, nil
 }
 
-func (r *ServerRepository) GetByOS(ctx context.Context, os string) ([]model.Server, error) {}
+func (r *ServerRepository) GetByOS(ctx context.Context, os string) ([]model.Server, error) {
+	query := `
+		SELECT id, name, hostname, os, created_at
+		FROM servers
+		WHERE os = $1
+	`
+
+	rows, err := r.db.Query(ctx, query, os)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var servers []model.Server
+
+	for rows.Next() {
+		var server model.Server
+
+		err := rows.Scan(
+			&server.ID,
+			&server.Name,
+			&server.Hostname,
+			&server.OS,
+			&server.CreatedAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		servers = append(servers, server)
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return nil, err
+	}
+
+	return servers, nil
+}
