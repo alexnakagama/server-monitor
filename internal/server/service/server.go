@@ -56,6 +56,11 @@ func (s *ServerService) GetByOS(ctx context.Context, os string) ([]model.Server,
 }
 
 func (s *ServerService) GetByHostname(ctx context.Context, hostname string) (model.Server, error) {
+	err := model.ValidateHostname(hostname)
+	if err != nil {
+		return model.Server{}, err
+	}
+
 	return s.repository.GetByHostname(ctx, hostname)
 }
 
