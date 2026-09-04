@@ -1,6 +1,9 @@
 package model
 
-import "time"
+import (
+	"errors"
+	"time"
+)
 
 type Server struct {
 	ID        int       `json:"id"`
@@ -10,4 +13,18 @@ type Server struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
-func (s *Server) Validate() error {}
+func (s *Server) Validate() error {
+	if s.Name == "" {
+		return errors.New("name is required")
+	}
+
+	if s.Hostname == "" {
+		return errors.New("hostname is required")
+	}
+
+	if s.OS == "" {
+		return errors.New("os is required")
+	}
+
+	return nil
+}
