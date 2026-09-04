@@ -212,6 +212,21 @@ func (h *ServerHandler) HandleUpdateByHostname(w http.ResponseWriter, r *http.Re
 			return
 		}
 
+		if errors.Is(err, errors_custom.ErrNameRequired) {
+			http.Error(w, "name is required", http.StatusBadRequest)
+			return
+		}
+
+		if errors.Is(err, errors_custom.ErrHostnameRequired) {
+			http.Error(w, "hostname is required", http.StatusBadRequest)
+			return
+		}
+
+		if errors.Is(err, errors_custom.ErrOSRequired) {
+			http.Error(w, "os is required", http.StatusBadRequest)
+			return
+		}
+
 		http.Error(w, "failed to update server", http.StatusInternalServerError)
 		return
 	}
