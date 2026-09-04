@@ -42,6 +42,21 @@ func (h *ServerHandler) HandleCreate(w http.ResponseWriter, r *http.Request) {
 		req.OS,
 	)
 	if err != nil {
+		if errors.Is(err, errors_custom.ErrNameRequired) {
+			http.Error(w, "name is required", http.StatusBadRequest)
+			return
+		}
+
+		if errors.Is(err, errors_custom.ErrHostnameRequired) {
+			http.Error(w, "hostname is required", http.StatusBadRequest)
+			return
+		}
+
+		if errors.Is(err, errors_custom.ErrOSRequired) {
+			http.Error(w, "os is required", http.StatusBadRequest)
+			return
+		}
+
 		http.Error(w, "failed to create a server", http.StatusInternalServerError)
 		return
 	}
