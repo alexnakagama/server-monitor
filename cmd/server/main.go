@@ -100,7 +100,7 @@ func main() {
 		http.HandlerFunc(serverHandler.HandleUpdateNameByHostname),
 	))
 
-	mux.Handle("PATCH /servers/hostname/{os}/os", auth.AuthMiddleware(
+	mux.Handle("PATCH /servers/hostname/{hostname}/os", auth.AuthMiddleware(
 		pasetoManager,
 		http.HandlerFunc(serverHandler.HandleUpdateOSByHostname),
 	))
