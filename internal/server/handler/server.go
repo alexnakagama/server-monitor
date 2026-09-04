@@ -203,3 +203,5 @@ func (h *ServerHandler) HandleUpdateByHostname(w http.ResponseWriter, r *http.Re
 
 	w.WriteHeader(http.StatusNoContent)
 }
+
+func (h *ServerHandler) HandleUpdateNameByHostname(w http.ResponseWriter, r *http.Request) {}
