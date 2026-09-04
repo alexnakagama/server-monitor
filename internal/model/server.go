@@ -9,3 +9,5 @@ type Server struct {
 	OS        string    `json:"os"`
 	CreatedAt time.Time `json:"created_at"`
 }
+
+func (s *Server) Validate() error {}
