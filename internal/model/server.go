@@ -30,7 +30,7 @@ func (s *Server) Validate() error {
 	return nil
 }
 
-func (s *Server) ValidateName(name string) error {
+func ValidateName(name string) error {
 	if strings.TrimSpace(name) == "" {
 		return errors.New("name is required")
 	}
@@ -38,7 +38,7 @@ func (s *Server) ValidateName(name string) error {
 	return nil
 }
 
-func (s *Server) ValidateHostname(hostname string) error {
+func ValidateHostname(hostname string) error {
 	if strings.TrimSpace(hostname) == "" {
 		return errors.New("hostname is required")
 	}
@@ -46,7 +46,7 @@ func (s *Server) ValidateHostname(hostname string) error {
 	return nil
 }
 
-func (s *Server) ValidateOS(os string) error {
+func ValidateOS(os string) error {
 	if strings.TrimSpace(os) == "" {
 		return errors.New("os is required")
 	}
