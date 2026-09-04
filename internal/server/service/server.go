@@ -66,4 +66,6 @@ func (s *ServerService) UpdateNameByHostname(ctx context.Context, name string, h
 	return s.repository.UpdateNameByHostname(ctx, name, hostname)
 }
 
-func (s *ServerService) UpdateOSByHostname(ctx context.Context, os string, hostname string) error {}
+func (s *ServerService) UpdateOSByHostname(ctx context.Context, os string, hostname string) error {
+	return s.repository.UpdateOSByHostname(ctx, os, hostname)
+}
