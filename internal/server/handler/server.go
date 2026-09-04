@@ -178,7 +178,7 @@ func (h *ServerHandler) HandleDeleteByHostname(w http.ResponseWriter, r *http.Re
 		}
 
 		if errors.Is(err, errors_custom.ErrHostnameRequired) {
-			http.Error(w, "hostname required", http.StatusNotFound)
+			http.Error(w, "hostname required", http.StatusBadRequest)
 			return
 		}
 
