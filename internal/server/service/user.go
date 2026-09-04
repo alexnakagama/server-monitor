@@ -6,7 +6,7 @@ import (
 
 	"github.com/alexnakagama/server-monitor/internal/auth"
 	"github.com/alexnakagama/server-monitor/internal/model"
-	apperrors "github.com/alexnakagama/server-monitor/internal/server/repository"
+	"github.com/alexnakagama/server-monitor/internal/server/errors_custom"
 )
 
 type UserRepository interface {
@@ -36,7 +36,7 @@ func (s *UserService) Register(ctx context.Context, username string, email strin
 		return errors.New("username already exists")
 	}
 
-	if !errors.Is(err, apperrors.ErrUserNotFound) {
+	if !errors.Is(err, errors_custom.ErrUserNotFound) {
 		return err
 	}
 
@@ -45,7 +45,7 @@ func (s *UserService) Register(ctx context.Context, username string, email strin
 		return errors.New("email already exists")
 	}
 
-	if !errors.Is(err, apperrors.ErrUserNotFound) {
+	if !errors.Is(err, errors_custom.ErrUserNotFound) {
 		return err
 	}
 
