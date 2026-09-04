@@ -28,3 +28,5 @@ func (s *Server) Validate() error {
 
 	return nil
 }
+
+func (s *Server) ValidateName() error {}
