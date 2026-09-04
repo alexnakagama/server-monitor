@@ -177,6 +177,11 @@ func (h *ServerHandler) HandleDeleteByHostname(w http.ResponseWriter, r *http.Re
 			return
 		}
 
+		if errors.Is(err, errors_custom.ErrHostnameRequired) {
+			http.Error(w, "hostname required", http.StatusNotFound)
+			return
+		}
+
 		http.Error(w, "failed to delete server", http.StatusInternalServerError)
 		return
 	}
