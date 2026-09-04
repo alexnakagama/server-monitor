@@ -252,3 +252,6 @@ func (r *ServerRepository) UpdateNameByHostname(ctx context.Context, name string
 
 	return nil
 }
+
+func (r *ServerRepository) UpdateOsByHostname(ctx context.Context, os string, hostname string) error {
+}
