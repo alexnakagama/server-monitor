@@ -100,6 +100,11 @@ func main() {
 		http.HandlerFunc(serverHandler.HandleUpdateNameByHostname),
 	))
 
+	mux.Handle("PATCH /servers/hostname/{os}/os", auth.AuthMiddleware(
+		pasetoManager,
+		http.HandlerFunc(serverHandler.HandleUpdateOSByHostname),
+	))
+
 	server := http.Server{
 		Addr:    ":8080",
 		Handler: mux,
