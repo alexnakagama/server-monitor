@@ -35,6 +35,11 @@ func (s *ServerService) Create(ctx context.Context, name string, hostname string
 		OS:       os,
 	}
 
+	err := server.Validate()
+	if err != nil {
+		return err
+	}
+
 	return s.repository.Create(ctx, server)
 }
 
