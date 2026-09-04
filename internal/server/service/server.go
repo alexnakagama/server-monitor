@@ -60,3 +60,5 @@ func (s *ServerService) DeleteByHostname(ctx context.Context, hostname string) e
 func (s *ServerService) UpdateByHostname(ctx context.Context, hostname string, name string, os string) error {
 	return s.repository.UpdateByHostname(ctx, hostname, name, os)
 }
+
+func UpdateNameByHostname(ctx context.Context, name string, hostname string) error {}
