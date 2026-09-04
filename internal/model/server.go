@@ -46,4 +46,10 @@ func (s *Server) ValidateHostname(hostname string) error {
 	return nil
 }
 
-func (s *Server) ValidateOS(os string) error {}
+func (s *Server) ValidateOS(os string) error {
+	if strings.TrimSpace(os) == "" {
+		return errors.New("os is required")
+	}
+
+	return nil
+}
