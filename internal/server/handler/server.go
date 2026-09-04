@@ -81,7 +81,7 @@ func (h *ServerHandler) HandleGetByName(w http.ResponseWriter, r *http.Request) 
 			return
 		}
 
-		http.Error(w, "server not found", http.StatusInternalServerError)
+		http.Error(w, "failed to get server", http.StatusInternalServerError)
 		return
 	}
 
