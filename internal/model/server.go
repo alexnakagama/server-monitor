@@ -30,3 +30,5 @@ func (s *Server) Validate() error {
 }
 
 func (s *Server) ValidateName() error {}
+
+func (s *Server) ValidateHostname() error {}
