@@ -2,6 +2,7 @@ package model
 
 import (
 	"errors"
+	"strings"
 	"time"
 )
 
@@ -29,12 +30,18 @@ func (s *Server) Validate() error {
 	return nil
 }
 
-func (s *Server) ValidateName() error {
-	if s.Name == "" {
+func (s *Server) ValidateName(name string) error {
+	if strings.TrimSpace(name) == "" {
 		return errors.New("name is required")
 	}
 
 	return nil
 }
 
-func (s *Server) ValidateHostname() error {}
+func (s *Server) ValidateHostname(hostname string) error {
+	if strings.TrimSpace(hostname) == "" {
+		return errors.New("hostname is required")
+	}
+
+	return nil
+}
