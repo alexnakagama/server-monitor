@@ -238,7 +238,7 @@ type UpdateServerOSRequest struct {
 }
 
 func (h *ServerHandler) HandleUpdateOSByHostname(w http.ResponseWriter, r *http.Request) {
-	os := r.PathValue("os")
+	hostname := r.PathValue("hostname")
 
 	var req UpdateServerOSRequest
 
@@ -248,7 +248,7 @@ func (h *ServerHandler) HandleUpdateOSByHostname(w http.ResponseWriter, r *http.
 		return
 	}
 
-	err = h.service.UpdateOSByHostname(r.Context(), req.OS, os)
+	err = h.service.UpdateOSByHostname(r.Context(), req.OS, hostname)
 	if err != nil {
 		if errors.Is(err, errors_custom.ErrServerNotFound) {
 			http.Error(w, "server not found", http.StatusNotFound)
