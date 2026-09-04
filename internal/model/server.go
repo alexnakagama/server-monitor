@@ -45,3 +45,5 @@ func (s *Server) ValidateHostname(hostname string) error {
 
 	return nil
 }
+
+func (s *Server) ValidateOS(os string) error {}
