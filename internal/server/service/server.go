@@ -65,6 +65,11 @@ func (s *ServerService) GetByHostname(ctx context.Context, hostname string) (mod
 }
 
 func (s *ServerService) DeleteByHostname(ctx context.Context, hostname string) error {
+	err := model.ValidateHostname(hostname)
+	if err != nil {
+		return err
+	}
+
 	return s.repository.DeleteByHostname(ctx, hostname)
 }
 
