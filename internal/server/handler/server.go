@@ -204,9 +204,31 @@ func (h *ServerHandler) HandleUpdateByHostname(w http.ResponseWriter, r *http.Re
 	w.WriteHeader(http.StatusNoContent)
 }
 
-type UpdateNameRequest struct {
+type UpdateServerNameRequest struct {
 	Name string `json:"name"`
 }
 
 func (h *ServerHandler) HandleUpdateNameByHostname(w http.ResponseWriter, r *http.Request) {
+	hostname := r.PathValue("hostname")
+
+	var req UpdateServerNameRequest
+
+	err := json.NewDecoder(r.Body).Decode(&req)
+	if err != nil {
+		http.Error(w, "invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	err = h.service.UpdateNameByHostname(r.Context(), req.Name, hostname)
+	if err != nil {
+		if errors.Is(err, errors_custom.ErrServerNotFound) {
+			http.Error(w, "server not found", http.StatusNotFound)
+			return
+		}
+
+		http.Error(w, "failed to update server", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
 }
