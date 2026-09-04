@@ -74,7 +74,12 @@ func (s *ServerService) DeleteByHostname(ctx context.Context, hostname string) e
 }
 
 func (s *ServerService) UpdateByHostname(ctx context.Context, hostname string, name string, os string) error {
-	err := model.ValidateName(name)
+	err := model.ValidateHostname(hostname)
+	if err != nil {
+		return err
+	}
+
+	err = model.ValidateName(name)
 	if err != nil {
 		return err
 	}
