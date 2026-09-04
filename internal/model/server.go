@@ -29,6 +29,12 @@ func (s *Server) Validate() error {
 	return nil
 }
 
-func (s *Server) ValidateName() error {}
+func (s *Server) ValidateName() error {
+	if s.Name == "" {
+		return errors.New("name is required")
+	}
+
+	return nil
+}
 
 func (s *Server) ValidateHostname() error {}
