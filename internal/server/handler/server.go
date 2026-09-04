@@ -256,6 +256,11 @@ func (h *ServerHandler) HandleUpdateNameByHostname(w http.ResponseWriter, r *htt
 			return
 		}
 
+		if errors.Is(err, errors_custom.ErrNameRequired) {
+			http.Error(w, "name is required", http.StatusBadRequest)
+			return
+		}
+
 		http.Error(w, "failed to update server", http.StatusInternalServerError)
 		return
 	}
