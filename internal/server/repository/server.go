@@ -230,4 +230,25 @@ func (r *ServerRepository) UpdateByHostname(ctx context.Context, hostname string
 }
 
 func (r *ServerRepository) UpdateNameByHostname(ctx context.Context, name string, hostname string) error {
+	query := `
+		UPDATE servers
+		SET name = $1
+		WHERE hostname = $2
+	`
+
+	result, err := r.db.Exec(
+		ctx,
+		query,
+		name,
+		hostname,
+	)
+	if err != nil {
+		return err
+	}
+
+	if result.RowsAffected() == 0 {
+		return errors_custom.ErrServerNotFound
+	}
+
+	return nil
 }
