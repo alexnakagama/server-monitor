@@ -15,6 +15,7 @@ type ServerRepository interface {
 	DeleteByHostname(ctx context.Context, hostname string) error
 	UpdateByHostname(ctx context.Context, hostname string, name string, os string) error
 	UpdateNameByHostname(ctx context.Context, name string, hostname string) error
+	UpdateOSByHostname(ctx context.Context, os string, hostname string) error
 }
 
 type ServerService struct {
