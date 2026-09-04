@@ -90,7 +90,7 @@ func main() {
 		http.HandlerFunc(serverHandler.HandleDeleteByHostname),
 	))
 
-	mux.Handle("UPDATE /servers/hostname/{hostname}", auth.AuthMiddleware(
+	mux.Handle("PUT /servers/hostname/{hostname}", auth.AuthMiddleware(
 		pasetoManager,
 		http.HandlerFunc(serverHandler.HandleUpdateByHostname),
 	))
