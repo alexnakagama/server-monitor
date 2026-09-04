@@ -290,6 +290,11 @@ func (h *ServerHandler) HandleUpdateOSByHostname(w http.ResponseWriter, r *http.
 			return
 		}
 
+		if errors.Is(err, errors_custom.ErrOSRequired) {
+			http.Error(w, "os required", http.StatusBadRequest)
+			return
+		}
+
 		http.Error(w, "failed to update server", http.StatusInternalServerError)
 		return
 	}
