@@ -253,5 +253,26 @@ func (r *ServerRepository) UpdateNameByHostname(ctx context.Context, name string
 	return nil
 }
 
-func (r *ServerRepository) UpdateOsByHostname(ctx context.Context, os string, hostname string) error {
+func (r *ServerRepository) UpdateOSByHostname(ctx context.Context, os string, hostname string) error {
+	query := `
+		UPDATE servers
+		SET os = $1
+		WHERE hostname = $2
+	`
+
+	result, err := r.db.Exec(
+		ctx,
+		query,
+		os,
+		hostname,
+	)
+	if err != nil {
+		return err
+	}
+
+	if result.RowsAffected() == 0 {
+		return errors_custom.ErrServerNotFound
+	}
+
+	return nil
 }
