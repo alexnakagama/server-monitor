@@ -87,5 +87,10 @@ func (s *ServerService) UpdateNameByHostname(ctx context.Context, name string, h
 }
 
 func (s *ServerService) UpdateOSByHostname(ctx context.Context, os string, hostname string) error {
+	err := model.ValidateOS(os)
+	if err != nil {
+		return err
+	}
+
 	return s.repository.UpdateOSByHostname(ctx, os, hostname)
 }
