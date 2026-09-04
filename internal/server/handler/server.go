@@ -233,4 +233,8 @@ func (h *ServerHandler) HandleUpdateNameByHostname(w http.ResponseWriter, r *htt
 	w.WriteHeader(http.StatusNoContent)
 }
 
+type UpdateServerOSRequest struct {
+	OS string `json:"os"`
+}
+
 func (h *ServerHandler) HandleUpdateOSByHostname(w http.ResponseWriter, r *http.Request) {}
