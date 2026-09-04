@@ -78,6 +78,11 @@ func (s *ServerService) UpdateByHostname(ctx context.Context, hostname string, n
 }
 
 func (s *ServerService) UpdateNameByHostname(ctx context.Context, name string, hostname string) error {
+	err := model.ValidateName(name)
+	if err != nil {
+		return err
+	}
+
 	return s.repository.UpdateNameByHostname(ctx, name, hostname)
 }
 
