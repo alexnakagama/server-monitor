@@ -1,6 +1,10 @@
 package model
 
-import "time"
+import (
+	"time"
+
+	"github.com/alexnakagama/server-monitor/internal/server/errors_custom"
+)
 
 type User struct {
 	ID           int       `json:"id"`
@@ -13,5 +17,14 @@ type User struct {
 func (u *User) Validate() {
 }
 
-func ValidateUsername(username string) {
+func ValidateUsername(username string) error {
+	if username == "" {
+		return errors_custom.ErrUsernameRequired
+	}
+
+	if username < 5 {
+		return errors_custom.ErrUsernameTooShort
+	}
+
+	return nil
 }
