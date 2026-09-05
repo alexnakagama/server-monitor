@@ -7,6 +7,7 @@ import (
 	"github.com/alexnakagama/server-monitor/internal/model"
 	"github.com/alexnakagama/server-monitor/internal/server/errors_custom"
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -34,7 +35,17 @@ func (r *ServerRepository) Create(ctx context.Context, server model.Server) erro
 		server.OS,
 	)
 
-	return err
+	if err != nil {
+		var pgErr *pgconn.PgError
+
+		if errors.As(err, &pgErr) && pgErr.Code == "2305" {
+			return errors_custom.ErrHostnameAlreadyExists
+		}
+
+		return err
+	}
+
+	return nil
 }
 
 func (r *ServerRepository) GetByName(ctx context.Context, name string) (model.Server, error) {
