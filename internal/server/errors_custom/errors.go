@@ -7,6 +7,9 @@ var (
 	ErrEmailRequired    = errors.New("email is required")
 	ErrPasswordRequired = errors.New("password is required")
 
+	ErrPasswordTooShort = errors.New("password is too short")
+	ErrPasswordTooLong  = errors.New("password is too long")
+
 	ErrServerNotFound = errors.New("server not found")
 	ErrUserNotFound   = errors.New("user not found")
 
