@@ -39,7 +39,11 @@ func ValidateEmail(email string) error {
 	}
 
 	if len(email) > 50 {
-		return errors_custom.
+		return errors_custom.ErrEmailTooLong
+	}
+
+	if len(email) < 10 {
+		return errors_custom.ErrEmailTooShort
 	}
 
 	return nil
