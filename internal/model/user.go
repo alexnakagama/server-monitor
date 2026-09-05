@@ -39,15 +39,14 @@ func ValidateEmail(email string) error {
 		return errors_custom.ErrEmailRequired
 	}
 
-	if len(email) > 50 {
+	if len(email) > 255 {
 		return errors_custom.ErrEmailTooLong
 	}
 
-	if len(email) < 10 {
-		return errors_custom.ErrEmailTooShort
-	}
-
 	_, err := mail.ParseAddress(email)
+	if err != nil {
+		return errors_custom.ErrInvalidEmail
+	}
 
 	return nil
 }
