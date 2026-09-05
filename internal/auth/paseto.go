@@ -31,17 +31,17 @@ func (p *PasetoManager) CreateToken(userID int) (string, error) {
 func (p *PasetoManager) VerifyToken(token string) (int, error) {
 	parsedToken, err := paseto.NewParser().ParseV4Local(p.key, token, nil)
 	if err != nil {
-		return 0, nil
+		return 0, err
 	}
 
 	userStringID, err := parsedToken.GetString("user_id")
 	if err != nil {
-		return 0, nil
+		return 0, err
 	}
 
 	userID, err := strconv.Atoi(userStringID)
 	if err != nil {
-		return 0, nil
+		return 0, err
 	}
 
 	return userID, nil
