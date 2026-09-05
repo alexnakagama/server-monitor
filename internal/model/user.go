@@ -9,3 +9,5 @@ type User struct {
 	PasswordHash string    `json:"-"`
 	CreatedAt    time.Time `json:"created_at"`
 }
+
+func (u *User) Validate() {}
