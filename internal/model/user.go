@@ -26,6 +26,10 @@ func ValidateUsername(username string) error {
 		return errors_custom.ErrUsernameTooShort
 	}
 
+	if len(username) > 30 {
+		return errors_custom.ErrUsernameTooLong
+	}
+
 	return nil
 }
 
