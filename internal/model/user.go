@@ -22,7 +22,7 @@ func ValidateUsername(username string) error {
 		return errors_custom.ErrUsernameRequired
 	}
 
-	if username < 5 {
+	if len(username) < 5 {
 		return errors_custom.ErrUsernameTooShort
 	}
 
