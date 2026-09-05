@@ -3,6 +3,8 @@ package errors_custom
 import "errors"
 
 var (
+	ErrUsernameRequired = errors.New("username is required")
+
 	ErrServerNotFound = errors.New("server not found")
 	ErrUserNotFound   = errors.New("user not found")
 
