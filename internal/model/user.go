@@ -1,6 +1,7 @@
 package model
 
 import (
+	"net/mail"
 	"time"
 
 	"github.com/alexnakagama/server-monitor/internal/server/errors_custom"
@@ -45,6 +46,8 @@ func ValidateEmail(email string) error {
 	if len(email) < 10 {
 		return errors_custom.ErrEmailTooShort
 	}
+
+	_, err := mail.ParseAddress(email)
 
 	return nil
 }

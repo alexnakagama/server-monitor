@@ -3,6 +3,8 @@ package errors_custom
 import "errors"
 
 var (
+	ErrInvalidEmail = errors.New("invalid email")
+
 	ErrUsernameRequired = errors.New("username is required")
 	ErrEmailRequired    = errors.New("email is required")
 	ErrPasswordRequired = errors.New("password is required")
