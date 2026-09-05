@@ -29,4 +29,10 @@ func ValidateUsername(username string) error {
 	return nil
 }
 
-func ValidateEmail(email string) error {}
+func ValidateEmail(email string) error {
+	if email == "" {
+		return errors_custom.ErrEmailRequired
+	}
+
+	return nil
+}

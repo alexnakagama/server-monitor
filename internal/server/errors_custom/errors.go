@@ -12,7 +12,9 @@ var (
 
 	ErrUsernameTooShort = errors.New("username is too short")
 	ErrPasswordTooShort = errors.New("password is too short")
-	ErrPasswordTooLong  = errors.New("password is too long")
+
+	ErrUsernameTooLong = errors.New("username is too long")
+	ErrPasswordTooLong = errors.New("password is too long")
 
 	ErrServerNotFound = errors.New("server not found")
 	ErrUserNotFound   = errors.New("user not found")
