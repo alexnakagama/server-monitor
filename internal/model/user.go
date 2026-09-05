@@ -56,4 +56,17 @@ func ValidateEmail(email string) error {
 }
 
 func ValidatePassword(password string) error {
+	if password == "" {
+		return errors_custom.ErrPasswordRequired
+	}
+
+	if len(password) < 6 {
+		return errors_custom.ErrPasswordTooShort
+	}
+
+	if len(password) > 80 {
+		return errors_custom.ErrPasswordTooLong
+	}
+
+	return nil
 }
