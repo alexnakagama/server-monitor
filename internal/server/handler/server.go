@@ -57,6 +57,11 @@ func (h *ServerHandler) HandleCreate(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		if errors.Is(err, errors_custom.ErrHostnameAlreadyExists) {
+			http.Error(w, "hostname already exists", http.StatusConflict)
+			return
+		}
+
 		http.Error(w, "failed to create a server", http.StatusInternalServerError)
 		return
 	}
