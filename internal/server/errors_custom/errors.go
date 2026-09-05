@@ -4,6 +4,7 @@ import "errors"
 
 var (
 	ErrUsernameRequired = errors.New("username is required")
+	ErrEmailRequired    = errors.New("email is required")
 
 	ErrServerNotFound = errors.New("server not found")
 	ErrUserNotFound   = errors.New("user not found")
