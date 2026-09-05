@@ -10,4 +10,8 @@ type User struct {
 	CreatedAt    time.Time `json:"created_at"`
 }
 
-func (u *User) Validate() {}
+func (u *User) Validate() {
+}
+
+func ValidateUsername(username string) {
+}
