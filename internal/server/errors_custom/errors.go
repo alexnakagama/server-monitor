@@ -9,4 +9,6 @@ var (
 	ErrNameRequired     = errors.New("name is required")
 	ErrHostnameRequired = errors.New("hostname is required")
 	ErrOSRequired       = errors.New("os is required")
+
+	ErrHostnameAlreadyExists = errors.New("hostname already exists")
 )
