@@ -38,7 +38,7 @@ func (r *ServerRepository) Create(ctx context.Context, server model.Server) erro
 	if err != nil {
 		var pgErr *pgconn.PgError
 
-		if errors.As(err, &pgErr) && pgErr.Code == "2305" {
+		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
 			return errors_custom.ErrHostnameAlreadyExists
 		}
 
