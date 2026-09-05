@@ -28,3 +28,5 @@ func ValidateUsername(username string) error {
 
 	return nil
 }
+
+func ValidateEmail(email string) error {}
