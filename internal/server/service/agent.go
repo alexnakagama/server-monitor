@@ -2,6 +2,8 @@ package service
 
 import (
 	"context"
+	"crypto/rand"
+	"encoding/hex"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
 	"github.com/alexnakagama/server-monitor/internal/server/errors_custom"
@@ -22,7 +24,16 @@ func NewAgentService(repository AgentRepository) *AgentService {
 	}
 }
 
-func GenerateAgentToken() (string, error) {}
+func GenerateAgentToken() (string, error) {
+	token := make([]byte, 32)
+
+	_, err := rand.Read(token)
+	if err != nil {
+		return "", err
+	}
+
+	return hex.EncodeToString(token), nil
+}
 
 func (s *AgentService) Create(ctx context.Context, serverID int, name string) error {
 	err := model.ValidateServerID(serverID)
