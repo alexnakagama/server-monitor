@@ -147,4 +147,25 @@ func (h *UserHandler) HandleUpdateProfile(w http.ResponseWriter, r *http.Request
 	w.WriteHeader(http.StatusNoContent)
 }
 
-func (h *UserHandler) HandleDeleteProfile(w http.ResponseWriter, r *http.Request) {}
+func (h *UserHandler) HandleDeleteProfile(w http.ResponseWriter, r *http.Request) {
+	userID, ok := auth.UserIDFromContext(r.Context())
+	if !ok {
+		http.Error(w, "unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	err := h.service.DeleteProfile(r.Context(), userID)
+	if err != nil {
+		switch {
+		case errors.Is(err, errors_custom.ErrUserNotFound):
+			http.Error(w, err.Error(), http.StatusNotFound)
+
+		default:
+			http.Error(w, "internal server error", http.StatusInternalServerError)
+		}
+
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
+}
