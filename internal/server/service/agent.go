@@ -53,11 +53,17 @@ func (s *AgentService) Create(ctx context.Context, serverID int, name string) er
 		return errors_custom.ErrNameRequired
 	}
 
-	// Todo function to generate the token hash to pass to the agent to create it
+	token, err := GenerateAgentToken()
+	if err != nil {
+		return err
+	}
+
+	tokenHash := HashAgentToken(token)
 
 	agent := model.Agent{
-		ServerID: serverID,
-		Name:     name,
+		ServerID:  serverID,
+		Name:      name,
+		TokenHash: tokenHash,
 	}
 
 	return s.repository.Create(ctx, agent)
