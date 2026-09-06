@@ -1,6 +1,10 @@
 package handler
 
-import "github.com/alexnakagama/server-monitor/internal/server/service"
+import (
+	"net/http"
+
+	"github.com/alexnakagama/server-monitor/internal/server/service"
+)
 
 type AgentHandler struct {
 	service *service.AgentService
@@ -11,3 +15,5 @@ func NewAgentHandler(service *service.AgentService) *AgentHandler {
 		service: service,
 	}
 }
+
+func (h *AgentHandler) HandleCreate(w *http.ResponseWriter, r *http.Request) {}
