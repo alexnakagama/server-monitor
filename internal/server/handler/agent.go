@@ -79,3 +79,5 @@ func (h *AgentHandler) HandleGetByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func (h *AgentHandler) HandleDelete(w http.ResponseWriter, r *http.Request) {}
