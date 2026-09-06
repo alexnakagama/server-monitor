@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"crypto/rand"
+	"crypto/sha256"
 	"encoding/hex"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
@@ -35,7 +36,11 @@ func GenerateAgentToken() (string, error) {
 	return hex.EncodeToString(token), nil
 }
 
-func HashAgentToken(token string) string {}
+func HashAgentToken(token string) string {
+	hash := sha256.Sum256([]byte(token))
+
+	return hex.EncodeToString(hash[:])
+}
 
 func (s *AgentService) Create(ctx context.Context, serverID int, name string) error {
 	err := model.ValidateServerID(serverID)
