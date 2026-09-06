@@ -76,4 +76,24 @@ func (r *AgentRepository) GetByID(ctx context.Context, agentID int) (model.Agent
 	return agent, nil
 }
 
-func (r *AgentRepository) DeleteByID(ctx context.Context, agentID int) error {}
+func (r *AgentRepository) DeleteByID(ctx context.Context, agentID int) error {
+	query := `
+		DELETE FROM agents
+		WHERE id = $1
+	`
+
+	result, err := r.db.Exec(
+		ctx,
+		query,
+		agentID,
+	)
+	if err != nil {
+		return err
+	}
+
+	if result.RowsAffected() == 0 {
+		return errors_custom.ErrAgentNotFound
+	}
+
+	return nil
+}
