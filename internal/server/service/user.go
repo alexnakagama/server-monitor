@@ -140,8 +140,8 @@ func (s *UserService) DeleteProfile(ctx context.Context, userID int) error {
 	return s.repository.Delete(ctx, userID)
 }
 
-func (s *UserService) ChangePassword(ctx context.Context, id int, currentPassword, newPassword string) error {
-	user, err := s.repository.GetByID(ctx, id)
+func (s *UserService) ChangePassword(ctx context.Context, userID int, currentPassword, newPassword string) error {
+	user, err := s.repository.GetByID(ctx, userID)
 	if err != nil {
 		return err
 	}
@@ -165,5 +165,5 @@ func (s *UserService) ChangePassword(ctx context.Context, id int, currentPasswor
 		return err
 	}
 
-	return s.repository.UpdatePassword(ctx, id, passwordHash)
+	return s.repository.UpdatePassword(ctx, userID, passwordHash)
 }
