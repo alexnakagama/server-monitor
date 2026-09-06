@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"errors"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
 	"github.com/alexnakagama/server-monitor/internal/server/errors_custom"
@@ -43,4 +44,15 @@ func (s *AgentService) Create(ctx context.Context, serverID int, name string) er
 	return s.repository.Create(ctx, agent)
 }
 
-func (s *AgentService) GetByID(ctx context.Context, agentID int) (model.Agent, error) {}
+func (s *AgentService) GetByID(ctx context.Context, agentID int) (model.Agent, error) {
+	agent, err := s.repository.GetByID(ctx, agentID)
+	if err != nil {
+		if errors.Is(err, errors_custom.ErrAgentNotFound) {
+			return model.Agent{}, errors_custom.ErrAgentNotFound
+		}
+
+		return model.Agent{}, err
+	}
+
+	return agent, nil
+}
