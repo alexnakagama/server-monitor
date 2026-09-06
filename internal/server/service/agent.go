@@ -11,7 +11,7 @@ import (
 )
 
 type AgentRepository interface {
-	Create(ctx context.Context, agent model.Agent) error
+	Create(ctx context.Context, agent model.Agent) (string, error)
 	GetByID(ctx context.Context, agentID int) (model.Agent, error)
 }
 
