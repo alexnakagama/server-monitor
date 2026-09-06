@@ -80,4 +80,18 @@ func (h *AgentHandler) HandleGetByID(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *AgentHandler) HandleDelete(w http.ResponseWriter, r *http.Request) {}
+func (h *AgentHandler) HandleDelete(w http.ResponseWriter, r *http.Request) {
+	agentID, err := strconv.Atoi(r.PathValue("agentID"))
+	if err != nil {
+		http.Error(w, "invalid agent id", http.StatusBadRequest)
+		return
+	}
+
+	err = h.service.DeleteByID(r.Context(), agentID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
+}
