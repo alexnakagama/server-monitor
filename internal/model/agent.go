@@ -16,7 +16,7 @@ type Agent struct {
 
 func (a *Agent) Validate() error {
 	if err := ValidateAgentName(a.Name); err != nil {
-		return errors_custom.ErrNameRequired
+		return err
 	}
 
 	if a.ServerID <= 0 {
@@ -29,6 +29,10 @@ func (a *Agent) Validate() error {
 func ValidateAgentName(name string) error {
 	if name == "" {
 		return errors_custom.ErrNameRequired
+	}
+
+	if len(name) > 100 {
+		return errors_custom.ErrUsernameTooLong
 	}
 
 	return nil
