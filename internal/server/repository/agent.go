@@ -6,4 +6,8 @@ type AgentRepository struct {
 	db *pgxpool.Pool
 }
 
-func NewAgentRepository(db *pgxpool.Pool) *AgentRepository {}
+func NewAgentRepository(db *pgxpool.Pool) *AgentRepository {
+	return &AgentRepository{
+		db: db,
+	}
+}
