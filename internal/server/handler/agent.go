@@ -58,4 +58,24 @@ func (h *AgentHandler) HandleCreate(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *AgentHandler) HandleGetByID(w http.ResponseWriter, r *http.Request) {}
+func (h *AgentHandler) HandleGetByID(w http.ResponseWriter, r *http.Request) {
+	agentID, err := strconv.Atoi(r.PathValue("agentID"))
+	if err != nil {
+		http.Error(w, "invalid agent id", http.StatusBadRequest)
+		return
+	}
+
+	agent, err := h.service.GetByID(r.Context(), agentID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+
+	err = json.NewEncoder(w).Encode(agent)
+	if err != nil {
+		return
+	}
+}
