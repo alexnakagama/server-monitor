@@ -22,6 +22,8 @@ func NewAgentService(repository AgentRepository) *AgentService {
 	}
 }
 
+func GenerateAgentToken() (string, error) {}
+
 func (s *AgentService) Create(ctx context.Context, serverID int, name string) error {
 	err := model.ValidateServerID(serverID)
 	if err != nil {
