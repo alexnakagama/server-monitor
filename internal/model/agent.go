@@ -19,8 +19,8 @@ func (a *Agent) Validate() error {
 		return err
 	}
 
-	if a.ServerID <= 0 {
-		return errors_custom.ErrInvalidServerID
+	if err := ValidateServerID(a.ServerID); err != nil {
+		return err
 	}
 
 	return nil
