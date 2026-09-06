@@ -42,3 +42,5 @@ func (s *AgentService) Create(ctx context.Context, serverID int, name string) er
 
 	return s.repository.Create(ctx, agent)
 }
+
+func (s *AgentService) GetByID(ctx context.Context, agentID int) (model.Agent, error) {}
