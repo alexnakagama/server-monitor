@@ -141,4 +141,17 @@ func (s *UserService) DeleteProfile(ctx context.Context, userID int) error {
 }
 
 func (s *UserService) ChangePassword(ctx context.Context, id int, currentPassword, newPassword string) error {
+	user, err := s.repository.GetByID(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	match, err := VerifyPassword(currentPassword, user.PasswordHash)
+	if err != nil {
+		return err
+	}
+
+	if !match {
+		return errors_custom.ErrInvalidCredentials
+	}
 }
