@@ -98,7 +98,7 @@ type UpdateProfileRequest struct {
 	Email    string `json:"email"`
 }
 
-func (h *UserHandler) UpdateProfile(w http.ResponseWriter, r *http.Request) {
+func (h *UserHandler) HandleUpdateProfile(w http.ResponseWriter, r *http.Request) {
 	userID, ok := auth.UserIDFromContext(r.Context())
 	if !ok {
 		http.Error(w, "unauthorized", http.StatusUnauthorized)
