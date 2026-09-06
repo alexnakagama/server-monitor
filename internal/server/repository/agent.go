@@ -76,4 +76,4 @@ func (r *AgentRepository) GetByID(ctx context.Context, agentID int) (model.Agent
 	return agent, nil
 }
 
-func (r *AgentRepository) DeleteByID(ctx context.Context, id int) error {}
+func (r *AgentRepository) DeleteByID(ctx context.Context, agentID int) error {}
