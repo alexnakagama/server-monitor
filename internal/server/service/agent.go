@@ -35,6 +35,8 @@ func GenerateAgentToken() (string, error) {
 	return hex.EncodeToString(token), nil
 }
 
+func HashAgentToken(token string) string {}
+
 func (s *AgentService) Create(ctx context.Context, serverID int, name string) error {
 	err := model.ValidateServerID(serverID)
 	if err != nil {
