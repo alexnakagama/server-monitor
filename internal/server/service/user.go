@@ -16,6 +16,7 @@ type UserRepository interface {
 	Delete(ctx context.Context, id int) error
 	Update(ctx context.Context, user model.User) error
 	GetByID(ctx context.Context, id int) (model.User, error)
+	UpdatePassword(ctx context.Context, id int, hash string) error
 }
 
 type UserService struct {
