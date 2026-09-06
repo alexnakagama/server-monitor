@@ -3,7 +3,8 @@ package model
 import "time"
 
 type Metric struct {
-	ServerID       int       `json:"server_id"`
+	ID             int       `json:"id"`
+	AgentID        int       `json:"agent_id"`
 	CPUUsage       float64   `json:"cpu_usage"`
 	MemoryUsage    float64   `json:"memory_usage"`
 	DiskUsage      float64   `json:"disk_usage"`
