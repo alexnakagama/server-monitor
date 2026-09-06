@@ -20,6 +20,8 @@ const (
 	serverIDContextKey serverIDKey = "serverID"
 )
 
+func AgentIDFromContext(ctx context.Context) (int, bool) {}
+
 func AgentAuthMiddleware(agentAuthenticator AgentAuthenticator, next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authHandler := r.Header.Get("Authorization")
