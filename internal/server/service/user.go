@@ -31,7 +31,22 @@ func NewUserService(repo UserRepository, pasetoManager *auth.PasetoManager) *Use
 }
 
 func (s *UserService) Register(ctx context.Context, username string, email string, password string) error {
-	_, err := s.repository.GetByUsername(ctx, username)
+	err := model.ValidateUsername(username)
+	if err != nil {
+		return err
+	}
+
+	err = model.ValidateEmail(email)
+	if err != nil {
+		return err
+	}
+
+	err = model.ValidatePassword(password)
+	if err != nil {
+		return err
+	}
+
+	_, err = s.repository.GetByUsername(ctx, username)
 	if err == nil {
 		return errors.New("username already exists")
 	}
