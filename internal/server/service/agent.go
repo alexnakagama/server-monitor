@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
+	"github.com/alexnakagama/server-monitor/internal/server/errors_custom"
 )
 
 type AgentRepository interface {
@@ -21,4 +22,23 @@ func NewAgentService(repository AgentRepository) *AgentService {
 	}
 }
 
-func (s *AgentService) Create(ctx context.Context, serverID int, name string) error {}
+func (s *AgentService) Create(ctx context.Context, serverID int, name string) error {
+	err := model.ValidateServerID(serverID)
+	if err != nil {
+		return errors_custom.ErrInvalidServerID
+	}
+
+	err = model.ValidateAgentName(name)
+	if err != nil {
+		return errors_custom.ErrNameRequired
+	}
+
+	// Todo function to generate the token hash to pass to the agent to create it
+
+	agent := model.Agent{
+		ServerID: serverID,
+		Name:     name,
+	}
+
+	return s.repository.Create(ctx, agent)
+}
