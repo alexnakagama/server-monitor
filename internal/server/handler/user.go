@@ -2,9 +2,11 @@ package handler
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 
 	"github.com/alexnakagama/server-monitor/internal/auth"
+	"github.com/alexnakagama/server-monitor/internal/server/errors_custom"
 	"github.com/alexnakagama/server-monitor/internal/server/service"
 )
 
@@ -96,10 +98,51 @@ type UpdateProfileRequest struct {
 	Email    string `json:"email"`
 }
 
-func (h *UserHandler) HandleUpdateProfile(w http.ResponseWriter, r *http.Request) {
+func (h *UserHandler) UpdateProfile(w http.ResponseWriter, r *http.Request) {
 	userID, ok := auth.UserIDFromContext(r.Context())
 	if !ok {
 		http.Error(w, "unauthorized", http.StatusUnauthorized)
 		return
 	}
+
+	var req UpdateProfileRequest
+
+	err := json.NewDecoder(r.Body).Decode(&req)
+	if err != nil {
+		http.Error(w, "invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	err = h.service.UpdateProfile(
+		r.Context(),
+		userID,
+		req.Username,
+		req.Email,
+	)
+
+	if err != nil {
+		switch {
+		case errors.Is(err, errors_custom.ErrUsernameRequired),
+			errors.Is(err, errors_custom.ErrUsernameTooShort),
+			errors.Is(err, errors_custom.ErrUsernameTooLong),
+			errors.Is(err, errors_custom.ErrEmailRequired),
+			errors.Is(err, errors_custom.ErrEmailTooLong),
+			errors.Is(err, errors_custom.ErrInvalidEmail):
+			http.Error(w, err.Error(), http.StatusBadRequest)
+
+		case errors.Is(err, errors_custom.ErrUsernameAlreadyExists),
+			errors.Is(err, errors_custom.ErrEmailAlreadyExists):
+			http.Error(w, err.Error(), http.StatusConflict)
+
+		case errors.Is(err, errors_custom.ErrUserNotFound):
+			http.Error(w, err.Error(), http.StatusNotFound)
+
+		default:
+			http.Error(w, "internal server error", http.StatusInternalServerError)
+		}
+
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
 }
