@@ -6,8 +6,8 @@ type AgentHandler struct {
 	service *service.AgentService
 }
 
-func NewAgentHandler(s *service.AgentService) *AgentHandler {
+func NewAgentHandler(service *service.AgentService) *AgentHandler {
 	return &AgentHandler{
-		service: s,
+		service: service,
 	}
 }
