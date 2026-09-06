@@ -42,20 +42,20 @@ func HashAgentToken(token string) string {
 	return hex.EncodeToString(hash[:])
 }
 
-func (s *AgentService) Create(ctx context.Context, serverID int, name string) error {
+func (s *AgentService) Create(ctx context.Context, serverID int, name string) (string, error) {
 	err := model.ValidateServerID(serverID)
 	if err != nil {
-		return errors_custom.ErrInvalidServerID
+		return "", errors_custom.ErrInvalidServerID
 	}
 
 	err = model.ValidateAgentName(name)
 	if err != nil {
-		return errors_custom.ErrNameRequired
+		return "", err
 	}
 
 	token, err := GenerateAgentToken()
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	tokenHash := HashAgentToken(token)
@@ -66,7 +66,12 @@ func (s *AgentService) Create(ctx context.Context, serverID int, name string) er
 		TokenHash: tokenHash,
 	}
 
-	return s.repository.Create(ctx, agent)
+	err = s.repository.Create(ctx, agent)
+	if err != nil {
+		return "", err
+	}
+
+	return token, nil
 }
 
 func (s *AgentService) GetByID(ctx context.Context, agentID int) (model.Agent, error) {
