@@ -177,3 +177,5 @@ func (r *UserRepository) GetByID(ctx context.Context, id int) (model.User, error
 
 	return user, nil
 }
+
+func (r *UserRepository) UpdatePassword(ctx context.Context, id int, hash string) error {}
