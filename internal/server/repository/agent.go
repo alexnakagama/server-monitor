@@ -99,4 +99,33 @@ func (r *AgentRepository) DeleteByID(ctx context.Context, agentID int) error {
 }
 
 func (r *AgentRepository) GetByTokenHash(ctx context.Context, tokenHash string) (model.Agent, error) {
+	query := `
+		SELECT id, server_id, name, token_hash, created_at
+		FROM agents
+		WHERE token_hash = $1
+	`
+
+	var agent model.Agent
+
+	err := r.db.QueryRow(
+		ctx,
+		query,
+		tokenHash,
+	).Scan(
+		&agent.ID,
+		&agent.ServerID,
+		&agent.Name,
+		&agent.TokenHash,
+		&agent.CreatedAt,
+	)
+
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return model.Agent{}, errors_custom.ErrAgentNotFound
+		}
+
+		return model.Agent{}, err
+	}
+
+	return agent, nil
 }
