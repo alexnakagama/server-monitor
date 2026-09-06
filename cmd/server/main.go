@@ -132,6 +132,11 @@ func main() {
 		http.HandlerFunc(agentHandler.HandleCreate),
 	))
 
+	mux.Handle("POST /agents/{agentID}", auth.AuthMiddleware(
+		pasetoManager,
+		http.HandlerFunc(agentHandler.HandleGetByID),
+	))
+
 	server := http.Server{
 		Addr:    ":8080",
 		Handler: mux,
