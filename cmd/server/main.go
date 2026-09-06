@@ -48,6 +48,10 @@ func main() {
 	serverService := service.NewServerService(serverRepository)
 	serverHandler := handler.NewServerHandler(serverService)
 
+	agentRepository := repository.NewAgentRepository(database)
+	agentService := service.NewAgentService(agentRepository)
+	agentHandler := handler.NewAgentHandler(agentService)
+
 	mux := http.NewServeMux()
 
 	// the only public endpoints, register and login
@@ -120,6 +124,12 @@ func main() {
 	mux.Handle("PATCH /servers/hostname/{hostname}/os", auth.AuthMiddleware(
 		pasetoManager,
 		http.HandlerFunc(serverHandler.HandleUpdateOSByHostname),
+	))
+
+	// agents endpoints
+	mux.Handle("POST /servers/{serverID}/agents", auth.AuthMiddleware(
+		pasetoManager,
+		http.HandlerFunc(agentHandler.HandleCreate),
 	))
 
 	server := http.Server{
