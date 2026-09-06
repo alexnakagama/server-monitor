@@ -14,6 +14,7 @@ type AgentRepository interface {
 	Create(ctx context.Context, agent model.Agent) error
 	GetByID(ctx context.Context, agentID int) (model.Agent, error)
 	DeleteByID(ctx context.Context, agentID int) error
+	GetByTokenHash(ctx context.Context, tokenHash string) (model.Agent, error)
 }
 
 type AgentService struct {
