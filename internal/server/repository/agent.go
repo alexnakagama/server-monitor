@@ -40,3 +40,5 @@ func (r *AgentRepository) Create(ctx context.Context, agent model.Agent) error {
 
 	return nil
 }
+
+func (r *AgentRepository) GetByID(ctx context.Context, agentID int) (model.Agent, error) {}
