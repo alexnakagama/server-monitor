@@ -11,3 +11,5 @@ type Agent struct {
 }
 
 func (a *Agent) Validate() error {}
+
+func ValidateAgentName(name string) error {}
