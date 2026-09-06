@@ -15,9 +15,6 @@ type User struct {
 	CreatedAt    time.Time `json:"created_at"`
 }
 
-func (u *User) Validate() {
-}
-
 func ValidateUsername(username string) error {
 	if username == "" {
 		return errors_custom.ErrUsernameRequired
