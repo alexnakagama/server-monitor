@@ -20,7 +20,15 @@ const (
 	serverIDContextKey serverIDKey = "serverID"
 )
 
-func AgentIDFromContext(ctx context.Context) (int, bool) {}
+func AgentIDFromContext(ctx context.Context) (int, bool) {
+	agentID, ok := ctx.Value(agentIDContextKey).(int)
+	return agentID, ok
+}
+
+func ServerIDFromContext(ctx context.Context) (int, bool) {
+	serverID, ok := ctx.Value(serverIDContextKey).(int)
+	return serverID, ok
+}
 
 func AgentAuthMiddleware(agentAuthenticator AgentAuthenticator, next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
