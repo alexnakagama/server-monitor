@@ -1,6 +1,10 @@
 package model
 
-import "time"
+import (
+	"time"
+
+	"github.com/alexnakagama/server-monitor/internal/server/errors_custom"
+)
 
 type Agent struct {
 	ID        int       `json:"id"`
@@ -12,4 +16,10 @@ type Agent struct {
 
 func (a *Agent) Validate() error {}
 
-func ValidateAgentName(name string) error {}
+func ValidateAgentName(name string) error {
+	if name == "" {
+		return errors_custom.ErrNameRequired
+	}
+
+	return nil
+}
