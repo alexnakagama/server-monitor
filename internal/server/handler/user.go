@@ -182,5 +182,42 @@ func (h *UserHandler) HandleChangePassword(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	err := h.service.ChangePassword(r.Context())
+	var request struct {
+		CurrentPassword string `json:"current_password"`
+		NewPassword     string `json:"new_password"`
+	}
+
+	err := json.NewDecoder(r.Body).Decode(&request)
+	if err != nil {
+		http.Error(w, "invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	err = h.service.ChangePassword(
+		r.Context(),
+		userID,
+		request.CurrentPassword,
+		request.NewPassword,
+	)
+	if err != nil {
+		switch {
+		case errors.Is(err, errors_custom.ErrPasswordRequired),
+			errors.Is(err, errors_custom.ErrPasswordTooShort),
+			errors.Is(err, errors_custom.ErrPasswordTooLong):
+			http.Error(w, err.Error(), http.StatusBadRequest)
+
+		case errors.Is(err, errors_custom.ErrInvalidCredentials):
+			http.Error(w, err.Error(), http.StatusUnauthorized)
+
+		case errors.Is(err, errors_custom.ErrUserNotFound):
+			http.Error(w, err.Error(), http.StatusNotFound)
+
+		default:
+			http.Error(w, "internal server error", http.StatusInternalServerError)
+		}
+
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
 }
