@@ -79,6 +79,16 @@ func (s *UserService) Register(ctx context.Context, username string, email strin
 }
 
 func (s *UserService) Login(ctx context.Context, username string, password string) (string, error) {
+	err := model.ValidateUsername(username)
+	if err != nil {
+		return "", err
+	}
+
+	err = model.ValidatePassword(password)
+	if err != nil {
+		return "", err
+	}
+
 	user, err := s.repository.GetByUsername(ctx, username)
 	if err != nil {
 		return "", errors.New("invalid credentials")
