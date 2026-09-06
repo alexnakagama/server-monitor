@@ -170,4 +170,15 @@ func (h *UserHandler) HandleDeleteProfile(w http.ResponseWriter, r *http.Request
 	w.WriteHeader(http.StatusNoContent)
 }
 
-func (h *UserHandler) HandleChangePassword(w http.ResponseWriter, r *http.Request) {}
+type ChangePasswordRequest struct {
+}
+
+func (h *UserHandler) HandleChangePassword(w http.ResponseWriter, r *http.Request) {
+	userID, ok := auth.UserIDFromContext(r.Context())
+	if !ok {
+		http.Error(w, "unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	err := h.service.ChangePassword(r.Context())
+}
