@@ -137,6 +137,11 @@ func main() {
 		http.HandlerFunc(agentHandler.HandleGetByID),
 	))
 
+	mux.Handle("DELETE /agents/{agentID}", auth.AuthMiddleware(
+		pasetoManager,
+		http.HandlerFunc(agentHandler.HandleDelete),
+	))
+
 	server := http.Server{
 		Addr:    ":8080",
 		Handler: mux,
