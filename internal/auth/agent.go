@@ -55,7 +55,7 @@ func AgentAuthMiddleware(agentAuthenticator AgentAuthenticator, next http.Handle
 		}
 
 		ctx := context.WithValue(r.Context(), agentIDContextKey, agent.ID)
-		ctx = context.WithValue(r.Context(), serverIDContextKey, agent.ServerID)
+		ctx = context.WithValue(ctx, serverIDContextKey, agent.ServerID)
 
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
