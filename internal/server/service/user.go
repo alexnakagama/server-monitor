@@ -136,4 +136,5 @@ func (s *UserService) UpdateProfile(ctx context.Context, userID int, username st
 }
 
 func (s *UserService) DeleteProfile(ctx context.Context, userID int) error {
+	return s.repository.Delete(ctx, userID)
 }
