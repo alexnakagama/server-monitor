@@ -85,24 +85,13 @@ func (s *AgentService) DeleteByID(ctx context.Context, agentID int) error {
 	return s.repository.DeleteByID(ctx, agentID)
 }
 
-func (s *AgentService) GetByTokenHash(ctx context.Context, token string) (model.Agent, error) {
-	tokenHash := HashAgentToken(token)
-
-	agent, err := s.repository.GetByTokenHash(ctx, tokenHash)
-	if err != nil {
-		return model.Agent{}, errors_custom.ErrInvalidCredentials
-	}
-
-	return agent, nil
-}
-
 func (s *AgentService) Authenticate(ctx context.Context, token string) (model.Agent, error) {
 	tokenHash := HashAgentToken(token)
 
 	agent, err := s.repository.GetByTokenHash(ctx, tokenHash)
 	if err != nil {
 		if errors.Is(err, errors_custom.ErrAgentNotFound) {
-			return model.Agent{}, err
+			return model.Agent{}, errors_custom.ErrInvalidCredentials
 		}
 
 		return model.Agent{}, err
