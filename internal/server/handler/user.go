@@ -90,3 +90,5 @@ func (h *UserHandler) HandleProfile(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(user)
 }
+
+func (h *UserHandler) HandleUpdateProfile(w http.ResponseWriter, r *http.Request) {}
