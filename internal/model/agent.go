@@ -38,4 +38,10 @@ func ValidateAgentName(name string) error {
 	return nil
 }
 
-func ValidateServerID(serverID int) error {}
+func ValidateServerID(serverID int) error {
+	if serverID <= 0 {
+		return errors_custom.ErrInvalidServerID
+	}
+
+	return nil
+}
