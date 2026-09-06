@@ -15,4 +15,8 @@ type AgentService struct {
 	repository AgentRepository
 }
 
-func NewAgentService(repository AgentRepository) *AgentService {}
+func NewAgentService(repository AgentRepository) *AgentService {
+	return &AgentService{
+		repository: repository,
+	}
+}
