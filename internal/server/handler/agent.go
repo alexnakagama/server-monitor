@@ -17,6 +17,7 @@ func NewAgentHandler(service *service.AgentService) *AgentHandler {
 }
 
 type CreateAgentRequest struct {
+	Name string `json:"name"`
 }
 
 func (h *AgentHandler) HandleCreate(w *http.ResponseWriter, r *http.Request) {}
