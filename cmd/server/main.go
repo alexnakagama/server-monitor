@@ -71,6 +71,11 @@ func main() {
 		http.HandlerFunc(userHandler.HandleDeleteProfile),
 	))
 
+	mux.Handle("PUT /users/profile/me/password", auth.AuthMiddleware(
+		pasetoManager,
+		http.HandlerFunc(userHandler.HandleDeleteProfile),
+	))
+
 	// server endpoints
 	mux.Handle("POST /servers", auth.AuthMiddleware(
 		pasetoManager,
