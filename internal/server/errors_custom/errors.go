@@ -5,6 +5,7 @@ import "errors"
 var (
 	ErrInvalidEmail       = errors.New("invalid email")
 	ErrInvalidCredentials = errors.New("invalid credentials")
+	ErrInvalidServerID    = errors.New("invalid server id")
 
 	ErrUsernameRequired = errors.New("username is required")
 	ErrEmailRequired    = errors.New("email is required")

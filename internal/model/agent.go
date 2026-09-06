@@ -14,7 +14,15 @@ type Agent struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
-func (a *Agent) Validate() error {}
+func (a *Agent) Validate() error {
+	if err := ValidateAgentName(a.Name); err != nil {
+		return errors_custom.ErrNameRequired
+	}
+
+	if a.ServerID <= 0 {
+		return errors_custom.ErrInvalidServerID
+	}
+}
 
 func ValidateAgentName(name string) error {
 	if name == "" {
