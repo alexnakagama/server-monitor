@@ -114,3 +114,23 @@ func (s *UserService) Login(ctx context.Context, username string, password strin
 func (s *UserService) GetByID(ctx context.Context, id int) (model.User, error) {
 	return s.repository.GetByID(ctx, id)
 }
+
+func (s *UserService) UpdateProfile(ctx context.Context, userID int, username string, email string) error {
+	err := model.ValidateUsername(username)
+	if err != nil {
+		return err
+	}
+
+	err = model.ValidateEmail(email)
+	if err != nil {
+		return err
+	}
+
+	user := model.User{
+		ID:       userID,
+		Username: username,
+		Email:    email,
+	}
+
+	return s.repository.Update(ctx, user)
+}
