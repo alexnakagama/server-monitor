@@ -97,3 +97,6 @@ func (r *AgentRepository) DeleteByID(ctx context.Context, agentID int) error {
 
 	return nil
 }
+
+func (r *AgentRepository) GetByTokenHash(ctx context.Context, tokenHash string) (model.Agent, error) {
+}
