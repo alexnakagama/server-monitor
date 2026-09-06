@@ -94,3 +94,5 @@ func (s *AgentService) GetByTokenHash(ctx context.Context, token string) (model.
 
 	return agent, nil
 }
+
+func (s *AgentService) Authenticate(ctx context.Context, token string) (model.Agent, error) {}
