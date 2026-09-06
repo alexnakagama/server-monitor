@@ -20,3 +20,5 @@ func NewAgentService(repository AgentRepository) *AgentService {
 		repository: repository,
 	}
 }
+
+func (s *AgentService) Create(ctx context.Context, serverID int, name string) error {}
