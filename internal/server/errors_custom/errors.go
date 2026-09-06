@@ -10,6 +10,7 @@ var (
 	ErrUsernameRequired = errors.New("username is required")
 	ErrEmailRequired    = errors.New("email is required")
 	ErrPasswordRequired = errors.New("password is required")
+	ErrServerIDRequired = errors.New("serverID is required")
 
 	ErrUsernameAlreadyExists = errors.New("username already exists")
 	ErrEmailAlreadyExists    = errors.New("email already exists")
