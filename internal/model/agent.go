@@ -37,3 +37,5 @@ func ValidateAgentName(name string) error {
 
 	return nil
 }
+
+func ValidateServerID(serverID int) error {}
