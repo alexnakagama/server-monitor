@@ -171,6 +171,8 @@ func (h *UserHandler) HandleDeleteProfile(w http.ResponseWriter, r *http.Request
 }
 
 type ChangePasswordRequest struct {
+	CurrentPassword string `json:"current_password"`
+	NewPassword     string `json:"new_password"`
 }
 
 func (h *UserHandler) HandleChangePassword(w http.ResponseWriter, r *http.Request) {
