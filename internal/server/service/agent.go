@@ -13,6 +13,7 @@ import (
 type AgentRepository interface {
 	Create(ctx context.Context, agent model.Agent) error
 	GetByID(ctx context.Context, agentID int) (model.Agent, error)
+	DeleteByID(ctx context.Context, agentID int) error
 }
 
 type AgentService struct {
