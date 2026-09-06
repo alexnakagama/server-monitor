@@ -64,6 +64,7 @@ func (r *AgentRepository) GetByID(ctx context.Context, agentID int) (model.Agent
 		&agent.TokenHash,
 		&agent.CreatedAt,
 	)
+
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return model.Agent{}, errors_custom.ErrAgentNotFound
