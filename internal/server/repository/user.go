@@ -178,4 +178,26 @@ func (r *UserRepository) GetByID(ctx context.Context, id int) (model.User, error
 	return user, nil
 }
 
-func (r *UserRepository) UpdatePassword(ctx context.Context, id int, hash string) error {}
+func (r *UserRepository) UpdatePassword(ctx context.Context, id int, hash string) error {
+	query := `
+		UPDATE users
+		SET password_hash = $1
+		WHERE id = $2
+	`
+
+	result, err := r.db.Exec(
+		ctx,
+		query,
+		id,
+		hash,
+	)
+	if err != nil {
+		return err
+	}
+
+	if result.RowsAffected() == 0 {
+		return errors_custom.ErrUserNotFound
+	}
+
+	return nil
+}
