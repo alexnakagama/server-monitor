@@ -169,3 +169,5 @@ func (h *UserHandler) HandleDeleteProfile(w http.ResponseWriter, r *http.Request
 
 	w.WriteHeader(http.StatusNoContent)
 }
+
+func (h *UserHandler) HandleChangePassword(w http.ResponseWriter, r *http.Request) {}
