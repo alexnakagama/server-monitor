@@ -154,4 +154,16 @@ func (s *UserService) ChangePassword(ctx context.Context, id int, currentPasswor
 	if !match {
 		return errors_custom.ErrInvalidCredentials
 	}
+
+	err = model.ValidatePassword(newPassword)
+	if err != nil {
+		return err
+	}
+
+	passwordHash, err := HashPassword(newPassword)
+	if err != nil {
+		return err
+	}
+
+	return s.repository.UpdatePassword(ctx, id, passwordHash)
 }
