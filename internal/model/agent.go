@@ -9,3 +9,5 @@ type Agent struct {
 	TokenHash string    `json:"-"`
 	CreatedAt time.Time `json:"created_at"`
 }
+
+func (a *Agent) Validate() error {}
