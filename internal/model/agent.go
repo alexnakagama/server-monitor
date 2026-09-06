@@ -22,6 +22,8 @@ func (a *Agent) Validate() error {
 	if a.ServerID <= 0 {
 		return errors_custom.ErrInvalidServerID
 	}
+
+	return nil
 }
 
 func ValidateAgentName(name string) error {
