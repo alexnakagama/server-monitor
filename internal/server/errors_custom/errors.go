@@ -26,6 +26,7 @@ var (
 	ErrServerNotFound = errors.New("server not found")
 	ErrUserNotFound   = errors.New("user not found")
 	ErrAgentNotFound  = errors.New("agent not found")
+	ErrMetricNotFound = errors.New("metric not found")
 
 	ErrNameRequired     = errors.New("name is required")
 	ErrHostnameRequired = errors.New("hostname is required")

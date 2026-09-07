@@ -2,8 +2,11 @@ package repository
 
 import (
 	"context"
+	"errors"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
+	"github.com/alexnakagama/server-monitor/internal/server/errors_custom"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -44,4 +47,45 @@ func (r *MetricRepository) Create(ctx context.Context, metric model.Metric) erro
 	return err
 }
 
-func (r *MetricRepository) GetByID(ctx context.Context, metricID int) (model.Metric, error) {}
+func (r *MetricRepository) GetByID(ctx context.Context, metricID int) (model.Metric, error) {
+	query := `
+		SELECT
+			id,
+			server_id,
+			cpu_usage,
+			memory_usage,
+			disk_usage,
+			network_receive,
+			network_sent,
+			timestamp
+		FROM server_metrics
+		WHERE id = $1
+	`
+
+	var metric model.Metric
+
+	err := r.db.QueryRow(
+		ctx,
+		query,
+		metricID,
+	).Scan(
+		&metric.ID,
+		&metric.ServerID,
+		&metric.CPUUsage,
+		&metric.MemoryUsage,
+		&metric.DiskUsage,
+		&metric.NetworkReceive,
+		&metric.NetworkSent,
+		&metric.Timestamp,
+	)
+
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return model.Metric{}, errors_custom.ErrMetricNotFound
+		}
+
+		return model.Metric{}, err
+	}
+
+	return metric, nil
+}
