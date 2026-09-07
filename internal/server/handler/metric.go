@@ -6,4 +6,8 @@ type MetricHandler struct {
 	service *service.ServerService
 }
 
-func NewMetricHandler(service *service.ServerService) *MetricHandler {}
+func NewMetricHandler(service *service.ServerService) *MetricHandler {
+	return &MetricHandler{
+		service: service,
+	}
+}
