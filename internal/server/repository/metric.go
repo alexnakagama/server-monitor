@@ -43,3 +43,5 @@ func (r *MetricRepository) Create(ctx context.Context, metric model.Metric) erro
 
 	return err
 }
+
+func (r *MetricRepository) GetByID(ctx context.Context, metricID int) (model.Metric, error) {}
