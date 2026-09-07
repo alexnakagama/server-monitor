@@ -1,6 +1,10 @@
 package model
 
-import "time"
+import (
+	"time"
+
+	"github.com/alexnakagama/server-monitor/internal/server/errors_custom"
+)
 
 type Metric struct {
 	ID             int       `json:"id"`
@@ -13,4 +17,8 @@ type Metric struct {
 	Timestamp      time.Time `json:"timestamp"`
 }
 
-func ValidateMetric(metric Metric) error {}
+func ValidateMetric(metric Metric) error {
+	if metric.ServerID <= 0 {
+		return errors_custom.ErrInvalidCredentials
+	}
+}
