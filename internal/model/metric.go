@@ -17,20 +17,20 @@ type Metric struct {
 	Timestamp      time.Time `json:"timestamp"`
 }
 
-func (m *Metric) ValidateMetric(metric Metric) error {
-	if metric.ServerID <= 0 {
+func (m *Metric) ValidateMetric() error {
+	if m.ServerID <= 0 {
 		return errors_custom.ErrInvalidServerID
 	}
 
-	if metric.CPUUsage < 0 || metric.CPUUsage > 100 {
+	if m.CPUUsage < 0 || m.CPUUsage > 100 {
 		return errors_custom.ErrInvalidCPUUsage
 	}
 
-	if metric.MemoryUsage < 0 || metric.MemoryUsage > 100 {
+	if m.MemoryUsage < 0 || m.MemoryUsage > 100 {
 		return errors_custom.ErrInvalidMemoryUsage
 	}
 
-	if metric.DiskUsage < 0 || metric.DiskUsage > 100 {
+	if m.DiskUsage < 0 || m.DiskUsage > 100 {
 		return errors_custom.ErrInvalidDiskUsage
 	}
 

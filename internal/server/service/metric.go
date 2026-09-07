@@ -40,6 +40,7 @@ func (s *MetricService) Create(ctx context.Context, input MetricInput) error {
 		NetworkSent:    input.NetworkSent,
 	}
 
+	err := metric.ValidateMetric()
 }
 
 func (s *MetricService) GetByID(ctx context.Context, metricID int) (model.Metric, error) {}
