@@ -21,8 +21,16 @@ func NewMetricService(repository MetricRepository) *MetricService {
 	}
 }
 
-func (s *MetricService) Create(ctx context.Context, metric model.Metric) error {
-	return s.repository.Create(ctx, metric)
+type MetricInput struct {
+	ServerID       int
+	CPUUsage       float64
+	MemoryUsage    float64
+	DiskUsage      float64
+	NetworkReceive uint64
+	NetworkSent    uint64
+}
+
+func (s *MetricService) Create(ctx context.Context, input MetricInput) error {
 }
 
 func (s *MetricService) GetByID(ctx context.Context, metricID int) (model.Metric, error) {}
