@@ -24,3 +24,5 @@ func NewMetricService(repository MetricRepository) *MetricService {
 func (s *MetricService) Create(ctx context.Context, metric model.Metric) error {
 	return s.repository.Create(ctx, metric)
 }
+
+func (s *MetricService) GetByID(ctx context.Context, metricID int) (model.Metric, error) {}
