@@ -31,6 +31,15 @@ type MetricInput struct {
 }
 
 func (s *MetricService) Create(ctx context.Context, input MetricInput) error {
+	metric := model.Metric{
+		ServerID:       input.ServerID,
+		CPUUsage:       input.CPUUsage,
+		MemoryUsage:    input.MemoryUsage,
+		DiskUsage:      input.DiskUsage,
+		NetworkReceive: input.NetworkReceive,
+		NetworkSent:    input.NetworkSent,
+	}
+
 }
 
 func (s *MetricService) GetByID(ctx context.Context, metricID int) (model.Metric, error) {}
