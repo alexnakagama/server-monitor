@@ -12,3 +12,5 @@ type Metric struct {
 	NetworkSent    uint64    `json:"network_sent"`
 	Timestamp      time.Time `json:"timestamp"`
 }
+
+func ValidateMetric(metric Metric) error {}
