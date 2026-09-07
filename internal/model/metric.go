@@ -19,6 +19,20 @@ type Metric struct {
 
 func ValidateMetric(metric Metric) error {
 	if metric.ServerID <= 0 {
-		return errors_custom.ErrInvalidCredentials
+		return errors_custom.ErrInvalidServerID
 	}
+
+	if metric.CPUUsage < 0 || metric.CPUUsage > 100 {
+		return errors_custom.ErrInvalidCPUUsage
+	}
+
+	if metric.MemoryUsage < 0 || metric.MemoryUsage > 100 {
+		return errors_custom.ErrInvalidMemoryUsage
+	}
+
+	if metric.DiskUsage < 0 || metric.DiskUsage > 100 {
+		return errors_custom.ErrInvalidDiskUsage
+	}
+
+	return nil
 }
