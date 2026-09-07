@@ -15,4 +15,8 @@ type MetricService struct {
 	repository MetricRepository
 }
 
-func NewMetricService(repository MetricRepository) *MetricService {}
+func NewMetricService(repository MetricRepository) *MetricService {
+	return &MetricService{
+		repository: repository,
+	}
+}
