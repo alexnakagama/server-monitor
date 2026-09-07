@@ -20,3 +20,5 @@ func NewMetricService(repository MetricRepository) *MetricService {
 		repository: repository,
 	}
 }
+
+func (s *MetricService) Create(ctx context.Context, metric model.Metric) error {}
