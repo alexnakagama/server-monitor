@@ -40,7 +40,12 @@ func (s *MetricService) Create(ctx context.Context, input MetricInput) error {
 		NetworkSent:    input.NetworkSent,
 	}
 
-	err := metric.ValidateMetric()
+	err := metric.Validate()
+	if err != nil {
+		return err
+	}
+
+	return s.repository.Create(ctx, metric)
 }
 
 func (s *MetricService) GetByID(ctx context.Context, metricID int) (model.Metric, error) {}

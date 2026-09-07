@@ -17,7 +17,7 @@ type Metric struct {
 	Timestamp      time.Time `json:"timestamp"`
 }
 
-func (m *Metric) ValidateMetric() error {
+func (m *Metric) Validate() error {
 	if m.ServerID <= 0 {
 		return errors_custom.ErrInvalidServerID
 	}
