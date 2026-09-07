@@ -48,4 +48,6 @@ func (s *MetricService) Create(ctx context.Context, input MetricInput) error {
 	return s.repository.Create(ctx, metric)
 }
 
-func (s *MetricService) GetByID(ctx context.Context, metricID int) (model.Metric, error) {}
+func (s *MetricService) GetByID(ctx context.Context, metricID int) (model.Metric, error) {
+	return s.repository.GetByID(ctx, metricID)
+}
