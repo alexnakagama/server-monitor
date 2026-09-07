@@ -14,3 +14,5 @@ type MetricRepository interface {
 type MetricService struct {
 	repository MetricRepository
 }
+
+func NewMetricService(repository MetricRepository) *MetricService {}
