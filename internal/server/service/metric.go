@@ -21,4 +21,6 @@ func NewMetricService(repository MetricRepository) *MetricService {
 	}
 }
 
-func (s *MetricService) Create(ctx context.Context, metric model.Metric) error {}
+func (s *MetricService) Create(ctx context.Context, metric model.Metric) error {
+	return s.repository.Create(ctx, metric)
+}
