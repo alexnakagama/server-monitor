@@ -3,6 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
+	"time"
 
 	"github.com/alexnakagama/server-monitor/internal/auth"
 	"github.com/alexnakagama/server-monitor/internal/server/service"
@@ -59,7 +60,16 @@ func (h *MetricHandler) HandleCreate(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 }
 
-type MetricResponse struct{}
+type MetricResponse struct {
+	ID             int       `json:"id"`
+	ServerID       int       `json:"server_id"`
+	CPUUsage       float64   `json:"cpu_usage"`
+	MemoryUsage    float64   `json:"memory_usage"`
+	DiskUsage      float64   `json:"disk_usage"`
+	NetworkReceive uint64    `json:"network_receive"`
+	NetworkSent    uint64    `json:"network_sent"`
+	Timestamp      time.Time `json:"timestamp"`
+}
 
 func (h *MetricHandler) HandleGetByID(w http.ResponseWriter, r *http.Request) {
 }
