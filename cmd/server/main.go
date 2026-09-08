@@ -152,6 +152,10 @@ func main() {
 	))
 
 	// metric endpoints
+	mux.Handle("GET /metrics/{metricID}", auth.AuthMiddleware(
+		pasetoManager,
+		http.HandlerFunc(metricHandler.HandleGetByID),
+	))
 
 	server := http.Server{
 		Addr:    ":8080",
