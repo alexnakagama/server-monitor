@@ -146,7 +146,10 @@ func main() {
 		http.HandlerFunc(agentHandler.HandleDelete),
 	))
 
-	// agent endpoints
+	mux.Handle("POST /agents/metrics", auth.AgentAuthMiddleware(
+		agentService,
+		http.HandlerFunc(metricHandler.HandleCreate),
+	))
 
 	server := http.Server{
 		Addr:    ":8080",
