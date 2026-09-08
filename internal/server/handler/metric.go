@@ -58,3 +58,5 @@ func (h *MetricHandler) HandleCreate(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusCreated)
 }
+
+func (h *MetricHandler) HandleGetByID(w http.ResponseWriter, r *http.Request) {}
