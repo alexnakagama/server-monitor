@@ -3,6 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/alexnakagama/server-monitor/internal/auth"
@@ -72,4 +73,34 @@ type MetricResponse struct {
 }
 
 func (h *MetricHandler) HandleGetByID(w http.ResponseWriter, r *http.Request) {
+	metricID, err := strconv.Atoi(r.PathValue("metricID"))
+	if err != nil {
+		http.Error(w, "invalid metric id", http.StatusBadRequest)
+		return
+	}
+
+	metric, err := h.service.GetByID(r.Context(), metricID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+
+	response := MetricResponse{
+		ID:             metric.ID,
+		ServerID:       metric.ServerID,
+		CPUUsage:       metric.CPUUsage,
+		MemoryUsage:    metric.MemoryUsage,
+		DiskUsage:      metric.DiskUsage,
+		NetworkReceive: metric.NetworkReceive,
+		NetworkSent:    metric.NetworkSent,
+		Timestamp:      metric.Timestamp,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+
+	err = json.NewEncoder(w).Encode(response)
+	if err != nil {
+		return
+	}
 }
