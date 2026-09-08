@@ -52,6 +52,10 @@ func main() {
 	agentService := service.NewAgentService(agentRepository)
 	agentHandler := handler.NewAgentHandler(agentService)
 
+	metricRepository := repository.NewMetricRepository(database)
+	metricService := service.NewMetricService(metricRepository)
+	metricHandler := handler.NewMetricHandler(metricService)
+
 	mux := http.NewServeMux()
 
 	// the only public endpoints, register and login

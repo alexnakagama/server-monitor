@@ -7,10 +7,10 @@ import (
 )
 
 type MetricHandler struct {
-	service *service.ServerService
+	service *service.MetricService
 }
 
-func NewMetricHandler(service *service.ServerService) *MetricHandler {
+func NewMetricHandler(service *service.MetricService) *MetricHandler {
 	return &MetricHandler{
 		service: service,
 	}
