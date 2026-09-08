@@ -146,6 +146,8 @@ func main() {
 		http.HandlerFunc(agentHandler.HandleDelete),
 	))
 
+	// agent endpoints
+
 	server := http.Server{
 		Addr:    ":8080",
 		Handler: mux,
