@@ -151,6 +151,8 @@ func main() {
 		http.HandlerFunc(metricHandler.HandleCreate),
 	))
 
+	// metric endpoints
+
 	server := http.Server{
 		Addr:    ":8080",
 		Handler: mux,
