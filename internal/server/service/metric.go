@@ -54,4 +54,5 @@ func (s *MetricService) GetByID(ctx context.Context, metricID int) (model.Metric
 }
 
 func (s *MetricService) GetByServerID(ctx context.Context, serverID int, limit int) ([]model.Metric, error) {
+	return s.repository.GetByServerID(ctx, serverID, limit)
 }
