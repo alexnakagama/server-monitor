@@ -1,0 +1,13 @@
+CREATE TABLE server_metrics (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    server_id BIGINT NOT NULL REFERENCES servers(id) ON DELETE CASCADE,
+
+    cpu_usage DOUBLE PRECISION NOT NULL,
+    memory_usage DOUBLE PRECISION NOT NULL,
+    disk_usage DOUBLE PRECISION NOT NULL,
+
+    network_receive BIGINT NOT NULL,
+    network_sent BIGINT NOT NULL,
+
+    timestamp TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
