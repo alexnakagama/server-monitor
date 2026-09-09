@@ -1,6 +1,10 @@
 package agent
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/alexnakagama/server-monitor/internal/model"
+)
 
 type Client struct {
 	baseURL string
@@ -15,3 +19,5 @@ func NewClient(baseURL, token string) *Client {
 		client:  &http.Client{},
 	}
 }
+
+func (c *Client) SendMetric(metric model.Metric) error {}
