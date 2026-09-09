@@ -23,6 +23,14 @@ func NewClient(baseURL, token string) *Client {
 	}
 }
 
+type CreateMetricRequest struct {
+	CPUUsage       float64 `json:"cpu_usage"`
+	MemoryUsage    float64 `json:"memory_usage"`
+	DiskUsage      float64 `json:"disk_usage"`
+	NetworkReceive uint64  `json:"network_receive"`
+	NetworkSent    uint64  `json:"network_sent"`
+}
+
 func (c *Client) SendMetric(metric model.Metric) error {
 	body, err := json.Marshal(metric)
 	if err != nil {
