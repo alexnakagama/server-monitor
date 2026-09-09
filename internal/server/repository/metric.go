@@ -91,4 +91,53 @@ func (r *MetricRepository) GetByID(ctx context.Context, metricID int) (model.Met
 }
 
 func (r *MetricRepository) GetByServerID(ctx context.Context, serverID int, limit int) ([]model.Metric, error) {
+	query := `
+		SELECT
+			id,
+			server_id,
+			cpu_usage,
+			memory_usage,
+			disk_usage,
+			network_receive,
+			network_sent,
+			timestamp
+		FROM server_metrics
+		WHERE server_id = $1
+		ORDER BY timestamp DESC
+		LIMIT $2
+	`
+
+	rows, err := r.db.Query(ctx, query, serverID, limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	metrics := make([]model.Metric, 0)
+
+	for rows.Next() {
+		var metric model.Metric
+
+		err := rows.Scan(
+			&metric.ID,
+			&metric.ServerID,
+			&metric.CPUUsage,
+			&metric.MemoryUsage,
+			&metric.NetworkReceive,
+			&metric.NetworkSent,
+			&metric.Timestamp,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		metrics = append(metrics, metric)
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return nil, err
+	}
+
+	return metrics, nil
 }
