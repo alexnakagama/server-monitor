@@ -7,3 +7,5 @@ type Client struct {
 	token   string
 	client  *http.Client
 }
+
+func NewClient(baseURL, token string) *Client {}
