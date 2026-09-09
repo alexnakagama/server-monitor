@@ -31,16 +31,8 @@ type CreateMetricRequest struct {
 	NetworkSent    uint64  `json:"network_sent"`
 }
 
-func (c *Client) SendMetric(metric model.Metric) error {
-	requestBody := CreateMetricRequest{
-		CPUUsage:       metric.CPUUsage,
-		MemoryUsage:    metric.MemoryUsage,
-		DiskUsage:      metric.DiskUsage,
-		NetworkReceive: metric.NetworkReceive,
-		NetworkSent:    metric.NetworkSent,
-	}
-
-	body, err := json.Marshal(requestBody)
+func (c *Client) SendMetric(metric CreateMetricRequest) error {
+	body, err := json.Marshal(metric)
 	if err != nil {
 		return err
 	}
