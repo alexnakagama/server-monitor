@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/alexnakagama/server-monitor/internal/model"
+	"github.com/alexnakagama/server-monitor/internal/agent/request"
 )
 
 type Client struct {
@@ -23,15 +23,7 @@ func NewClient(baseURL, token string) *Client {
 	}
 }
 
-type CreateMetricRequest struct {
-	CPUUsage       float64 `json:"cpu_usage"`
-	MemoryUsage    float64 `json:"memory_usage"`
-	DiskUsage      float64 `json:"disk_usage"`
-	NetworkReceive uint64  `json:"network_receive"`
-	NetworkSent    uint64  `json:"network_sent"`
-}
-
-func (c *Client) SendMetric(metric CreateMetricRequest) error {
+func (c *Client) SendMetric(metric request.CreateMetricRequest) error {
 	body, err := json.Marshal(metric)
 	if err != nil {
 		return err
