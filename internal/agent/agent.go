@@ -9,6 +9,7 @@ import (
 
 type Agent struct {
 	interval time.Duration
+	Client   *Client
 }
 
 func New(interval time.Duration) *Agent {
