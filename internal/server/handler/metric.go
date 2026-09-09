@@ -105,4 +105,52 @@ func (h *MetricHandler) HandleGetByID(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *MetricHandler) HandleGetByServerID(w http.ResponseWriter, r *http.Request) {}
+func (h *MetricHandler) HandleGetByServerID(w http.ResponseWriter, r *http.Request) {
+	serverID, ok := auth.ServerIDFromContext(r.Context())
+	if !ok {
+		http.Error(w, "invalid server id", http.StatusUnauthorized)
+		return
+	}
+
+	limit := 100
+
+	limitParam := r.URL.Query().Get("limit")
+	if limitParam != "" {
+		var err error
+
+		limit, err = strconv.Atoi(limitParam)
+		if err != nil {
+			http.Error(w, "invalid limit", http.StatusBadRequest)
+			return
+		}
+	}
+
+	metrics, err := h.service.GetByServerID(r.Context(), serverID, limit)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	response := make([]MetricResponse, 0, len(metrics))
+
+	for _, metric := range metrics {
+		response = append(response, MetricResponse{
+			ID:             metric.ID,
+			ServerID:       metric.ServerID,
+			CPUUsage:       metric.CPUUsage,
+			MemoryUsage:    metric.MemoryUsage,
+			DiskUsage:      metric.DiskUsage,
+			NetworkReceive: metric.NetworkReceive,
+			NetworkSent:    metric.NetworkSent,
+			Timestamp:      metric.Timestamp,
+		})
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+
+	err = json.NewEncoder(w).Encode(response)
+	if err != nil {
+		return
+	}
+}
