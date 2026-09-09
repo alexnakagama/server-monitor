@@ -123,6 +123,7 @@ func (r *MetricRepository) GetByServerID(ctx context.Context, serverID int, limi
 			&metric.ServerID,
 			&metric.CPUUsage,
 			&metric.MemoryUsage,
+			&metric.DiskUsage,
 			&metric.NetworkReceive,
 			&metric.NetworkSent,
 			&metric.Timestamp,
