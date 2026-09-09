@@ -1,3 +1,9 @@
 package agent
 
-type Client struct{}
+import "net/http"
+
+type Client struct {
+	baseURL string
+	token   string
+	client  *http.Client
+}
