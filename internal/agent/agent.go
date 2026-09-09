@@ -26,7 +26,11 @@ func (a *Agent) Run() {
 			continue
 		}
 
-		log.Printf("%+v\n", metric)
+		err = a.Client.SendMetric(metric)
+		if err != nil {
+			log.Println(err)
+			return
+		}
 
 		time.Sleep(a.interval)
 	}
