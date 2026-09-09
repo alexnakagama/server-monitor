@@ -32,7 +32,15 @@ type CreateMetricRequest struct {
 }
 
 func (c *Client) SendMetric(metric model.Metric) error {
-	body, err := json.Marshal(metric)
+	requestBody := CreateMetricRequest{
+		CPUUsage:       metric.CPUUsage,
+		MemoryUsage:    metric.MemoryUsage,
+		DiskUsage:      metric.DiskUsage,
+		NetworkReceive: metric.NetworkReceive,
+		NetworkSent:    metric.NetworkSent,
+	}
+
+	body, err := json.Marshal(requestBody)
 	if err != nil {
 		return err
 	}
