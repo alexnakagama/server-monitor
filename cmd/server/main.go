@@ -157,6 +157,11 @@ func main() {
 		http.HandlerFunc(metricHandler.HandleGetByID),
 	))
 
+	mux.Handle("GET /servers/{serverID}/metrics", auth.AuthMiddleware(
+		pasetoManager,
+		http.HandlerFunc(metricHandler.HandleGetByServerID),
+	))
+
 	server := http.Server{
 		Addr:    ":8080",
 		Handler: mux,
