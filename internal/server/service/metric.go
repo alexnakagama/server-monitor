@@ -52,3 +52,6 @@ func (s *MetricService) Create(ctx context.Context, input MetricInput) error {
 func (s *MetricService) GetByID(ctx context.Context, metricID int) (model.Metric, error) {
 	return s.repository.GetByID(ctx, metricID)
 }
+
+func (s *MetricService) GetByServerID(ctx context.Context, serverID int, limit int) ([]model.Metric, error) {
+}
