@@ -89,3 +89,6 @@ func (r *MetricRepository) GetByID(ctx context.Context, metricID int) (model.Met
 
 	return metric, nil
 }
+
+func (r *MetricRepository) GetByServerID(ctx context.Context, serverID int, limit int) ([]model.Metric, error) {
+}
