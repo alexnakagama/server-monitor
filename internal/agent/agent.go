@@ -12,9 +12,10 @@ type Agent struct {
 	Client   *Client
 }
 
-func New(interval time.Duration) *Agent {
+func New(interval time.Duration, client *Client) *Agent {
 	return &Agent{
 		interval: interval,
+		Client:   client,
 	}
 }
 
