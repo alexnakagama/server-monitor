@@ -1,38 +1,35 @@
 package collector
 
 import (
-	"time"
-
-	"github.com/alexnakagama/server-monitor/internal/model"
+	"github.com/alexnakagama/server-monitor/internal/agent/request"
 )
 
-func CollectMetrics() (model.Metric, error) {
+func CollectMetrics() (request.CreateMetricRequest, error) {
 	cpu, err := CPUUsage()
 	if err != nil {
-		return model.Metric{}, err
+		return request.CreateMetricRequest{}, err
 	}
 
 	memory, err := MemoryUsage()
 	if err != nil {
-		return model.Metric{}, err
+		return request.CreateMetricRequest{}, err
 	}
 
 	disk, err := DiskUsage()
 	if err != nil {
-		return model.Metric{}, err
+		return request.CreateMetricRequest{}, err
 	}
 
 	network, err := NetworkUsage()
 	if err != nil {
-		return model.Metric{}, err
+		return request.CreateMetricRequest{}, err
 	}
 
-	return model.Metric{
+	return request.CreateMetricRequest{
 		CPUUsage:       cpu,
 		MemoryUsage:    memory,
 		DiskUsage:      disk,
 		NetworkReceive: network.Received,
 		NetworkSent:    network.Sent,
-		Timestamp:      time.Now(),
 	}, nil
 }
