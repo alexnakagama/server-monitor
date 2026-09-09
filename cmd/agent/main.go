@@ -12,6 +12,6 @@ func main() {
 		"TU_AGENT_TOKEN",
 	)
 
-	agent := agent.New(10*time.Second, client)
+	agent := agent.New(100*time.Second, client)
 	agent.Run()
 }
