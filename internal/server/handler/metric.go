@@ -106,9 +106,11 @@ func (h *MetricHandler) HandleGetByID(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *MetricHandler) HandleGetByServerID(w http.ResponseWriter, r *http.Request) {
-	serverID, ok := auth.ServerIDFromContext(r.Context())
-	if !ok {
-		http.Error(w, "invalid server id", http.StatusUnauthorized)
+	serverIDStr := r.PathValue("serverID")
+
+	serverID, err := strconv.Atoi(serverIDStr)
+	if err != nil {
+		http.Error(w, "invalid server id", http.StatusBadRequest)
 		return
 	}
 
@@ -116,8 +118,6 @@ func (h *MetricHandler) HandleGetByServerID(w http.ResponseWriter, r *http.Reque
 
 	limitParam := r.URL.Query().Get("limit")
 	if limitParam != "" {
-		var err error
-
 		limit, err = strconv.Atoi(limitParam)
 		if err != nil {
 			http.Error(w, "invalid limit", http.StatusBadRequest)
