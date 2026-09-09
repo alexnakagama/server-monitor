@@ -104,3 +104,5 @@ func (h *MetricHandler) HandleGetByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func (h *MetricHandler) HandleGetByServerID(w http.ResponseWriter, r *http.Request) {}
