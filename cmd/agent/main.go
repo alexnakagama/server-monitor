@@ -7,7 +7,11 @@ import (
 )
 
 func main() {
-	agent := agent.New(5 * time.Second)
+	client := agent.NewClient(
+		"http://localhost:8080",
+		"TU_AGENT_TOKEN",
+	)
 
+	agent := agent.New(5*time.Second, client)
 	agent.Run()
 }
