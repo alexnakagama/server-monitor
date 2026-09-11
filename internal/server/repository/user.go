@@ -41,7 +41,7 @@ func (r *UserRepository) GetByUsername(ctx context.Context, username string) (mo
 	var user model.User
 
 	query := `
-		SELECT id, username, email, password_hash, created_at
+		SELECT id, username, email, password_hash, role, created_at
 		FROM users
 		WHERE username = $1
 	`
@@ -55,6 +55,7 @@ func (r *UserRepository) GetByUsername(ctx context.Context, username string) (mo
 		&user.Username,
 		&user.Email,
 		&user.PasswordHash,
+		&user.Role,
 		&user.CreatedAt,
 	)
 
