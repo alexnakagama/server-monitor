@@ -146,7 +146,7 @@ func main() {
 		http.HandlerFunc(agentHandler.HandleCreate),
 	))
 
-	mux.Handle("POST /agents/{agentID}", auth.AuthMiddleware(
+	mux.Handle("GET /agents/{agentID}", auth.AuthMiddleware(
 		pasetoManager,
 		http.HandlerFunc(agentHandler.HandleGetByID),
 	))
