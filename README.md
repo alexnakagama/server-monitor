@@ -237,10 +237,3 @@ All endpoints respond with JSON. Authenticated endpoints require an `Authorizati
 | GET    | `/metrics/server/{serverID}`  | user token    | Get metrics for a server.                  |
 
 `GET /metrics/server/{serverID}` accepts an optional `limit` query parameter between 1 and 1000. It defaults to 100.
-
-## Contributing
-
-1. Fork the repository and create a feature branch.
-2. Keep changes scoped to a single concern.
-3. Run `go vet ./...` and `go build ./...` before submitting a pull request.
-4. Describe the change and any migration requirements in the pull request description.
