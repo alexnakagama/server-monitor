@@ -187,7 +187,10 @@ func main() {
 	mux.Handle("DELETE /agents/{agentID}", auth.AuthMiddleware(
 		pasetoManager,
 		userRepository,
-		http.HandlerFunc(agentHandler.HandleDelete),
+		auth.RequireRole(
+			"admin",
+			http.HandlerFunc(agentHandler.HandleDelete),
+		),
 	))
 
 	mux.Handle("POST /agents/metrics", auth.AgentAuthMiddleware(
