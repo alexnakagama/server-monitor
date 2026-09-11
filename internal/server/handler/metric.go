@@ -123,6 +123,11 @@ func (h *MetricHandler) HandleGetByServerID(w http.ResponseWriter, r *http.Reque
 			http.Error(w, "invalid limit", http.StatusBadRequest)
 			return
 		}
+
+		if limit < 1 || limit > 1000 {
+			http.Error(w, "limit must be between 1 and 1000", http.StatusBadRequest)
+			return
+		}
 	}
 
 	metrics, err := h.service.GetByServerID(r.Context(), serverID, limit)
