@@ -153,7 +153,10 @@ func main() {
 	mux.Handle("PATCH /servers/hostname/{hostname}/name", auth.AuthMiddleware(
 		pasetoManager,
 		userRepository,
-		http.HandlerFunc(serverHandler.HandleUpdateNameByHostname),
+		auth.RequireRole(
+			"admin",
+			http.HandlerFunc(serverHandler.HandleUpdateNameByHostname),
+		),
 	))
 
 	mux.Handle("PATCH /servers/hostname/{hostname}/os", auth.AuthMiddleware(
