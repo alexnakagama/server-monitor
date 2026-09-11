@@ -3,9 +3,13 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
+
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-type HealthHandler struct{}
+type HealthHandler struct {
+	db *pgxpool.Pool
+}
 
 func NewHealthHandler() *HealthHandler {
 	return &HealthHandler{}
