@@ -40,6 +40,8 @@ func main() {
 
 	pasetoManager := auth.NewPasetoManager(key)
 
+	healthHandler := handler.NewHealthHandler()
+
 	userRepository := repository.NewUserRepository(database)
 	userService := service.NewUserService(userRepository, pasetoManager)
 	userHandler := handler.NewUserHandler(userService)
@@ -61,6 +63,8 @@ func main() {
 	// the only public endpoints, register and login
 	mux.HandleFunc("POST /users/register", userHandler.HandleRegister)
 	mux.HandleFunc("POST /users/login", userHandler.HandleLogin)
+
+	mux.HandleFunc("GET /health", healthHandler.Handle)
 
 	// private endpoints
 	// user endpoints
