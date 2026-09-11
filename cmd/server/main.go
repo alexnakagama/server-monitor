@@ -5,6 +5,9 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
 	"aidanwoods.dev/go-paseto"
 
@@ -172,6 +175,35 @@ func main() {
 	}
 
 	log.Println("server running on port: 8080")
+
+	// creates the channel
+	// receives signals of the operating system
+	shutdownSignal := make(chan os.Signal, 1)
+
+	// function which connects the signals of the os to the go program
+	// when the os sends os.Interrupt or syscall.SIGTERM send that signal through the channel
+	signal.Notify(
+		shutdownSignal,
+		os.Interrupt,
+		syscall.SIGTERM,
+	)
+
+	go func() {
+		<-shutdownSignal
+
+		log.Println("stutting down server...")
+
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+
+		err := server.Shutdown(ctx)
+		if err != nil {
+			log.Printf("server shutdown error: %v", err)
+			return
+		}
+
+		log.Println("server stopped")
+	}()
 
 	err = server.ListenAndServe()
 	if err != nil {
