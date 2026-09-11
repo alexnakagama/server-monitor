@@ -102,7 +102,10 @@ func main() {
 	mux.Handle("POST /servers", auth.AuthMiddleware(
 		pasetoManager,
 		userRepository,
-		http.HandlerFunc(serverHandler.HandleCreate),
+		auth.RequireRole(
+			"admin",
+			http.HandlerFunc(serverHandler.HandleCreate),
+		),
 	))
 
 	mux.Handle("GET /servers/{name}", auth.AuthMiddleware(
