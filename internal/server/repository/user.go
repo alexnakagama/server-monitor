@@ -74,7 +74,7 @@ func (r *UserRepository) GetByEmail(ctx context.Context, email string) (model.Us
 	var user model.User
 
 	query := `
-		SELECT id, username, email, password_hash, created_at
+		SELECT id, username, email, password_hash, role, created_at
 		FROM users
 		WHERE email = $1
 	`
@@ -88,6 +88,7 @@ func (r *UserRepository) GetByEmail(ctx context.Context, email string) (model.Us
 		&user.Username,
 		&user.Email,
 		&user.PasswordHash,
+		&user.Role,
 		&user.CreatedAt,
 	)
 
