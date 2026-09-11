@@ -68,6 +68,7 @@ func main() {
 	mux.HandleFunc("POST /users/register", userHandler.HandleRegister)
 	mux.HandleFunc("POST /users/login", userHandler.HandleLogin)
 
+	// endpoints for health of the app
 	mux.HandleFunc("GET /health/live", healthHandler.HandleLive)
 	mux.HandleFunc("GET /health/ready", healthHandler.HandleReady)
 
