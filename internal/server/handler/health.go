@@ -56,4 +56,7 @@ func (h *HealthHandler) Handle(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *HealthHandler) HandleLive(w http.ResponseWriter, r *http.Request) {}
+func (h *HealthHandler) HandleLive(w http.ResponseWriter, r *http.Request) {
+}
+
+func (h *HealthHandler) HandleReady(w http.ResponseWriter, r *http.Request) {}
