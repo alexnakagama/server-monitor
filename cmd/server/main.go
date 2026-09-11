@@ -76,83 +76,99 @@ func main() {
 	// user endpoints
 	mux.Handle("GET /users/profile/me", auth.AuthMiddleware(
 		pasetoManager,
+		userRepository,
 		http.HandlerFunc(userHandler.HandleProfile),
 	))
 
 	mux.Handle("PUT /users/profile/me", auth.AuthMiddleware(
 		pasetoManager,
+		userRepository,
 		http.HandlerFunc(userHandler.HandleUpdateProfile),
 	))
 
 	mux.Handle("DELETE /users/profile/me", auth.AuthMiddleware(
 		pasetoManager,
+		userRepository,
 		http.HandlerFunc(userHandler.HandleDeleteProfile),
 	))
 
 	mux.Handle("PUT /users/profile/me/password", auth.AuthMiddleware(
 		pasetoManager,
+		userRepository,
 		http.HandlerFunc(userHandler.HandleChangePassword),
 	))
 
 	// server endpoints
 	mux.Handle("POST /servers", auth.AuthMiddleware(
 		pasetoManager,
+		userRepository,
 		http.HandlerFunc(serverHandler.HandleCreate),
 	))
 
 	mux.Handle("GET /servers/{name}", auth.AuthMiddleware(
 		pasetoManager,
+		userRepository,
 		http.HandlerFunc(serverHandler.HandleGetByName),
 	))
 
 	mux.Handle("GET /servers", auth.AuthMiddleware(
 		pasetoManager,
+		userRepository,
 		http.HandlerFunc(serverHandler.HandleGetAll),
 	))
 
 	mux.Handle("GET /servers/os/{os}", auth.AuthMiddleware(
 		pasetoManager,
+		userRepository,
 		http.HandlerFunc(serverHandler.HandleGetByOS),
 	))
 
 	mux.Handle("GET /servers/hostname/{hostname}", auth.AuthMiddleware(
 		pasetoManager,
+		userRepository,
 		http.HandlerFunc(serverHandler.HandleGetByHostname),
 	))
 
 	mux.Handle("DELETE /servers/hostname/{hostname}", auth.AuthMiddleware(
 		pasetoManager,
+		userRepository,
 		http.HandlerFunc(serverHandler.HandleDeleteByHostname),
 	))
 
 	mux.Handle("PUT /servers/hostname/{hostname}", auth.AuthMiddleware(
 		pasetoManager,
+		userRepository,
 		http.HandlerFunc(serverHandler.HandleUpdateByHostname),
 	))
 
 	mux.Handle("PATCH /servers/hostname/{hostname}/name", auth.AuthMiddleware(
 		pasetoManager,
+		userRepository,
 		http.HandlerFunc(serverHandler.HandleUpdateNameByHostname),
 	))
 
 	mux.Handle("PATCH /servers/hostname/{hostname}/os", auth.AuthMiddleware(
 		pasetoManager,
+		userRepository,
 		http.HandlerFunc(serverHandler.HandleUpdateOSByHostname),
 	))
 
 	// agents endpoints
 	mux.Handle("POST /servers/{serverID}/agents", auth.AuthMiddleware(
 		pasetoManager,
+		userRepository,
 		http.HandlerFunc(agentHandler.HandleCreate),
 	))
 
 	mux.Handle("GET /agents/{agentID}", auth.AuthMiddleware(
 		pasetoManager,
+		userRepository,
 		http.HandlerFunc(agentHandler.HandleGetByID),
 	))
 
 	mux.Handle("DELETE /agents/{agentID}", auth.AuthMiddleware(
 		pasetoManager,
+		userRepository,
 		http.HandlerFunc(agentHandler.HandleDelete),
 	))
 
@@ -164,11 +180,13 @@ func main() {
 	// metric endpoints
 	mux.Handle("GET /metrics/{metricID}", auth.AuthMiddleware(
 		pasetoManager,
+		userRepository,
 		http.HandlerFunc(metricHandler.HandleGetByID),
 	))
 
 	mux.Handle("GET /metrics/server/{serverID}", auth.AuthMiddleware(
 		pasetoManager,
+		userRepository,
 		http.HandlerFunc(metricHandler.HandleGetByServerID),
 	))
 
