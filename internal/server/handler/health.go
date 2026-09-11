@@ -18,6 +18,19 @@ func NewHealthHandler(db *pgxpool.Pool) *HealthHandler {
 }
 
 func (h *HealthHandler) HandleLive(w http.ResponseWriter, r *http.Request) {
+	response := struct {
+		Status string `json:"status"`
+	}{
+		Status: "ok",
+	}
+
+	w.Header().Set("Context-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+
+	err := json.NewEncoder(w).Encode(response)
+	if err != nil {
+		return
+	}
 }
 
 func (h *HealthHandler) HandleReady(w http.ResponseWriter, r *http.Request) {
