@@ -23,7 +23,7 @@ func RoleFromContext(ctx context.Context) (string, bool) {
 	return role, ok
 }
 
-func AuthMiddleware(pasetoManager *PasetoManager, next http.Handler) http.Handler {
+func AuthMiddleware(pasetoManager *PasetoManager, userProvider UserProvider, next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authHeader := r.Header.Get("Authorization")
 
@@ -47,7 +47,14 @@ func AuthMiddleware(pasetoManager *PasetoManager, next http.Handler) http.Handle
 			return
 		}
 
+		user, err := userProvider.GetByID(r.Context(), userID)
+		if err != nil {
+			http.Error(w, "invalid token", http.StatusUnauthorized)
+			return
+		}
+
 		ctx := context.WithValue(r.Context(), userIDKey, userID)
+		ctx = context.WithValue(ctx, roleKey, user.Role)
 
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
