@@ -17,7 +17,10 @@ func NewHealthHandler(db *pgxpool.Pool) *HealthHandler {
 	}
 }
 
-func (h *HealthHandler) Handle(w http.ResponseWriter, r *http.Request) {
+func (h *HealthHandler) HandleLive(w http.ResponseWriter, r *http.Request) {
+}
+
+func (h *HealthHandler) HandleReady(w http.ResponseWriter, r *http.Request) {
 	err := h.db.Ping(r.Context())
 	if err != nil {
 		response := struct {
@@ -28,7 +31,7 @@ func (h *HealthHandler) Handle(w http.ResponseWriter, r *http.Request) {
 			Database: "error",
 		}
 
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Context-Type", "application/json")
 		w.WriteHeader(http.StatusServiceUnavailable)
 
 		err := json.NewEncoder(w).Encode(response)
@@ -55,8 +58,3 @@ func (h *HealthHandler) Handle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
-
-func (h *HealthHandler) HandleLive(w http.ResponseWriter, r *http.Request) {
-}
-
-func (h *HealthHandler) HandleReady(w http.ResponseWriter, r *http.Request) {}
