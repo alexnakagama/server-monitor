@@ -124,7 +124,11 @@ func (h *ServerHandler) HandleGetAll(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(responses)
+
+	err = json.NewEncoder(w).Encode(responses)
+	if err != nil {
+		return
+	}
 }
 
 func (h *ServerHandler) HandleGetByOS(w http.ResponseWriter, r *http.Request) {
@@ -148,7 +152,11 @@ func (h *ServerHandler) HandleGetByOS(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(responses)
+
+	err = json.NewEncoder(w).Encode(responses)
+	if err != nil {
+		return
+	}
 }
 
 func (h *ServerHandler) HandleGetByHostname(w http.ResponseWriter, r *http.Request) {
@@ -173,7 +181,11 @@ func (h *ServerHandler) HandleGetByHostname(w http.ResponseWriter, r *http.Reque
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(response)
+
+	err = json.NewEncoder(w).Encode(response)
+	if err != nil {
+		return
+	}
 }
 
 func (h *ServerHandler) HandleDeleteByHostname(w http.ResponseWriter, r *http.Request) {
