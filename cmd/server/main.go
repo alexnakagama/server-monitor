@@ -44,7 +44,7 @@ func main() {
 
 	pasetoManager := auth.NewPasetoManager(key)
 
-	healthHandler := handler.NewHealthHandler()
+	healthHandler := handler.NewHealthHandler(database)
 
 	userRepository := repository.NewUserRepository(database)
 	userService := service.NewUserService(userRepository, pasetoManager)
