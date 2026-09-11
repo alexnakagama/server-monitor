@@ -193,7 +193,7 @@ func main() {
 		// here the go routine stays blocked until it receives a shutdown signal
 		<-shutdownSignal
 
-		log.Println("stutting down server...")
+		log.Println("shutting down server...")
 
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
