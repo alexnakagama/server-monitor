@@ -152,7 +152,7 @@ func (r *UserRepository) GetByID(ctx context.Context, id int) (model.User, error
 	var user model.User
 
 	query := `
-		SELECT id, username, email, password_hash, created_at
+		SELECT id, username, email, password_hash, role, created_at
 		FROM users
 		WHERE id = $1
 	`
@@ -166,6 +166,7 @@ func (r *UserRepository) GetByID(ctx context.Context, id int) (model.User, error
 		&user.Username,
 		&user.Email,
 		&user.PasswordHash,
+		&user.Role,
 		&user.CreatedAt,
 	)
 
