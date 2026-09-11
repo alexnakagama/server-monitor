@@ -162,7 +162,10 @@ func main() {
 	mux.Handle("PATCH /servers/hostname/{hostname}/os", auth.AuthMiddleware(
 		pasetoManager,
 		userRepository,
-		http.HandlerFunc(serverHandler.HandleUpdateOSByHostname),
+		auth.RequireRole(
+			"admin",
+			http.HandlerFunc(serverHandler.HandleUpdateOSByHostname),
+		),
 	))
 
 	// agents endpoints
