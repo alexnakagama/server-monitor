@@ -11,8 +11,10 @@ type HealthHandler struct {
 	db *pgxpool.Pool
 }
 
-func NewHealthHandler() *HealthHandler {
-	return &HealthHandler{}
+func NewHealthHandler(db *pgxpool.Pool) *HealthHandler {
+	return &HealthHandler{
+		db: db,
+	}
 }
 
 func (h *HealthHandler) Handle(w http.ResponseWriter, r *http.Request) {
