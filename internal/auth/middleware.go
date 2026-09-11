@@ -8,11 +8,19 @@ import (
 
 type contextKey string
 
-const userIDKey contextKey = "userID"
+const (
+	userIDKey contextKey = "userID"
+	roleKey   contextKey = "role"
+)
 
 func UserIDFromContext(ctx context.Context) (int, bool) {
 	userID, ok := ctx.Value(userIDKey).(int)
 	return userID, ok
+}
+
+func RoleFromContext(ctx context.Context) (string, bool) {
+	role, ok := ctx.Value(roleKey).(string)
+	return role, ok
 }
 
 func AuthMiddleware(pasetoManager *PasetoManager, next http.Handler) http.Handler {
