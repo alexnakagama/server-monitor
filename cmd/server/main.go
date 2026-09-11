@@ -135,7 +135,10 @@ func main() {
 	mux.Handle("DELETE /servers/hostname/{hostname}", auth.AuthMiddleware(
 		pasetoManager,
 		userRepository,
-		http.HandlerFunc(serverHandler.HandleDeleteByHostname),
+		auth.RequireRole(
+			"admin",
+			http.HandlerFunc(serverHandler.HandleDeleteByHostname),
+		),
 	))
 
 	mux.Handle("PUT /servers/hostname/{hostname}", auth.AuthMiddleware(
