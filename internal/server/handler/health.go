@@ -2,4 +2,6 @@ package handler
 
 type HealthHandler struct{}
 
-func NewHealthHandler() *HealthHandler {}
+func NewHealthHandler() *HealthHandler {
+	return &HealthHandler{}
+}
