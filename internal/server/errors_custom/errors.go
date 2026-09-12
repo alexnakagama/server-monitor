@@ -9,6 +9,8 @@ var (
 	ErrInvalidCPUUsage    = errors.New("invalid cpu usage")
 	ErrInvalidMemoryUsage = errors.New("invalid memory usage")
 	ErrInvalidDiskUsage   = errors.New("invalid disk usage")
+	ErrInvalidLimit       = errors.New("invalid limit")
+	ErrInvalidTimeRange   = errors.New("invalid time range")
 
 	ErrUsernameRequired = errors.New("username is required")
 	ErrEmailRequired    = errors.New("email is required")
