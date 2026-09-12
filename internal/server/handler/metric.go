@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/alexnakagama/server-monitor/internal/auth"
+	"github.com/alexnakagama/server-monitor/internal/model"
 	"github.com/alexnakagama/server-monitor/internal/server/service"
 )
 
@@ -130,7 +131,39 @@ func (h *MetricHandler) HandleGetByServerID(w http.ResponseWriter, r *http.Reque
 		}
 	}
 
-	metrics, err := h.service.GetByServerID(r.Context(), serverID, limit)
+	var from *time.Time
+
+	fromParam := r.URL.Query().Get("from")
+	if fromParam != "" {
+		parsedFrom, err := time.Parse(time.RFC3339, fromParam)
+		if err != nil {
+			http.Error(w, "invalid from date", http.StatusBadRequest)
+			return
+		}
+
+		from = &parsedFrom
+	}
+
+	var to *time.Time
+
+	toParam := r.URL.Query().Get("to")
+	if toParam != "" {
+		parsedTo, err := time.Parse(time.RFC3339, toParam)
+		if err != nil {
+			http.Error(w, "invalid from date", http.StatusBadRequest)
+			return
+		}
+
+		to = &parsedTo
+	}
+
+	filters := model.MetricFilters{
+		From:  from,
+		To:    to,
+		Limit: limit,
+	}
+
+	metrics, err := h.service.GetByServerID(r.Context(), serverID, filters)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
