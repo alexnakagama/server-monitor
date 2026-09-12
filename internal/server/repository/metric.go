@@ -98,29 +98,38 @@ type MetricFilters struct {
 }
 
 func (r *MetricRepository) GetByServerID(ctx context.Context, serverID int, filters MetricFilters) ([]model.Metric, error) {
-	query := `
-		SELECT
-			id,
-			server_id,
-			cpu_usage,
-			memory_usage,
-			disk_usage,
-			network_receive,
-			network_sent,
-			timestamp
-		FROM server_metrics
-		WHERE server_id = $1
-		ORDER BY timestamp DESC
-		LIMIT $2
-	`
+	var metrics []model.Metric
 
-	rows, err := r.db.Query(ctx, query, serverID, limit)
+	query := `
+        SELECT
+            id,
+            server_id,
+            cpu_usage,
+            memory_usage,
+            disk_usage,
+            network_receive,
+            network_sent,
+            timestamp
+        FROM server_metrics
+        WHERE server_id = $1
+          AND ($2::timestamptz IS NULL OR timestamp >= $2)
+          AND ($3::timestamptz IS NULL OR timestamp <= $3)
+        ORDER BY timestamp DESC
+        LIMIT $4
+    `
+
+	rows, err := r.db.Query(
+		ctx,
+		query,
+		serverID,
+		filters.From,
+		filters.To,
+		filters.Limit,
+	)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-
-	metrics := make([]model.Metric, 0)
 
 	for rows.Next() {
 		var metric model.Metric
