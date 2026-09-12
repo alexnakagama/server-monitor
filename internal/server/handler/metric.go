@@ -124,11 +124,6 @@ func (h *MetricHandler) HandleGetByServerID(w http.ResponseWriter, r *http.Reque
 			http.Error(w, "invalid limit", http.StatusBadRequest)
 			return
 		}
-
-		if limit < 1 || limit > 1000 {
-			http.Error(w, "limit must be between 1 and 1000", http.StatusBadRequest)
-			return
-		}
 	}
 
 	var from *time.Time
@@ -157,15 +152,16 @@ func (h *MetricHandler) HandleGetByServerID(w http.ResponseWriter, r *http.Reque
 		to = &parsedTo
 	}
 
-	if from != nil && to != nil && from.After(*to) {
-		http.Error(w, "from must be before to", http.StatusBadRequest)
-		return
-	}
-
 	filters := model.MetricFilters{
 		From:  from,
 		To:    to,
 		Limit: limit,
+	}
+
+	err = filters.Validate()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 
 	metrics, err := h.service.GetByServerID(r.Context(), serverID, filters)
