@@ -7,3 +7,6 @@ type MetricFilters struct {
 	To    *time.Time
 	Limit int
 }
+
+func (f MetricFilters) Validate() error {
+}
