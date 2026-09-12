@@ -150,11 +150,16 @@ func (h *MetricHandler) HandleGetByServerID(w http.ResponseWriter, r *http.Reque
 	if toParam != "" {
 		parsedTo, err := time.Parse(time.RFC3339, toParam)
 		if err != nil {
-			http.Error(w, "invalid from date", http.StatusBadRequest)
+			http.Error(w, "invalid to date", http.StatusBadRequest)
 			return
 		}
 
 		to = &parsedTo
+	}
+
+	if from != nil && to != nil && from.After(*to) {
+		http.Error(w, "from must be before to", http.StatusBadRequest)
+		return
 	}
 
 	filters := model.MetricFilters{
