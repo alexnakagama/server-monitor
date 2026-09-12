@@ -27,7 +27,7 @@ func TestValidateAgentName(t *testing.T) {
 		{
 			name:    "agent name longer than 100 characters is too long",
 			agent:   strings.Repeat("a", 101),
-			wantErr: errors_custom.ErrUsernameTooLong,
+			wantErr: errors_custom.ErrNameTooLong,
 		},
 	}
 
