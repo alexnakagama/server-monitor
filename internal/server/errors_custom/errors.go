@@ -25,6 +25,7 @@ var (
 	ErrUsernameTooLong = errors.New("username is too long")
 	ErrEmailTooLong    = errors.New("email is too long")
 	ErrPasswordTooLong = errors.New("password is too long")
+	ErrNameTooLong     = errors.New("name is too long")
 
 	ErrServerNotFound = errors.New("server not found")
 	ErrUserNotFound   = errors.New("user not found")

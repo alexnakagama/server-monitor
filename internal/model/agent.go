@@ -32,7 +32,7 @@ func ValidateAgentName(name string) error {
 	}
 
 	if len(name) > 100 {
-		return errors_custom.ErrUsernameTooLong
+		return errors_custom.ErrNameTooLong
 	}
 
 	return nil
