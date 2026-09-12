@@ -3,7 +3,6 @@ package repository
 import (
 	"context"
 	"errors"
-	"time"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
 	"github.com/alexnakagama/server-monitor/internal/server/errors_custom"
@@ -91,13 +90,7 @@ func (r *MetricRepository) GetByID(ctx context.Context, metricID int) (model.Met
 	return metric, nil
 }
 
-type MetricFilters struct {
-	From  *time.Time
-	To    *time.Time
-	Limit int
-}
-
-func (r *MetricRepository) GetByServerID(ctx context.Context, serverID int, filters MetricFilters) ([]model.Metric, error) {
+func (r *MetricRepository) GetByServerID(ctx context.Context, serverID int, filters model.MetricFilters) ([]model.Metric, error) {
 	var metrics []model.Metric
 
 	query := `
