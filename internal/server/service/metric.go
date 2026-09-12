@@ -60,6 +60,6 @@ func (s *MetricService) GetByID(ctx context.Context, metricID int) (model.Metric
 	return s.repository.GetByID(ctx, metricID)
 }
 
-func (s *MetricService) GetByServerID(ctx context.Context, serverID int, limit int) ([]model.Metric, error) {
-	return s.repository.GetByServerID(ctx, serverID, limit)
+func (s *MetricService) GetByServerID(ctx context.Context, serverID int, filters MetricFilters) ([]model.Metric, error) {
+	return s.repository.GetByServerID(ctx, serverID, filters)
 }
