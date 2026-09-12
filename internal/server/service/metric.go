@@ -2,14 +2,21 @@ package service
 
 import (
 	"context"
+	"time"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
 )
 
+type MetricFilters struct {
+	From  *time.Time
+	To    *time.Time
+	Limit int
+}
+
 type MetricRepository interface {
 	Create(ctx context.Context, metric model.Metric) error
 	GetByID(ctx context.Context, metricID int) (model.Metric, error)
-	GetByServerID(ctx context.Context, serverID int, limit int) ([]model.Metric, error)
+	GetByServerID(ctx context.Context, serverID int, filters MetricFilters) ([]model.Metric, error)
 }
 
 type MetricService struct {
