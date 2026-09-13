@@ -33,3 +33,5 @@ func (m *AgentRepositoryMock) GetByTokenHash(ctx context.Context, tokenHash stri
 }
 
 func TestAgentService_Create(t *testing.T) {}
+
+func TestAgentService_GetByID(t *testing.T) {}
