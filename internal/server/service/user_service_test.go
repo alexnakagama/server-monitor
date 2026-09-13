@@ -223,3 +223,5 @@ func TestUserService_GetByID(t *testing.T) {
 		t.Errorf("expected user email: %s, got: %s", user.Email, userFound.Email)
 	}
 }
+
+func TestUserService_ChangePassword(t *testing.T) {}
