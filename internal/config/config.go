@@ -5,3 +5,5 @@ type Config struct {
 	PasetoKey           string
 	MetricRetentionDays int
 }
+
+func Load() (Config, error) {}
