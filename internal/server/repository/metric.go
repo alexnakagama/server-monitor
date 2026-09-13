@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"errors"
+	"time"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
 	"github.com/alexnakagama/server-monitor/internal/server/errors_custom"
@@ -151,3 +152,5 @@ func (r *MetricRepository) GetByServerID(ctx context.Context, serverID int, filt
 
 	return metrics, nil
 }
+
+func (r *MetricRepository) DeleteOlderThan(ctx context.Context, before time.Time) error {}
