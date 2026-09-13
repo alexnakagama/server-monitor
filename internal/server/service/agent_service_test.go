@@ -37,3 +37,5 @@ func TestAgentService_Create(t *testing.T) {}
 func TestAgentService_GetByID(t *testing.T) {}
 
 func TestAgentService_DeleteByID(t *testing.T) {}
+
+func TestAgentService_GetByTokenHash(t *testing.T) {}
