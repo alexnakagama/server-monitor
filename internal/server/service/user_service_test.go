@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
+	"github.com/alexnakagama/server-monitor/internal/server/errors_custom"
 )
 
 var _ UserRepository = (*UserRepositoryMock)(nil)
@@ -47,4 +48,28 @@ func (m *UserRepositoryMock) UpdatePassword(ctx context.Context, id int, hash st
 	return m.updatePassword(ctx, id, hash)
 }
 
-func TestUserService_Register(t *testing.T) {}
+func TestUserService_Register(t *testing.T) {
+	repository := &UserRepositoryMock{
+		getByUsername: func(ctx context.Context, username string) (model.User, error) {
+			return model.User{}, errors_custom.ErrUserNotFound
+		},
+		getByEmail: func(ctx context.Context, email string) (model.User, error) {
+			return model.User{}, errors_custom.ErrUserNotFound
+		},
+		create: func(ctx context.Context, user model.User) error {
+			return nil
+		},
+	}
+
+	service := NewUserService(repository, nil)
+
+	err := service.Register(
+		context.Background(),
+		"alex",
+		"alex@example.gmail.com",
+		"password123",
+	)
+	if err != nil {
+		t.Fatalf("expected no error, got: %v", err)
+	}
+}
