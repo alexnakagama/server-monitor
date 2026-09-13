@@ -110,3 +110,5 @@ func TestMetricService_Create(t *testing.T) {
 		t.Errorf("expected network received 2000, got: %d", createdMetric.NetworkSent)
 	}
 }
+
+func TestMetricService_GetByID(t *testing.T) {}
