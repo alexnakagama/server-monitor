@@ -13,6 +13,7 @@ import (
 	"aidanwoods.dev/go-paseto"
 
 	"github.com/alexnakagama/server-monitor/internal/auth"
+	"github.com/alexnakagama/server-monitor/internal/config"
 	"github.com/alexnakagama/server-monitor/internal/server/db"
 	"github.com/alexnakagama/server-monitor/internal/server/handler"
 	"github.com/alexnakagama/server-monitor/internal/server/repository"
@@ -26,18 +27,18 @@ func main() {
 		log.Println("no .env file found")
 	}
 
-	databaseURL := os.Getenv("DATABASE_URL")
-	if databaseURL == "" {
-		log.Fatal("DATABASE_URL is empty")
+	cfg, err := config.Load()
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	database, err := db.NewPostgres(context.Background(), databaseURL)
+	database, err := db.NewPostgres(context.Background(), cfg.DatabaseURL)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer database.Close()
 
-	key, err := paseto.V4SymmetricKeyFromHex(os.Getenv("PASETO_KEY"))
+	key, err := paseto.V4SymmetricKeyFromHex(cfg.PasetoKey)
 	if err != nil {
 		log.Fatal(err)
 	}
