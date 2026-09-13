@@ -4,6 +4,8 @@ import (
 	"context"
 	"testing"
 
+	"aidanwoods.dev/go-paseto"
+	"github.com/alexnakagama/server-monitor/internal/auth"
 	"github.com/alexnakagama/server-monitor/internal/model"
 	"github.com/alexnakagama/server-monitor/internal/server/errors_custom"
 )
@@ -89,10 +91,40 @@ func TestUserService_Register(t *testing.T) {
 	}
 }
 
-func (m *UserRepositoryMock) TestUserService_Login(t *testing.T) {
+func TestUserService_Login(t *testing.T) {
+	passwordHash, err := HashPassword("password123")
+	if err != nil {
+		t.Fatalf("failed to hash the password: %v", err)
+	}
+
+	user := model.User{
+		ID:           1,
+		Username:     "alex123",
+		Email:        "alex@example.gmail.com",
+		PasswordHash: passwordHash,
+	}
+
 	repository := &UserRepositoryMock{
 		getByUsername: func(ctx context.Context, username string) (model.User, error) {
-			return model.User{}, nil
+			return user, nil
 		},
+	}
+
+	key := paseto.NewV4SymmetricKey()
+	pasetoManager := auth.NewPasetoManager(key)
+
+	service := NewUserService(repository, pasetoManager)
+
+	token, err := service.Login(
+		context.Background(),
+		"alex123",
+		"password123",
+	)
+	if err != nil {
+		t.Fatalf("expected no error, got: %v", err)
+	}
+
+	if token == "" {
+		t.Errorf("expected token to be generated")
 	}
 }
