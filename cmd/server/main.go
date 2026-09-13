@@ -14,6 +14,7 @@ import (
 
 	"github.com/alexnakagama/server-monitor/internal/auth"
 	"github.com/alexnakagama/server-monitor/internal/config"
+	"github.com/alexnakagama/server-monitor/internal/scheduler"
 	"github.com/alexnakagama/server-monitor/internal/server/db"
 	"github.com/alexnakagama/server-monitor/internal/server/handler"
 	"github.com/alexnakagama/server-monitor/internal/server/repository"
@@ -21,6 +22,13 @@ import (
 )
 
 func main() {
+	ctx, stop := signal.NotifyContext(
+		context.Background(),
+		os.Interrupt,
+		syscall.SIGTERM,
+	)
+	defer stop()
+
 	cfg, err := config.Load()
 	if err != nil {
 		log.Fatal(err)
@@ -56,6 +64,10 @@ func main() {
 	metricRepository := repository.NewMetricRepository(database)
 	metricService := service.NewMetricService(metricRepository, cfg.MetricRetentionDays)
 	metricHandler := handler.NewMetricHandler(metricService)
+
+	metricScheduler := scheduler.NewScheduler(metricService)
+
+	go metricScheduler.Run(ctx)
 
 	mux := http.NewServeMux()
 
@@ -213,29 +225,18 @@ func main() {
 
 	log.Println("server running on port: 8080")
 
-	// creates the channel
-	// receives signals of the operating system
-	shutdownSignal := make(chan os.Signal, 1)
-
-	// function which connects the signals of the os to the go program
-	// when the os sends os.Interrupt or syscall.SIGTERM send that signal through the channel
-	signal.Notify(
-		shutdownSignal,
-		os.Interrupt,
-		syscall.SIGTERM,
-	)
-
 	go func() {
-		// here the go routine stays blocked until it receives a shutdown signal
-		<-shutdownSignal
+		<-ctx.Done()
 
 		log.Println("shutting down server...")
 
-		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		shutdownCtx, cancel := context.WithTimeout(
+			context.Background(),
+			10*time.Second,
+		)
 		defer cancel()
 
-		// shutdowns the server
-		err := server.Shutdown(ctx)
+		err := server.Shutdown(shutdownCtx)
 		if err != nil {
 			log.Printf("server shutdown error: %v", err)
 			return
