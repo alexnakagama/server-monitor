@@ -7,9 +7,13 @@ import (
 )
 
 type UserRepositoryMock struct {
-	getByUsername func(ctx context.Context, username string) (model.User, error)
-	getByEmail    func(ctx context.Context, email string) (model.User, error)
-	create        func(ctx context.Context, user model.User) error
+	getByUsername  func(ctx context.Context, username string) (model.User, error)
+	getByEmail     func(ctx context.Context, email string) (model.User, error)
+	create         func(ctx context.Context, user model.User) error
+	delete         func(ctx context.Context, id int) error
+	update         func(ctx context.Context, user model.User) error
+	getByID        func(ctx context.Context, id int) (model.User, error)
+	updatePassword func(ctx context.Context, id int, hash string) error
 }
 
 func (m *UserRepositoryMock) GetByUsername(ctx context.Context, username string) (model.User, error) {
