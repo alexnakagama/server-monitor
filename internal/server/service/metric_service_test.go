@@ -61,3 +61,6 @@ func TestMetricService_DeleteOldMetrics(t *testing.T) {
 		t.Errorf("unexpectec cutoff: %v", receiveBefore)
 	}
 }
+
+func TestMetricService_Create(t *testing.T) {
+}
