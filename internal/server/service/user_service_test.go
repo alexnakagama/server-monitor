@@ -19,3 +19,7 @@ func (m *UserRepositoryMock) GetByUsername(ctx context.Context, username string)
 func (m *UserRepositoryMock) GetByEmail(ctx context.Context, email string) (model.User, error) {
 	return m.getByEmail(ctx, email)
 }
+
+func (m *UserRepositoryMock) Create(ctx context.Context, user model.User) error {
+	return m.create(ctx, user)
+}
