@@ -191,4 +191,35 @@ func TestUserService_UpdateProfile(t *testing.T) {
 	}
 }
 
-func TestUserService_GetByID(t *testing.T) {}
+func TestUserService_GetByID(t *testing.T) {
+	user := model.User{
+		ID:       1,
+		Username: "alex123",
+		Email:    "alex@example.gmail.com",
+	}
+
+	repository := &UserRepositoryMock{
+		getByID: func(ctx context.Context, id int) (model.User, error) {
+			return user, nil
+		},
+	}
+
+	service := NewUserService(repository, nil)
+
+	userFound, err := service.GetByID(context.Background(), 1)
+	if err != nil {
+		t.Fatalf("expected user, got: %v", err)
+	}
+
+	if userFound.ID != user.ID {
+		t.Errorf("expected user id: %d, got: %d", user.ID, userFound.ID)
+	}
+
+	if userFound.Username != user.Username {
+		t.Errorf("expected user username: %s, got: %s", user.Username, userFound.Username)
+	}
+
+	if userFound.Email != user.Email {
+		t.Errorf("expected user email: %s, got: %s", user.Email, userFound.Email)
+	}
+}
