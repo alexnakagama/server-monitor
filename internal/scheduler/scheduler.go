@@ -15,3 +15,6 @@ func NewScheduler(metricService metricService) *Scheduler {
 		metricService: metricService,
 	}
 }
+
+func (s *Scheduler) Run(ctx context.Context) {
+}
