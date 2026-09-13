@@ -54,7 +54,7 @@ func main() {
 	agentHandler := handler.NewAgentHandler(agentService)
 
 	metricRepository := repository.NewMetricRepository(database)
-	metricService := service.NewMetricService(metricRepository)
+	metricService := service.NewMetricService(metricRepository, cfg.MetricRetentionDays)
 	metricHandler := handler.NewMetricHandler(metricService)
 
 	mux := http.NewServeMux()
