@@ -31,3 +31,7 @@ func (m *UserRepositoryMock) Create(ctx context.Context, user model.User) error 
 func (m *UserRepositoryMock) Delete(ctx context.Context, id int) error {
 	return m.delete(ctx, id)
 }
+
+func (m *UserRepositoryMock) Update(ctx context.Context, user model.User) error {
+	return m.update(ctx, user)
+}
