@@ -6,6 +6,8 @@ import (
 	"github.com/alexnakagama/server-monitor/internal/model"
 )
 
+var _ UserRepository = (*UserRepositoryMock)(nil)
+
 type UserRepositoryMock struct {
 	getByUsername  func(ctx context.Context, username string) (model.User, error)
 	getByEmail     func(ctx context.Context, email string) (model.User, error)
