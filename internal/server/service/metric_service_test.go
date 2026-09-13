@@ -111,4 +111,51 @@ func TestMetricService_Create(t *testing.T) {
 	}
 }
 
-func TestMetricService_GetByID(t *testing.T) {}
+func TestMetricService_GetByID(t *testing.T) {
+	metric := model.Metric{
+		ID:             1,
+		ServerID:       1,
+		CPUUsage:       10,
+		MemoryUsage:    20,
+		DiskUsage:      30,
+		NetworkReceive: 1000,
+		NetworkSent:    2000,
+	}
+
+	repository := &MetricRepositoryMock{
+		getByID: func(ctx context.Context, metricID int) (model.Metric, error) {
+			return metric, nil
+		},
+	}
+
+	service := NewMetricService(repository, 30)
+
+	metricFound, err := service.GetByID(context.Background(), 1)
+	if err != nil {
+		t.Fatalf("expected no error, got: %v", err)
+	}
+
+	if metricFound.ServerID != metric.ServerID {
+		t.Errorf("expected server id: %d, got: %d", metric.ServerID, metricFound.ServerID)
+	}
+
+	if metricFound.CPUUsage != metric.CPUUsage {
+		t.Errorf("expected cpu usage: %f, got: %f", metric.CPUUsage, metricFound.CPUUsage)
+	}
+
+	if metricFound.MemoryUsage != metric.MemoryUsage {
+		t.Errorf("expected memory usage usage: %f, got: %f", metric.MemoryUsage, metricFound.MemoryUsage)
+	}
+
+	if metricFound.DiskUsage != metric.DiskUsage {
+		t.Errorf("expected disk usage: %f, got: %f", metric.DiskUsage, metricFound.DiskUsage)
+	}
+
+	if metricFound.NetworkReceive != metric.NetworkReceive {
+		t.Errorf("expected network receive: %d, got: %d", metric.NetworkReceive, metricFound.NetworkReceive)
+	}
+
+	if metricFound.NetworkSent != metric.NetworkSent {
+		t.Errorf("expected network sent: %d, got: %d", metric.NetworkSent, metricFound.NetworkSent)
+	}
+}
