@@ -101,6 +101,26 @@ func TestAgentService_GetByID(t *testing.T) {
 	}
 }
 
-func TestAgentService_DeleteByID(t *testing.T) {}
+func TestAgentService_DeleteByID(t *testing.T) {
+	var deletedID int
+
+	repository := &AgentRepositoryMock{
+		deleteByID: func(ctx context.Context, agentID int) error {
+			deletedID = agentID
+			return nil
+		},
+	}
+
+	service := NewAgentService(repository)
+
+	err := service.DeleteByID(context.Background(), 1)
+	if err != nil {
+		t.Fatalf("expected no error, got: %v", err)
+	}
+
+	if deletedID != 1 {
+		t.Errorf("expected agent id 1, got: %d", deletedID)
+	}
+}
 
 func TestAgentService_GetByTokenHash(t *testing.T) {}
