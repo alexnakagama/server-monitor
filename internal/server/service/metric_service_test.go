@@ -7,6 +7,8 @@ import (
 	"github.com/alexnakagama/server-monitor/internal/model"
 )
 
+var _ MetricRepository = (*MetricRepositoryMock)(nil)
+
 type MetricRepositoryMock struct {
 	create          func(ctx context.Context, metric model.Metric) error
 	getByID         func(ctx context.Context, metricID int) (model.Metric, error)
