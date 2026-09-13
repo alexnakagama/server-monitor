@@ -4,8 +4,6 @@ import (
 	"context"
 	"log"
 	"time"
-
-	"golang.org/x/text/cases"
 )
 
 type metricService interface {
