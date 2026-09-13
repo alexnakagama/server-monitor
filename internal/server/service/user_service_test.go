@@ -65,7 +65,7 @@ func TestUserService_Register(t *testing.T) {
 
 	err := service.Register(
 		context.Background(),
-		"alex",
+		"alex123",
 		"alex@example.gmail.com",
 		"password123",
 	)
@@ -73,3 +73,5 @@ func TestUserService_Register(t *testing.T) {
 		t.Fatalf("expected no error, got: %v", err)
 	}
 }
+
+func (m *UserRepositoryMock) TestUserService_Login(t *testing.T) {}
