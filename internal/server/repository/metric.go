@@ -153,4 +153,14 @@ func (r *MetricRepository) GetByServerID(ctx context.Context, serverID int, filt
 	return metrics, nil
 }
 
-func (r *MetricRepository) DeleteOlderThan(ctx context.Context, before time.Time) error {}
+func (r *MetricRepository) DeleteOlderThan(ctx context.Context, before time.Time) error {
+	query := `DELETE FROM server_metrics WHERE timestamp < $1`
+
+	_, err := r.db.Exec(
+		ctx,
+		query,
+		before,
+	)
+
+	return err
+}
