@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"testing"
 	"time"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
@@ -31,3 +32,5 @@ func (m *MetricRepositoryMock) GetByServerID(ctx context.Context, serverID int, 
 func (m *MetricRepositoryMock) DeleteOlderThan(ctx context.Context, before time.Time) error {
 	return m.deleteOlderThan(ctx, before)
 }
+
+func TestMetricService_DeleteOldMetrics(t *testing.T) {}
