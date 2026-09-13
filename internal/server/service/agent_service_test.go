@@ -14,3 +14,6 @@ type AgentRepositoryMock struct {
 	deleteByID     func(ctx context.Context, agentID int) error
 	getByTokenHash func(ctx context.Context, tokenHash string) (model.Agent, error)
 }
+
+func (m *AgentRepositoryMock) Create(ctx context.Context, agent model.Agent) error {
+}
