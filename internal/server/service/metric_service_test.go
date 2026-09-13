@@ -23,3 +23,7 @@ func (m *MetricRepositoryMock) Create(ctx context.Context, metric model.Metric) 
 func (m *MetricRepositoryMock) GetByID(ctx context.Context, metricID int) (model.Metric, error) {
 	return m.getByID(ctx, metricID)
 }
+
+func (m *MetricRepositoryMock) GetByServerID(ctx context.Context, serverID int, filters model.MetricFilters) ([]model.Metric, error) {
+	return m.getByServerID(ctx, serverID, filters)
+}
