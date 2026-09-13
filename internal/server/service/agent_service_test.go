@@ -68,7 +68,38 @@ func TestAgentService_Create(t *testing.T) {
 	}
 }
 
-func TestAgentService_GetByID(t *testing.T) {}
+func TestAgentService_GetByID(t *testing.T) {
+	agent := model.Agent{
+		ID:       1,
+		ServerID: 1,
+		Name:     "my-server-agent",
+	}
+
+	repository := &AgentRepositoryMock{
+		getByID: func(ctx context.Context, agentID int) (model.Agent, error) {
+			return agent, nil
+		},
+	}
+
+	service := NewAgentService(repository)
+
+	agentFound, err := service.GetByID(context.Background(), 1)
+	if err != nil {
+		t.Fatalf("expected no error, got: %v", err)
+	}
+
+	if agentFound.ID != agent.ID {
+		t.Errorf("expected id: %d, got: %d", agent.ID, agentFound.ID)
+	}
+
+	if agentFound.ServerID != agent.ServerID {
+		t.Errorf("expected server id: %d, got: %d", agent.ServerID, agentFound.ServerID)
+	}
+
+	if agentFound.Name != agent.Name {
+		t.Errorf("expected name: %s, got: %s", agent.Name, agentFound.Name)
+	}
+}
 
 func TestAgentService_DeleteByID(t *testing.T) {}
 
