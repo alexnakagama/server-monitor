@@ -11,3 +11,7 @@ type UserRepositoryMock struct {
 	getByEmail    func(ctx context.Context, email string) (model.User, error)
 	create        func(ctx context.Context, user model.User) error
 }
+
+func (m *UserRepositoryMock) GetByUsername(ctx context.Context, username string) (model.User, error) {
+	return m.getByUsername(ctx, username)
+}
