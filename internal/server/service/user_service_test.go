@@ -156,4 +156,37 @@ func TestUserService_DeleteProfile(t *testing.T) {
 	}
 }
 
-func TestUserService_UpdateProfile(t *testing.T) {}
+func TestUserService_UpdateProfile(t *testing.T) {
+	var updatedUser model.User
+
+	repository := &UserRepositoryMock{
+		update: func(ctx context.Context, user model.User) error {
+			updatedUser = user
+			return nil
+		},
+	}
+
+	service := NewUserService(repository, nil)
+
+	err := service.UpdateProfile(
+		context.Background(),
+		1,
+		"alex123",
+		"alex@example.gmail.com",
+	)
+	if err != nil {
+		t.Errorf("expected no error, got: %v", err)
+	}
+
+	if updatedUser.ID != 1 {
+		t.Errorf("expected id 1, got: %d", updatedUser.ID)
+	}
+
+	if updatedUser.Username != "alex123" {
+		t.Errorf("expected username alex123, got: %s", updatedUser.Username)
+	}
+
+	if updatedUser.Email != "alex@example.gmail.com" {
+		t.Errorf("expected email alex@example.gmail.com, got: %s", updatedUser.Email)
+	}
+}
