@@ -190,3 +190,5 @@ func TestUserService_UpdateProfile(t *testing.T) {
 		t.Errorf("expected email alex@example.gmail.com, got: %s", updatedUser.Email)
 	}
 }
+
+func TestUserService_GetByID(t *testing.T) {}
