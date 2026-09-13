@@ -16,4 +16,5 @@ type AgentRepositoryMock struct {
 }
 
 func (m *AgentRepositoryMock) Create(ctx context.Context, agent model.Agent) error {
+	return m.create(ctx, agent)
 }
