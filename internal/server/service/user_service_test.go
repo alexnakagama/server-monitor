@@ -27,3 +27,7 @@ func (m *UserRepositoryMock) GetByEmail(ctx context.Context, email string) (mode
 func (m *UserRepositoryMock) Create(ctx context.Context, user model.User) error {
 	return m.create(ctx, user)
 }
+
+func (m *UserRepositoryMock) Delete(ctx context.Context, id int) error {
+	return m.delete(ctx, id)
+}
