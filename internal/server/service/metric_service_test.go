@@ -159,3 +159,5 @@ func TestMetricService_GetByID(t *testing.T) {
 		t.Errorf("expected network sent: %d, got: %d", metric.NetworkSent, metricFound.NetworkSent)
 	}
 }
+
+func TestMetricService_GetByServerID(t *testing.T) {}
