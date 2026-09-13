@@ -33,4 +33,31 @@ func (m *MetricRepositoryMock) DeleteOlderThan(ctx context.Context, before time.
 	return m.deleteOlderThan(ctx, before)
 }
 
-func TestMetricService_DeleteOldMetrics(t *testing.T) {}
+func TestMetricService_DeleteOldMetrics(t *testing.T) {
+	var receiveBefore time.Time
+
+	repository := &MetricRepositoryMock{
+		deleteOlderThan: func(ctx context.Context, before time.Time) error {
+			receiveBefore = before
+			return nil
+		},
+	}
+
+	service := NewMetricService(repository, 30)
+
+	start := time.Now()
+
+	err := service.DeleteOldMetrics(context.Background())
+	if err != nil {
+		t.Fatalf("expected no error, got: %v", err)
+	}
+
+	end := time.Now()
+
+	min := start.AddDate(0, 0, -30)
+	max := end.AddDate(0, 0, -30)
+
+	if receiveBefore.Before(min) || receiveBefore.After(max) {
+		t.Errorf("unexpectec cutoff: %v", receiveBefore)
+	}
+}
