@@ -22,3 +22,7 @@ func (m *AgentRepositoryMock) Create(ctx context.Context, agent model.Agent) err
 func (m *AgentRepositoryMock) GetByID(ctx context.Context, agentID int) (model.Agent, error) {
 	return m.getByID(ctx, agentID)
 }
+
+func (m *AgentRepositoryMock) DeleteByID(ctx context.Context, agentID int) error {
+	return m.deleteByID(ctx, agentID)
+}
