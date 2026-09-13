@@ -4,6 +4,8 @@ import (
 	"context"
 	"log"
 	"time"
+
+	"golang.org/x/text/cases"
 )
 
 type metricService interface {
@@ -21,6 +23,16 @@ func NewScheduler(metricService metricService) *Scheduler {
 }
 
 func (s *Scheduler) Run(ctx context.Context) {
+	// checks if the context was already canceled
+	// if its canceled returns
+	// if it isnt continues executing the function
+	select {
+	case <-ctx.Done():
+		return
+
+	default:
+	}
+
 	err := s.metricService.DeleteOldMetrics(ctx)
 	if err != nil {
 		log.Printf("metric cleanup error: %v", err)
@@ -33,10 +45,10 @@ func (s *Scheduler) Run(ctx context.Context) {
 	defer ticker.Stop()
 
 	for {
-		// select stays blocked waiting for one of the channels to execute
+		// select blocks waiting for one of the channels operations to become ready
 		select {
-		// receives a value of the ticker.c channel
-		// in this case we arent interested in the value but the moment of the ticker
+		// receives the time sent by ticker.c
+		// we dont need the value, only the fact that the ticker fired
 		case <-ticker.C:
 			err := s.metricService.DeleteOldMetrics(ctx)
 			if err != nil {
