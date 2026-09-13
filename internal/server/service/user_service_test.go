@@ -155,3 +155,5 @@ func TestUserService_DeleteProfile(t *testing.T) {
 		t.Errorf("expected Delete to be called")
 	}
 }
+
+func TestUserService_UpdateProfile(t *testing.T) {}
