@@ -66,7 +66,6 @@ func main() {
 	metricHandler := handler.NewMetricHandler(metricService)
 
 	metricScheduler := scheduler.NewScheduler(metricService)
-
 	go metricScheduler.Run(ctx)
 
 	mux := http.NewServeMux()
