@@ -15,3 +15,7 @@ type MetricRepositoryMock struct {
 	getByServerID   func(ctx context.Context, serverID int, filters model.MetricFilters) ([]model.Metric, error)
 	deleteOlderThan func(ctx context.Context, before time.Time) error
 }
+
+func (m *MetricRepositoryMock) Create(ctx context.Context, metric model.Metric) error {
+	return m.create(ctx, metric)
+}
