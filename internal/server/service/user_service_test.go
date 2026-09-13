@@ -35,3 +35,7 @@ func (m *UserRepositoryMock) Delete(ctx context.Context, id int) error {
 func (m *UserRepositoryMock) Update(ctx context.Context, user model.User) error {
 	return m.update(ctx, user)
 }
+
+func (m *UserRepositoryMock) GetByID(ctx context.Context, id int) error {
+	return m.GetByID(ctx, id)
+}
