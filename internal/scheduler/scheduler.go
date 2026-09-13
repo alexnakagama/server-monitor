@@ -21,6 +21,11 @@ func NewScheduler(metricService metricService) *Scheduler {
 }
 
 func (s *Scheduler) Run(ctx context.Context) {
+	err := s.metricService.DeleteOldMetrics(ctx)
+	if err != nil {
+		log.Printf("metric cleanup error: %v", err)
+	}
+
 	// creating a ticker
 	// one of the campos its a channel
 	// one time for each 24 hours it sends a value through that channel
