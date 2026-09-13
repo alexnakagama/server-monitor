@@ -129,4 +129,29 @@ func TestUserService_Login(t *testing.T) {
 	}
 }
 
-func TestUserService_DeleteProfile(t *testing.T) {}
+func TestUserService_DeleteProfile(t *testing.T) {
+	deleteCalled := false
+
+	repository := &UserRepositoryMock{
+		delete: func(ctx context.Context, id int) error {
+			deleteCalled = true
+
+			if id != 1 {
+				t.Errorf("expected id 1, got: %d", id)
+			}
+
+			return nil
+		},
+	}
+
+	service := NewUserService(repository, nil)
+
+	err := service.DeleteProfile(context.Background(), 1)
+	if err != nil {
+		t.Fatalf("expected no error, got: %v", err)
+	}
+
+	if !deleteCalled {
+		t.Errorf("expected Delete to be called")
+	}
+}
