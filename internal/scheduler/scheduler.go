@@ -7,4 +7,7 @@ type metricService interface {
 }
 
 type Scheduler struct {
+	metricService metricService
 }
+
+func NewScheduler(metricService metricService) *Scheduler {}
