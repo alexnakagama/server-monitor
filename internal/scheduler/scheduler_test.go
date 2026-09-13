@@ -9,6 +9,8 @@ import (
 	"time"
 )
 
+// compile time interface assertion
+// it assures in compile time that *metricServiceMock impliments the interface metricService
 var _ metricService = (*metricServiceMock)(nil)
 
 // creating a mock of the metric service
