@@ -26,3 +26,7 @@ func (m *AgentRepositoryMock) GetByID(ctx context.Context, agentID int) (model.A
 func (m *AgentRepositoryMock) DeleteByID(ctx context.Context, agentID int) error {
 	return m.deleteByID(ctx, agentID)
 }
+
+func (m *AgentRepositoryMock) GetByTokenHash(ctx context.Context, tokenHash string) (model.Agent, error) {
+	return m.getByTokenHash(ctx, tokenHash)
+}
