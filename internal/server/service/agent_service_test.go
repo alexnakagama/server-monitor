@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"testing"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
 )
@@ -30,3 +31,5 @@ func (m *AgentRepositoryMock) DeleteByID(ctx context.Context, agentID int) error
 func (m *AgentRepositoryMock) GetByTokenHash(ctx context.Context, tokenHash string) (model.Agent, error) {
 	return m.getByTokenHash(ctx, tokenHash)
 }
+
+func TestAgentService_Create(t *testing.T) {}
