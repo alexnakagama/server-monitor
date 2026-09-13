@@ -49,6 +49,8 @@ func (m *UserRepositoryMock) UpdatePassword(ctx context.Context, id int, hash st
 }
 
 func TestUserService_Register(t *testing.T) {
+	var createdUser model.User
+
 	repository := &UserRepositoryMock{
 		getByUsername: func(ctx context.Context, username string) (model.User, error) {
 			return model.User{}, errors_custom.ErrUserNotFound
@@ -57,6 +59,7 @@ func TestUserService_Register(t *testing.T) {
 			return model.User{}, errors_custom.ErrUserNotFound
 		},
 		create: func(ctx context.Context, user model.User) error {
+			createdUser = user
 			return nil
 		},
 	}
@@ -72,6 +75,24 @@ func TestUserService_Register(t *testing.T) {
 	if err != nil {
 		t.Fatalf("expected no error, got: %v", err)
 	}
+
+	if createdUser.Username != "alex123" {
+		t.Errorf("expected username alex123, got: %s", createdUser.Username)
+	}
+
+	if createdUser.Email != "alex@example.gmail.com" {
+		t.Errorf("expected email alex@example.gmail.com, got: %s", createdUser.Email)
+	}
+
+	if createdUser.PasswordHash == "" {
+		t.Errorf("expected password hash to be generated")
+	}
 }
 
-func (m *UserRepositoryMock) TestUserService_Login(t *testing.T) {}
+func (m *UserRepositoryMock) TestUserService_Login(t *testing.T) {
+	repository := &UserRepositoryMock{
+		getByUsername: func(ctx context.Context, username string) (model.User, error) {
+			return model.User{}, nil
+		},
+	}
+}
