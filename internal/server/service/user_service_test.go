@@ -128,3 +128,5 @@ func TestUserService_Login(t *testing.T) {
 		t.Errorf("expected token to be generated")
 	}
 }
+
+func TestUserService_DeleteProfile(t *testing.T) {}
