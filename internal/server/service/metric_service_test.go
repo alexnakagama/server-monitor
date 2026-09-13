@@ -27,3 +27,7 @@ func (m *MetricRepositoryMock) GetByID(ctx context.Context, metricID int) (model
 func (m *MetricRepositoryMock) GetByServerID(ctx context.Context, serverID int, filters model.MetricFilters) ([]model.Metric, error) {
 	return m.getByServerID(ctx, serverID, filters)
 }
+
+func (m *MetricRepositoryMock) DeleteOlderThan(ctx context.Context, before time.Time) error {
+	return m.deleteOlderThan(ctx, before)
+}
