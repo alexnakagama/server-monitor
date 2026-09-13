@@ -10,4 +10,8 @@ type Scheduler struct {
 	metricService metricService
 }
 
-func NewScheduler(metricService metricService) *Scheduler {}
+func NewScheduler(metricService metricService) *Scheduler {
+	return &Scheduler{
+		metricService: metricService,
+	}
+}
