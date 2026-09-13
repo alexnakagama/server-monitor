@@ -15,12 +15,14 @@ type MetricRepository interface {
 }
 
 type MetricService struct {
-	repository MetricRepository
+	repository    MetricRepository
+	retentionDays int
 }
 
-func NewMetricService(repository MetricRepository) *MetricService {
+func NewMetricService(repository MetricRepository, retentionDays int) *MetricService {
 	return &MetricService{
-		repository: repository,
+		repository:    repository,
+		retentionDays: retentionDays,
 	}
 }
 
