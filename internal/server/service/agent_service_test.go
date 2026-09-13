@@ -124,4 +124,45 @@ func TestAgentService_DeleteByID(t *testing.T) {
 }
 
 func TestAgentService_Authenticate(t *testing.T) {
+	token := "my-secret-token"
+
+	agent := model.Agent{
+		ID:       1,
+		ServerID: 1,
+		Name:     "my-server-agent",
+	}
+
+	var receivedHash string
+
+	repository := &AgentRepositoryMock{
+		getByTokenHash: func(ctx context.Context, tokenHash string) (model.Agent, error) {
+			receivedHash = tokenHash
+			return agent, nil
+		},
+	}
+
+	service := NewAgentService(repository)
+
+	agentFound, err := service.Authenticate(context.Background(), token)
+	if err != nil {
+		t.Fatalf("expected no error, got: %v", err)
+	}
+
+	expectedHash := HashAgentToken(token)
+
+	if receivedHash != expectedHash {
+		t.Errorf("expected token hash: %s, got: %s", expectedHash, receivedHash)
+	}
+
+	if agentFound.ID != agent.ID {
+		t.Errorf("expected agent id: %d, got: %d", agent.ID, agentFound.ID)
+	}
+
+	if agentFound.ServerID != agent.ServerID {
+		t.Errorf("expected server id: %d, got: %d", agent.ServerID, agentFound.ServerID)
+	}
+
+	if agentFound.Name != agent.Name {
+		t.Errorf("expected name: %s, got: %s", agent.Name, agentFound.Name)
+	}
 }
