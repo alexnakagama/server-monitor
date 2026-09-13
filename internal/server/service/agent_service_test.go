@@ -123,4 +123,5 @@ func TestAgentService_DeleteByID(t *testing.T) {
 	}
 }
 
-func TestAgentService_GetByTokenHash(t *testing.T) {}
+func TestAgentService_Authenticate(t *testing.T) {
+}
