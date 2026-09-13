@@ -37,7 +37,7 @@ func (m *UserRepositoryMock) Update(ctx context.Context, user model.User) error 
 }
 
 func (m *UserRepositoryMock) GetByID(ctx context.Context, id int) (model.User, error) {
-	return m.GetByID(ctx, id)
+	return m.getByID(ctx, id)
 }
 
 func (m *UserRepositoryMock) UpdatePassword(ctx context.Context, id int, hash string) error {
