@@ -59,4 +59,6 @@ func (s *MetricService) GetByServerID(ctx context.Context, serverID int, filters
 	return s.repository.GetByServerID(ctx, serverID, filters)
 }
 
-func (s *MetricService) DeleteOlderThan(ctx context.Context, before time.Time) error {}
+func (s *MetricService) DeleteOlderThan(ctx context.Context, before time.Time) error {
+	return s.repository.DeleteOlderThan(ctx, before)
+}
