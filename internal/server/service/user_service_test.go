@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"testing"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
 )
@@ -45,3 +46,5 @@ func (m *UserRepositoryMock) GetByID(ctx context.Context, id int) (model.User, e
 func (m *UserRepositoryMock) UpdatePassword(ctx context.Context, id int, hash string) error {
 	return m.updatePassword(ctx, id, hash)
 }
+
+func TestUserService_Register(t *testing.T) {}
