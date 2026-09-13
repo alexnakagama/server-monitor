@@ -160,4 +160,42 @@ func TestMetricService_GetByID(t *testing.T) {
 	}
 }
 
-func TestMetricService_GetByServerID(t *testing.T) {}
+func TestMetricService_GetByServerID(t *testing.T) {
+	metrics := []model.Metric{
+		{
+			ID:       1,
+			ServerID: 1,
+			CPUUsage: 10,
+		},
+		{
+			ID:       2,
+			ServerID: 1,
+			CPUUsage: 20,
+		},
+	}
+
+	repository := &MetricRepositoryMock{
+		getByServerID: func(ctx context.Context, serverID int, filters model.MetricFilters) ([]model.Metric, error) {
+			return metrics, nil
+		},
+	}
+
+	service := NewMetricService(repository, 30)
+
+	metricsFound, err := service.GetByServerID(context.Background(), 1, model.MetricFilters{})
+	if err != nil {
+		t.Fatalf("expected no error, got: %v", err)
+	}
+
+	if len(metricsFound) != 2 {
+		t.Fatalf("expected 2 metrics, got: %d", len(metricsFound))
+	}
+
+	if metricsFound[0].ID != metrics[0].ID {
+		t.Errorf("expected metric id: %d, got: %d", metrics[0].ID, metricsFound[0].ID)
+	}
+
+	if metricsFound[1].ID != metrics[1].ID {
+		t.Errorf("expected metric id: %d, got: %d", metrics[1].ID, metricsFound[1].ID)
+	}
+}
