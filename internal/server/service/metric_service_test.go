@@ -63,4 +63,50 @@ func TestMetricService_DeleteOldMetrics(t *testing.T) {
 }
 
 func TestMetricService_Create(t *testing.T) {
+	var createdMetric model.Metric
+
+	repository := &MetricRepositoryMock{
+		create: func(ctx context.Context, metric model.Metric) error {
+			createdMetric = metric
+			return nil
+		},
+	}
+
+	service := NewMetricService(repository, 30)
+
+	err := service.Create(context.Background(), MetricInput{
+		ServerID:       1,
+		CPUUsage:       50,
+		MemoryUsage:    60,
+		DiskUsage:      70,
+		NetworkReceive: 1000,
+		NetworkSent:    2000,
+	})
+	if err != nil {
+		t.Fatalf("expected no error, got: %v", err)
+	}
+
+	if createdMetric.ServerID != 1 {
+		t.Errorf("expected server id 1, got: %d", createdMetric.ServerID)
+	}
+
+	if createdMetric.CPUUsage != 50 {
+		t.Errorf("expected cpu usage 50, got: %f", createdMetric.CPUUsage)
+	}
+
+	if createdMetric.MemoryUsage != 60 {
+		t.Errorf("expected memory usage 60, got: %f", createdMetric.MemoryUsage)
+	}
+
+	if createdMetric.DiskUsage != 70 {
+		t.Errorf("expected disk usage 70, got: %f", createdMetric.DiskUsage)
+	}
+
+	if createdMetric.NetworkReceive != 1000 {
+		t.Errorf("expected network received 1000, got: %d", createdMetric.NetworkReceive)
+	}
+
+	if createdMetric.NetworkSent != 2000 {
+		t.Errorf("expected network received 2000, got: %d", createdMetric.NetworkSent)
+	}
 }
