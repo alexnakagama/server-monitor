@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"time"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
 )
@@ -10,6 +11,7 @@ type MetricRepository interface {
 	Create(ctx context.Context, metric model.Metric) error
 	GetByID(ctx context.Context, metricID int) (model.Metric, error)
 	GetByServerID(ctx context.Context, serverID int, filters model.MetricFilters) ([]model.Metric, error)
+	DeleteOlderThan(ctx context.Context, before time.Time) error
 }
 
 type MetricService struct {
