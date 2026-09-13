@@ -224,4 +224,44 @@ func TestUserService_GetByID(t *testing.T) {
 	}
 }
 
-func TestUserService_ChangePassword(t *testing.T) {}
+func TestUserService_ChangePassword(t *testing.T) {
+	passwordHash, err := HashPassword("password123")
+	if err != nil {
+		t.Errorf("failed to hash the password: %v", err)
+	}
+
+	var updatedHash string
+
+	user := model.User{
+		ID:           1,
+		Username:     "alex123",
+		Email:        "alex@example.gmail.com",
+		PasswordHash: passwordHash,
+	}
+
+	repository := &UserRepositoryMock{
+		getByID: func(ctx context.Context, id int) (model.User, error) {
+			return user, nil
+		},
+		updatePassword: func(ctx context.Context, id int, hash string) error {
+			updatedHash = hash
+			return nil
+		},
+	}
+
+	service := NewUserService(repository, nil)
+
+	err = service.ChangePassword(
+		context.Background(),
+		1,
+		"password123",
+		"newpassword123",
+	)
+	if err != nil {
+		t.Fatalf("expected no error, got: %v", err)
+	}
+
+	if updatedHash == "" {
+		t.Error("expected password hash to be generated")
+	}
+}
