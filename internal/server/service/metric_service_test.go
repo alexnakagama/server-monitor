@@ -19,3 +19,7 @@ type MetricRepositoryMock struct {
 func (m *MetricRepositoryMock) Create(ctx context.Context, metric model.Metric) error {
 	return m.create(ctx, metric)
 }
+
+func (m *MetricRepositoryMock) GetByID(ctx context.Context, metricID int) (model.Metric, error) {
+	return m.getByID(ctx, metricID)
+}
