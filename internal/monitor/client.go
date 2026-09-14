@@ -41,7 +41,7 @@ func (c *Client) Login(ctx context.Context, username string, password string) er
 		return err
 	}
 
-	url := c.baseURL + "/login"
+	url := c.baseURL + "/users/login"
 
 	req, err := http.NewRequestWithContext(
 		ctx,
