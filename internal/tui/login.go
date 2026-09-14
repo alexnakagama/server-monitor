@@ -9,12 +9,12 @@ type LoginModel struct {
 
 func NewLoginModel() LoginModel {
 	username := textinput.New()
-	username.Placeholder = "username"
+	username.Placeholder = "Username"
 	username.Focus()
 
 	password := textinput.New()
-	password.Placeholder = "username"
-	password.Focus()
+	password.Placeholder = "Password"
+	password.EchoMode = textinput.EchoPassword
 
 	return LoginModel{
 		username: username,
