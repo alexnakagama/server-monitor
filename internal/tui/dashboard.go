@@ -2,6 +2,7 @@ package tui
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
 	"github.com/alexnakagama/server-monitor/internal/monitor"
@@ -70,6 +71,11 @@ func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if m.selectedServer < len(m.servers)-1 {
 				m.selectedServer++
 			}
+
+		case "enter":
+			server := m.servers[m.selectedServer]
+
+			fmt.Println("selected server:", server.Name)
 
 		case "q":
 			return m, func() tea.Msg {
