@@ -48,10 +48,22 @@ func quit() tea.Cmd {
 
 func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
+	case serversLoadedMessage:
+		if msg.err != nil {
+			m.err = msg.err
+			return m, nil
+		}
+
+		m.servers = msg.servers
+
+		return m, nil
+
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "q":
-			return m, quit()
+			return m, func() tea.Msg {
+				return quit()
+			}
 		}
 	}
 
