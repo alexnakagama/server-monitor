@@ -1,6 +1,8 @@
 package tui
 
 import (
+	"context"
+
 	"github.com/alexnakagama/server-monitor/internal/model"
 	"github.com/alexnakagama/server-monitor/internal/monitor"
 	tea "github.com/charmbracelet/bubbletea"
@@ -16,6 +18,20 @@ type ServerDetailModel struct {
 type metricsLoadedMessage struct {
 	metrics []model.Metric
 	err     error
+}
+
+func (m *ServerDetailModel) loadMetrics() tea.Cmd {
+	return func() tea.Msg {
+		metrics, err := m.client.GetServerMetrics(
+			context.Background(),
+			m.server.ID,
+		)
+
+		return metricsLoadedMessage{
+			metrics: metrics,
+			err:     err,
+		}
+	}
 }
 
 func NewServerDetailModel(client *monitor.Client, server model.Server) ServerDetailModel {
