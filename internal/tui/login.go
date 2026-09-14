@@ -54,3 +54,14 @@ func (m LoginModel) Update(msg tea.Msg) (LoginModel, tea.Cmd) {
 
 	return m, cmd
 }
+
+func (m LoginModel) View() string {
+	return "Server Monitor\n\n" +
+		"Username:\n" +
+		m.username.View() +
+		"\n\n" +
+		"Password:\n" +
+		m.password.View() +
+		"\n\n" +
+		"Press Enter to login"
+}
