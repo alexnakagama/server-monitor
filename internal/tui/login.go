@@ -28,3 +28,29 @@ func NewLoginModel() LoginModel {
 func (m LoginModel) Init() tea.Cmd {
 	return textinput.Blink
 }
+
+func (m LoginModel) Update(msg tea.Msg) (LoginModel, tea.Cmd) {
+	switch msg := msg.(type) {
+	case tea.KeyMsg:
+		switch msg.String() {
+		case "tab":
+			if m.username.Focused() {
+				m.username.Blur()
+				m.password.Focus()
+			} else {
+				m.password.Blur()
+				m.username.Focus()
+			}
+		}
+	}
+
+	var cmd tea.Cmd
+
+	if m.username.Focused() {
+		m.username, cmd = m.username.Update(msg)
+	} else {
+		m.password, cmd = m.password.Update(msg)
+	}
+
+	return m, cmd
+}
