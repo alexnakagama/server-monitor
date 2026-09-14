@@ -73,6 +73,10 @@ func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 
 		case "enter":
+			if len(m.servers) == 0 {
+				return m, nil
+			}
+
 			server := m.servers[m.selectedServer]
 
 			fmt.Println("selected server:", server.Name)
