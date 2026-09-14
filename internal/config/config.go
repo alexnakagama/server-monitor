@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/joho/godotenv"
 )
@@ -12,6 +13,12 @@ type Config struct {
 	DatabaseURL         string
 	PasetoKey           string
 	MetricRetentionDays int
+}
+
+type AgentConfig struct {
+	APIURL     string
+	AgentToken string
+	Interval   time.Duration
 }
 
 func Load() (Config, error) {
