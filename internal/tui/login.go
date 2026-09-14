@@ -67,7 +67,7 @@ func (m *LoginModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 
 		case "enter":
-			return m, nil
+			return m, m.login()
 		}
 	}
 
