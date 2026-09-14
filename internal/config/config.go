@@ -41,3 +41,5 @@ func Load() (Config, error) {
 		MetricRetentionDays: retentionDays,
 	}, nil
 }
+
+func LoadAgent() (AgentConfig, error) {}
