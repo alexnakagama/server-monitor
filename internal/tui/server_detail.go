@@ -3,6 +3,7 @@ package tui
 import (
 	"github.com/alexnakagama/server-monitor/internal/model"
 	"github.com/alexnakagama/server-monitor/internal/monitor"
+	tea "github.com/charmbracelet/bubbletea"
 )
 
 type ServerDetailModel struct {
@@ -15,4 +16,8 @@ func NewServerDetailModel(client *monitor.Client, server model.Server) ServerDet
 		client: client,
 		server: server,
 	}
+}
+
+func (m *ServerDetailModel) Init() tea.Cmd {
+	return nil
 }
