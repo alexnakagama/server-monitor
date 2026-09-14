@@ -14,6 +14,25 @@ type LoginModel struct {
 	client   *monitor.Client
 }
 
+type loginResultMessage struct {
+	err error
+}
+
+func (m *LoginModel) login() tea.Cmd {
+	return func() tea.Msg {
+		err := m.client.Login(
+			context.Background(),
+			m.username.Value(),
+			m.password.Value(),
+		)
+		if err != nil {
+			return loginResultMessage{err: err}
+		}
+
+		return loginResultMessage{}
+	}
+}
+
 func NewLoginModel(client *monitor.Client) LoginModel {
 	username := textinput.New()
 	username.Placeholder = "Username"
@@ -72,23 +91,4 @@ func (m *LoginModel) View() string {
 		m.password.View() +
 		"\n\n" +
 		"Press Enter to login"
-}
-
-type loginResultMessage struct {
-	err error
-}
-
-func (m *LoginModel) login() tea.Cmd {
-	return func() tea.Msg {
-		err := m.client.Login(
-			context.Background(),
-			m.username.Value(),
-			m.password.Value(),
-		)
-		if err != nil {
-			return loginResultMessage{err: err}
-		}
-
-		return loginResultMessage{}
-	}
 }
