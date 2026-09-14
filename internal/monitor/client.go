@@ -6,6 +6,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"github.com/alexnakagama/server-monitor/internal/model"
 )
 
 type Client struct {
@@ -76,3 +78,5 @@ func (c *Client) Login(ctx context.Context, username string, password string) er
 
 	return nil
 }
+
+func (c *Client) GetServers(ctx context.Context) ([]model.Server, error) {}
