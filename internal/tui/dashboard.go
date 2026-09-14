@@ -78,8 +78,9 @@ func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 
 			server := m.servers[m.selectedServer]
+			detail := NewServerDetailModel(m.client, server)
 
-			fmt.Println("selected server:", server.Name)
+			return &detail, detail.Init()
 
 		case "q":
 			return m, quit()
