@@ -1,5 +1,7 @@
 package monitor
 
+import "context"
+
 type Client struct {
 	baseURL string
 	token   string
@@ -19,3 +21,5 @@ type loginRequest struct {
 type loginResponse struct {
 	Token string `json:"token"`
 }
+
+func (c *Client) Login(ctx context.Context, username string, password string) error {}
