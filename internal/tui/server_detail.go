@@ -9,3 +9,10 @@ type ServerDetailModel struct {
 	client *monitor.Client
 	server model.Server
 }
+
+func NewServerDetail(client *monitor.Client, server model.Server) ServerDetailModel {
+	return ServerDetailModel{
+		client: client,
+		server: server,
+	}
+}
