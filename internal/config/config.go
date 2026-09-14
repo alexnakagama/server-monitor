@@ -42,4 +42,15 @@ func Load() (Config, error) {
 	}, nil
 }
 
-func LoadAgent() (AgentConfig, error) {}
+func LoadAgent() (AgentConfig, error) {
+	interval, err := time.ParseDuration(os.Getenv("AGENT_INTERVAL"))
+	if err != nil {
+		return AgentConfig{}, err
+	}
+
+	return AgentConfig{
+		APIURL:     os.Getenv("API_URL"),
+		AgentToken: os.Getenv("AGENT_TOKEN"),
+		Interval:   interval,
+	}, nil
+}
