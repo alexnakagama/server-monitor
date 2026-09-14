@@ -7,8 +7,15 @@ import (
 )
 
 type ServerDetailModel struct {
-	client *monitor.Client
-	server model.Server
+	client  *monitor.Client
+	server  model.Server
+	metrics []model.Metric
+	err     error
+}
+
+type metricsLoadedMessage struct {
+	metrics []model.Metric
+	err     error
 }
 
 func NewServerDetailModel(client *monitor.Client, server model.Server) ServerDetailModel {
