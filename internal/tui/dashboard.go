@@ -1,11 +1,21 @@
 package tui
 
-import tea "github.com/charmbracelet/bubbletea"
+import (
+	"github.com/alexnakagama/server-monitor/internal/model"
+	"github.com/alexnakagama/server-monitor/internal/monitor"
+	tea "github.com/charmbracelet/bubbletea"
+)
 
-type DashboardModel struct{}
+type DashboardModel struct {
+	client  *monitor.Client
+	servers []model.Server
+	err     error
+}
 
-func NewDashBoardModel() DashboardModel {
-	return DashboardModel{}
+func NewDashBoardModel(client *monitor.Client) DashboardModel {
+	return DashboardModel{
+		client: client,
+	}
 }
 
 func (m DashboardModel) Init() tea.Cmd {
