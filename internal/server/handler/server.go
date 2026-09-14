@@ -70,6 +70,7 @@ func (h *ServerHandler) HandleCreate(w http.ResponseWriter, r *http.Request) {
 }
 
 type ServerResponse struct {
+	ID        int       `json:"id"`
 	Name      string    `json:"name"`
 	Hostname  string    `json:"hostname"`
 	OS        string    `json:"os"`
@@ -91,6 +92,7 @@ func (h *ServerHandler) HandleGetByName(w http.ResponseWriter, r *http.Request) 
 	}
 
 	response := ServerResponse{
+		ID:        server.ID,
 		Name:      server.Name,
 		Hostname:  server.Hostname,
 		OS:        server.OS,
@@ -116,6 +118,7 @@ func (h *ServerHandler) HandleGetAll(w http.ResponseWriter, r *http.Request) {
 
 	for _, server := range servers {
 		responses = append(responses, ServerResponse{
+			ID:        server.ID,
 			Name:      server.Name,
 			Hostname:  server.Hostname,
 			OS:        server.OS,
@@ -144,6 +147,7 @@ func (h *ServerHandler) HandleGetByOS(w http.ResponseWriter, r *http.Request) {
 
 	for _, server := range servers {
 		responses = append(responses, ServerResponse{
+			ID:        server.ID,
 			Name:      server.Name,
 			Hostname:  server.Hostname,
 			OS:        server.OS,
@@ -174,6 +178,7 @@ func (h *ServerHandler) HandleGetByHostname(w http.ResponseWriter, r *http.Reque
 	}
 
 	response := ServerResponse{
+		ID:        server.ID,
 		Name:      server.Name,
 		Hostname:  server.Hostname,
 		OS:        server.OS,
