@@ -61,6 +61,16 @@ func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case tea.KeyMsg:
 		switch msg.String() {
+		case "up":
+			if m.selectedServer > 0 {
+				m.selectedServer--
+			}
+
+		case "down":
+			if m.selectedServer < len(m.servers)-1 {
+				m.selectedServer++
+			}
+
 		case "q":
 			return m, func() tea.Msg {
 				return quit()
