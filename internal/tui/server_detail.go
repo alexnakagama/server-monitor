@@ -2,6 +2,7 @@ package tui
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
 	"github.com/alexnakagama/server-monitor/internal/monitor"
@@ -52,6 +53,14 @@ func (m *ServerDetailModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "q":
 			return m, quit()
 		}
+
+	case metricsLoadedMessage:
+		if msg.err != nil {
+			m.err = msg.err
+			return m, nil
+		}
+
+		m.metrics = msg.metrics
 	}
 
 	return m, nil
@@ -64,6 +73,26 @@ func (m *ServerDetailModel) View() string {
 	view += "Name: " + m.server.Name + "\n"
 	view += "Hostname: " + m.server.Hostname + "\n"
 	view += "OS: " + m.server.OS + "\n"
+
+	if m.err != nil {
+		view += "\nError: " + m.err.Error() + "\n"
+		return view
+	}
+
+	if len(m.metrics) == 0 {
+		view += "\nNo metrics found.\n"
+		return view
+	}
+
+	metric := m.metrics[0]
+
+	view += "\nMetrics\n\n"
+	view += fmt.Sprintf("CPU: %.2f%%\n", metric.CPUUsage)
+	view += fmt.Sprintf("Memory: %.2f%%\n", metric.MemoryUsage)
+	view += fmt.Sprintf("Disk: %.2f%%\n", metric.DiskUsage)
+	view += fmt.Sprintf("Network RX: %d\n", metric.NetworkReceive)
+	view += fmt.Sprintf("Network TX: %d\n", metric.NetworkSent)
+	view += fmt.Sprintf("Last update: %s\n", metric.Timestamp.Format("15:04:05"))
 
 	view += "\nPress q to quit\n"
 
