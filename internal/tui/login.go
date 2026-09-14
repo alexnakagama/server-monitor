@@ -44,6 +44,9 @@ func (m *LoginModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.password.Blur()
 				m.username.Focus()
 			}
+
+		case "enter":
+			return m, nil
 		}
 	}
 
