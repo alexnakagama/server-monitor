@@ -12,6 +12,8 @@ type LoginModel struct {
 	username textinput.Model
 	password textinput.Model
 	client   *monitor.Client
+	err      error
+	loading  bool
 }
 
 type loginResultMessage struct {
@@ -67,11 +69,17 @@ func (m *LoginModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 
 		case "enter":
+			m.loading = true
+			m.err = nil
+
 			return m, m.login()
 		}
 
 	case loginResultMessage:
+		m.loading = false
+
 		if msg.err != nil {
+			m.err = msg.err
 			return m, nil
 		}
 
@@ -91,12 +99,21 @@ func (m *LoginModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m *LoginModel) View() string {
-	return "Server Monitor\n\n" +
+	view := "Server Monitor\n\n" +
 		"Username:\n" +
 		m.username.View() +
 		"\n\n" +
 		"Password:\n" +
 		m.password.View() +
-		"\n\n" +
-		"Press Enter to login"
+		"\n\n"
+
+	if m.loading {
+		view += "Logging in...\n"
+	} else if m.err != nil {
+		view += "Login failed: " + m.err.Error() + "\n"
+	} else {
+		view += "Press Enter to login\n"
+	}
+
+	return view
 }
