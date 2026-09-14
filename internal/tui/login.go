@@ -83,7 +83,7 @@ func (m *LoginModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, nil
 		}
 
-		dashboard := NewDashBoardModel()
+		dashboard := NewDashBoardModel(m.client)
 
 		// successfull login
 		return dashboard, dashboard.Init()
