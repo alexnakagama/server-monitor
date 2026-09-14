@@ -10,7 +10,7 @@ import (
 func main() {
 	model := tui.NewLoginModel()
 
-	p := tea.NewProgram(model)
+	p := tea.NewProgram(&model)
 
 	if _, err := p.Run(); err != nil {
 		log.Fatal(err)
