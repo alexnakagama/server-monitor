@@ -43,6 +43,11 @@ func Load() (Config, error) {
 }
 
 func LoadAgent() (AgentConfig, error) {
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Println("no .env file found")
+	}
+
 	interval, err := time.ParseDuration(os.Getenv("AGENT_INTERVAL"))
 	if err != nil {
 		return AgentConfig{}, err
