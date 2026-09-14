@@ -100,6 +100,7 @@ func (m *ServerDetailModel) View() string {
 	view += fmt.Sprintf("Network TX: %d\n", metric.NetworkSent)
 	view += fmt.Sprintf("Last update: %s\n", metric.Timestamp.Format("15:04:05"))
 
+	view += "\nPress ESC to go back\n"
 	view += "\nPress q to quit\n"
 
 	return view
