@@ -1,6 +1,8 @@
 package tui
 
 import (
+	"context"
+
 	"github.com/alexnakagama/server-monitor/internal/monitor"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
@@ -70,4 +72,23 @@ func (m *LoginModel) View() string {
 		m.password.View() +
 		"\n\n" +
 		"Press Enter to login"
+}
+
+type loginResultMessage struct {
+	err error
+}
+
+func (m *LoginModel) login() tea.Cmd {
+	return func() tea.Msg {
+		err := m.client.Login(
+			context.Background(),
+			m.username.Value(),
+			m.password.Value(),
+		)
+		if err != nil {
+			return loginResultMessage{err: err}
+		}
+
+		return loginResultMessage{}
+	}
 }
