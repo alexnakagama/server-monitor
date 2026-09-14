@@ -15,6 +15,6 @@ func main() {
 
 	client := agent.NewClient(cfg.APIURL, cfg.AgentToken)
 
-	agent := agent.New(cfg.Interval, client)
-	agent.Run()
+	a := agent.New(cfg.Interval, client)
+	a.Run()
 }
