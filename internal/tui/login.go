@@ -69,6 +69,14 @@ func (m *LoginModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "enter":
 			return m, m.login()
 		}
+
+	case loginResultMessage:
+		if msg.err != nil {
+			return m, nil
+		}
+
+		// successfull login
+		return m, nil
 	}
 
 	var cmd tea.Cmd
