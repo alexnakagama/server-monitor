@@ -1,13 +1,24 @@
 package main
 
 import (
+	"context"
 	"log"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/alexnakagama/server-monitor/internal/agent"
 	"github.com/alexnakagama/server-monitor/internal/config"
 )
 
 func main() {
+	ctx, stop := signal.NotifyContext(
+		context.Background(),
+		os.Interrupt,
+		syscall.SIGTERM,
+	)
+	defer stop()
+
 	cfg, err := config.LoadAgent()
 	if err != nil {
 		log.Fatal(err)
@@ -18,6 +29,8 @@ func main() {
 	a := agent.New(cfg.Interval, client)
 
 	log.Println("agent starting...")
-	a.Run()
+
+	a.Run(ctx)
+
 	log.Println("agent stopping...")
 }
