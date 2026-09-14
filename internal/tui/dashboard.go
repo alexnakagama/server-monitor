@@ -97,11 +97,17 @@ func (m *DashboardModel) View() string {
 
 	view += "Servers:\n\n"
 
-	for _, server := range m.servers {
-		view += server.Name + " (" + server.Hostname + ")\n"
+	for i, server := range m.servers {
+		if i == m.selectedServer {
+			view += "> " + server.Name + "\n"
+		} else {
+			view += "  " + server.Name + "\n"
+		}
 	}
 
-	view += "\nPress q to quit\n"
+	view += "\nUse ↑/↓ to select a server\n"
+	view += "Press Enter to open\n"
+	view += "Press q to quit\n"
 
 	return view
 }
