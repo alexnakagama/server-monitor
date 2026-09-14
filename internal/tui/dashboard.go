@@ -12,6 +12,11 @@ type DashboardModel struct {
 	err     error
 }
 
+type serversLoadedMessage struct {
+	servers []model.Server
+	err     error
+}
+
 func NewDashBoardModel(client *monitor.Client) DashboardModel {
 	return DashboardModel{
 		client: client,
