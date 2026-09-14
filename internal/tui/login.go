@@ -1,6 +1,9 @@
 package tui
 
-import "github.com/charmbracelet/bubbles/textinput"
+import (
+	"github.com/charmbracelet/bubbles/textinput"
+	tea "github.com/charmbracelet/bubbletea"
+)
 
 type LoginModel struct {
 	username textinput.Model
@@ -21,3 +24,5 @@ func NewLoginModel() LoginModel {
 		password: password,
 	}
 }
+
+func (m LoginModel) Init() tea.Cmd {}
