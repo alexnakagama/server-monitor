@@ -3,12 +3,14 @@ package main
 import (
 	"log"
 
+	"github.com/alexnakagama/server-monitor/internal/monitor"
 	"github.com/alexnakagama/server-monitor/internal/tui"
 	tea "github.com/charmbracelet/bubbletea"
 )
 
 func main() {
-	model := tui.NewLoginModel()
+	client := monitor.NewClient("http://localhost:8080")
+	model := tui.NewLoginModel(client)
 
 	p := tea.NewProgram(&model)
 
