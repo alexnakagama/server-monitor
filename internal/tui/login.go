@@ -1,6 +1,7 @@
 package tui
 
 import (
+	"github.com/alexnakagama/server-monitor/internal/monitor"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 )
@@ -8,9 +9,10 @@ import (
 type LoginModel struct {
 	username textinput.Model
 	password textinput.Model
+	client   *monitor.Client
 }
 
-func NewLoginModel() LoginModel {
+func NewLoginModel(client *monitor.Client) LoginModel {
 	username := textinput.New()
 	username.Placeholder = "Username"
 	username.Focus()
@@ -22,6 +24,7 @@ func NewLoginModel() LoginModel {
 	return LoginModel{
 		username: username,
 		password: password,
+		client:   client,
 	}
 }
 
