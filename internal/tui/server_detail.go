@@ -53,6 +53,10 @@ func (m *ServerDetailModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		switch msg.String() {
 		case "q":
 			return m, quit()
+
+		case "esc":
+			dashboard := NewDashBoardModel(m.client)
+			return &dashboard, dashboard.Init()
 		}
 
 	case metricsLoadedMessage:
