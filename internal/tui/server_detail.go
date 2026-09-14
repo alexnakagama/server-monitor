@@ -42,7 +42,7 @@ func NewServerDetailModel(client *monitor.Client, server model.Server) ServerDet
 }
 
 func (m *ServerDetailModel) Init() tea.Cmd {
-	return nil
+	return m.loadMetrics()
 }
 
 func (m *ServerDetailModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
