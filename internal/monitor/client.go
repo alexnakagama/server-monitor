@@ -113,3 +113,41 @@ func (c *Client) GetServers(ctx context.Context) ([]model.Server, error) {
 
 	return servers, nil
 }
+
+func (c *Client) GetServerMetrics(ctx context.Context, serverID int) ([]model.Metric, error) {
+	url := fmt.Sprintf("%s/metrics/server/%d", c.baseURL, serverID)
+
+	req, err := http.NewRequestWithContext(
+		ctx,
+		http.MethodGet,
+		url,
+		nil,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Authorization", "Bearer "+c.token)
+
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf(
+			"get server metrics failed with status code: %d",
+			resp.StatusCode,
+		)
+	}
+
+	var metrics []model.Metric
+
+	err = json.NewDecoder(resp.Body).Decode(&metrics)
+	if err != nil {
+		return nil, err
+	}
+
+	return metrics, nil
+}
