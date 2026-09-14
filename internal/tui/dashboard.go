@@ -1,6 +1,8 @@
 package tui
 
 import (
+	"context"
+
 	"github.com/alexnakagama/server-monitor/internal/model"
 	"github.com/alexnakagama/server-monitor/internal/monitor"
 	tea "github.com/charmbracelet/bubbletea"
@@ -15,6 +17,17 @@ type DashboardModel struct {
 type serversLoadedMessage struct {
 	servers []model.Server
 	err     error
+}
+
+func (m *DashboardModel) loadServers() tea.Cmd {
+	return func() tea.Msg {
+		servers, err := m.client.GetServers(context.Background())
+
+		return serversLoadedMessage{
+			servers: servers,
+			err:     err,
+		}
+	}
 }
 
 func NewDashBoardModel(client *monitor.Client) DashboardModel {
