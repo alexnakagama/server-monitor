@@ -25,11 +25,11 @@ func NewLoginModel() LoginModel {
 	}
 }
 
-func (m LoginModel) Init() tea.Cmd {
+func (m *LoginModel) Init() tea.Cmd {
 	return textinput.Blink
 }
 
-func (m LoginModel) Update(msg tea.Msg) (LoginModel, tea.Cmd) {
+func (m *LoginModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch msg.String() {
@@ -55,7 +55,7 @@ func (m LoginModel) Update(msg tea.Msg) (LoginModel, tea.Cmd) {
 	return m, cmd
 }
 
-func (m LoginModel) View() string {
+func (m *LoginModel) View() string {
 	return "Server Monitor\n\n" +
 		"Username:\n" +
 		m.username.View() +
