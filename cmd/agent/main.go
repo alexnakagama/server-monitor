@@ -16,5 +16,8 @@ func main() {
 	client := agent.NewClient(cfg.APIURL, cfg.AgentToken)
 
 	a := agent.New(cfg.Interval, client)
+
+	log.Println("agent starting...")
 	a.Run()
+	log.Println("agent stopping...")
 }
