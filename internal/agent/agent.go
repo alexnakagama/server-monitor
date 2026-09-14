@@ -1,6 +1,7 @@
 package agent
 
 import (
+	"context"
 	"log"
 	"time"
 
@@ -19,7 +20,10 @@ func New(interval time.Duration, client *Client) *Agent {
 	}
 }
 
-func (a *Agent) Run() {
+func (a *Agent) Run(ctx context.Context) {
+	ticker := time.NewTicker(a.interval)
+	defer ticker.Stop()
+
 	for {
 		metric, err := collector.CollectMetrics()
 		if err != nil {
@@ -33,6 +37,11 @@ func (a *Agent) Run() {
 			return
 		}
 
-		time.Sleep(a.interval)
+		select {
+		case <-ticker.C:
+			continue
+		case <-ctx.Done():
+			return
+		}
 	}
 }
