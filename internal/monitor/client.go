@@ -17,6 +17,7 @@ type Client struct {
 func NewClient(baseURL string) *Client {
 	return &Client{
 		baseURL: baseURL,
+		client:  &http.Client{},
 	}
 }
 
