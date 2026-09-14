@@ -71,8 +71,26 @@ func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m *DashboardModel) View() string {
-	return "Server Monitor\n\n" +
-		"Dashboard\n\n" +
-		"Logged in successfully.\n\n" +
-		"Press q to quit\n"
+	view := "Server Monitor\n\n"
+	view += "Dashboard\n\n"
+
+	if m.err != nil {
+		view += "Error: " + m.err.Error() + "\n"
+		return view
+	}
+
+	if len(m.servers) == 0 {
+		view += "No servers found.\n"
+		return view
+	}
+
+	view += "Servers:\n\n"
+
+	for _, server := range m.servers {
+		view += server.Name + " (" + server.Hostname + ")\n"
+	}
+
+	view += "\nPress q to quit\n"
+
+	return view
 }
