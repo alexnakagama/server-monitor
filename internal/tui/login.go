@@ -25,4 +25,6 @@ func NewLoginModel() LoginModel {
 	}
 }
 
-func (m LoginModel) Init() tea.Cmd {}
+func (m LoginModel) Init() tea.Cmd {
+	return textinput.Blink
+}
