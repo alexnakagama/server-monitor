@@ -2,24 +2,19 @@ package main
 
 import (
 	"log"
-	"os"
-	"time"
 
 	"github.com/alexnakagama/server-monitor/internal/agent"
-	"github.com/joho/godotenv"
+	"github.com/alexnakagama/server-monitor/internal/config"
 )
 
 func main() {
-	err := godotenv.Load(".env")
+	cfg, err := config.LoadAgent()
 	if err != nil {
-		log.Println("no .env file found")
+		log.Fatal(err)
 	}
 
-	apiURL := os.Getenv("API_URL")
-	token := os.Getenv("AGENT_TOKEN")
+	client := agent.NewClient(cfg.APIURL, cfg.AgentToken)
 
-	client := agent.NewClient(apiURL, token)
-
-	agent := agent.New(100*time.Second, client)
+	agent := agent.New(cfg.Interval, client)
 	agent.Run()
 }
