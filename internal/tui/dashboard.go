@@ -58,7 +58,7 @@ func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, nil
 }
 
-func (m DashboardModel) View() string {
+func (m *DashboardModel) View() string {
 	return "Server Monitor\n\n" +
 		"Dashboard\n\n" +
 		"Logged in successfully.\n\n" +
