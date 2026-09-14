@@ -78,9 +78,7 @@ func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			fmt.Println("selected server:", server.Name)
 
 		case "q":
-			return m, func() tea.Msg {
-				return quit()
-			}
+			return m, quit()
 		}
 	}
 
