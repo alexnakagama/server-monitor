@@ -15,8 +15,8 @@ func TestClientLogin(t *testing.T) {
 			if r.Method != http.MethodPost {
 				t.Errorf("method = %q, want %q", r.Method, http.MethodPost)
 			}
-			if r.URL.Path != "/login" {
-				t.Errorf("path = %q, want %q", r.URL.Path, "/login")
+			if r.URL.Path != "/users/login" {
+				t.Errorf("path = %q, want %q", r.URL.Path, "/users/login")
 			}
 
 			var req loginRequest
@@ -102,4 +102,3 @@ func TestClientLogin(t *testing.T) {
 		}
 	})
 }
-
