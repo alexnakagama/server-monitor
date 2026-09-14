@@ -36,8 +36,8 @@ func NewDashBoardModel(client *monitor.Client) DashboardModel {
 	}
 }
 
-func (m DashboardModel) Init() tea.Cmd {
-	return nil
+func (m *DashboardModel) Init() tea.Cmd {
+	return m.loadServers()
 }
 
 func quit() tea.Cmd {
