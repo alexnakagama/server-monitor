@@ -3,6 +3,7 @@ package tui
 import (
 	"context"
 	"fmt"
+	"strconv"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
 	"github.com/alexnakagama/server-monitor/internal/monitor"
@@ -70,6 +71,7 @@ func (m *ServerDetailModel) View() string {
 	view := "Server Monitor\n\n"
 	view += "Server Details\n\n"
 
+	view += "ID: " + strconv.Itoa(m.server.ID) + "\n"
 	view += "Name: " + m.server.Name + "\n"
 	view += "Hostname: " + m.server.Hostname + "\n"
 	view += "OS: " + m.server.OS + "\n"
