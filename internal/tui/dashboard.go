@@ -9,9 +9,10 @@ import (
 )
 
 type DashboardModel struct {
-	client  *monitor.Client
-	servers []model.Server
-	err     error
+	client         *monitor.Client
+	servers        []model.Server
+	selectedServer int
+	err            error
 }
 
 type serversLoadedMessage struct {
