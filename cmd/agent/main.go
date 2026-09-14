@@ -17,4 +17,6 @@ func main() {
 
 	a := agent.New(cfg.Interval, client)
 	a.Run()
+
+	log.Println("agent stopping...")
 }
