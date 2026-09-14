@@ -79,4 +79,37 @@ func (c *Client) Login(ctx context.Context, username string, password string) er
 	return nil
 }
 
-func (c *Client) GetServers(ctx context.Context) ([]model.Server, error) {}
+func (c *Client) GetServers(ctx context.Context) ([]model.Server, error) {
+	url := c.baseURL + "/servers"
+
+	req, err := http.NewRequestWithContext(
+		ctx,
+		http.MethodGet,
+		url,
+		nil,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Authorization", "Bearer "+c.token)
+
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("get servers failed with status code: %d", resp.StatusCode)
+	}
+
+	var servers []model.Server
+
+	err = json.NewDecoder(resp.Body).Decode(&servers)
+	if err != nil {
+		return nil, err
+	}
+
+	return servers, nil
+}
