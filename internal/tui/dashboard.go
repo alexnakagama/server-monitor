@@ -108,7 +108,7 @@ func (m *DashboardModel) View() string {
 
 	for i, server := range m.servers {
 		if i == m.selectedServer {
-			view += "> " + server.Name + "\n"
+			view += selectedStyle.Render("> "+server.Name) + "\n"
 		} else {
 			view += "  " + server.Name + "\n"
 		}
