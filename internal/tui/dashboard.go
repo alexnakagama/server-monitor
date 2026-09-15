@@ -137,7 +137,7 @@ func (m *DashboardModel) View() string {
 	view += sectionStyle.Render("SERVERS") + "\n\n"
 
 	view += headerStyle.Render(
-		fmt.Sprintf("%-22s %-10s", "NAME", "OS"),
+		fmt.Sprintf("%-22s %-10s %-10s", "NAME", "OS", "STATUS"),
 	) + "\n"
 
 	for i, server := range m.servers {
