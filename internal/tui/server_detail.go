@@ -36,6 +36,8 @@ func (m *ServerDetailModel) loadMetrics() tea.Cmd {
 	}
 }
 
+func (m *ServerDetailModel) tick() tea.Cmd {}
+
 func NewServerDetailModel(client *monitor.Client, server model.Server) ServerDetailModel {
 	return ServerDetailModel{
 		client: client,
