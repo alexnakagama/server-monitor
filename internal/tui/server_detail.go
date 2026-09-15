@@ -119,7 +119,7 @@ func (m *ServerDetailModel) View() string {
 	view += fmt.Sprintf("Last update: %s\n", metric.Timestamp.Format("15:04:05"))
 
 	view += "\nPress ESC to go back\n"
-	view += "\nPress q to quit\n"
+	view += "Press q to quit\n"
 
 	return view
 }
