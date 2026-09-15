@@ -116,8 +116,11 @@ func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if m.searching {
 			switch msg.String() {
 			case "esc":
+				m.search.Reset()
 				m.search.Blur()
 				m.searching = false
+				m.selectedServer = 0
+
 				return m, nil
 			}
 
@@ -131,8 +134,11 @@ func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		switch msg.String() {
 		case "/":
 			m.searching = true
-			m.search.Focus()
-			return m, nil
+			m.selectedServer = 0
+
+			cmd := m.search.Focus()
+
+			return m, cmd
 
 		case "up":
 			if m.selectedServer > 0 {
@@ -172,8 +178,15 @@ func (m *DashboardModel) View() string {
 		return containerStyle.Render(view)
 	}
 
+	if m.searching {
+		view += m.search.View() + "\n\n"
+	}
+
 	if len(m.servers) == 0 {
 		view += "No servers found.\n"
+		view += "\n"
+		view += helpStyle.Render("[/] Search   [q] Quit") + "\n"
+
 		return containerStyle.Render(view)
 	}
 
@@ -185,9 +198,11 @@ func (m *DashboardModel) View() string {
 
 	for i, server := range m.servers {
 		prefix := "  "
+		name := server.Name
 
 		if i == m.selectedServer {
 			prefix = "> "
+			name = selectedStyle.Render(name)
 		}
 
 		status := m.statuses[i]
@@ -199,23 +214,27 @@ func (m *DashboardModel) View() string {
 		}
 
 		row := fmt.Sprintf(
-			"%s%-20s %-10s ",
+			"%s%-20s %-10s %s",
 			prefix,
-			server.Name,
+			name,
 			server.OS,
+			statusView,
 		)
-
-		row += statusView
-
-		if i == m.selectedServer {
-			row = selectedStyle.Render(row)
-		}
 
 		view += row + "\n"
 	}
 
 	view += "\n"
-	view += helpStyle.Render("[↑/↓] Navigate   [Enter] Open   [q] Quit") + "\n"
+
+	if m.searching {
+		view += helpStyle.Render(
+			"[Esc] Close search   [↑/↓] Navigate   [Enter] Open",
+		) + "\n"
+	} else {
+		view += helpStyle.Render(
+			"[/] Search   [↑/↓] Navigate   [Enter] Open   [q] Quit",
+		) + "\n"
+	}
 
 	return containerStyle.Render(view)
 }
