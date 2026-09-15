@@ -148,10 +148,11 @@ func (m *DashboardModel) View() string {
 		}
 
 		row := fmt.Sprintf(
-			"%s%-20s %-10s",
+			"%s%-20s %-10s %-10s",
 			prefix,
 			server.Name,
 			server.OS,
+			m.statuses[i],
 		)
 
 		if i == m.selectedServer {
