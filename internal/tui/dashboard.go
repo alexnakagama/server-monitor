@@ -147,11 +147,40 @@ func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.selectedServer = 0
 
 				return m, nil
+
+			case "up":
+				if m.selectedServer > 0 {
+					m.selectedServer--
+				}
+
+				return m, nil
+
+			case "down":
+				servers, _ := m.filteredServers()
+
+				if m.selectedServer < len(servers)-1 {
+					m.selectedServer++
+				}
+
+				return m, nil
+
+			case "enter":
+				servers, _ := m.filteredServers()
+
+				if len(servers) == 0 {
+					return m, nil
+				}
+
+				server := servers[m.selectedServer]
+				detail := NewServerDetailModel(m.client, server)
+
+				return &detail, detail.Init()
 			}
 
 			var cmd tea.Cmd
 
 			m.search, cmd = m.search.Update(msg)
+			m.selectedServer = 0
 
 			return m, cmd
 		}
