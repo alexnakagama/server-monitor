@@ -128,7 +128,13 @@ func (m *ServerDetailModel) View() string {
 		}
 	}
 
-	view += labelStyle.Render("Status") + valueStyle.Render(status) + "\n"
+	statusView := offlineStyle.Render(status)
+
+	if status == "ONLINE" {
+		statusView = onlineStyle.Render(status)
+	}
+
+	view += labelStyle.Render("Status") + statusView + "\n"
 
 	if m.err != nil {
 		view += "\nError: " + m.err.Error() + "\n"
