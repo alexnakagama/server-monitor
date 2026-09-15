@@ -64,7 +64,26 @@ func progressBar(value float64, width int) string {
 	)
 }
 
-func formatBytes(bytes uint64) string {}
+func formatBytes(bytes uint64) string {
+	const unit = 1024
+
+	if bytes < unit {
+		return fmt.Sprintf("%d B", bytes)
+	}
+
+	value := float64(bytes)
+	units := []string{"KB", "MB", "GB", "TB"}
+
+	for _, unitName := range units {
+		value /= unit
+
+		if value < unit {
+			return fmt.Sprintf("%.2f %s", value, unitName)
+		}
+	}
+
+	return fmt.Sprintf("%.2f PB", value)
+}
 
 func NewServerDetailModel(client *monitor.Client, server model.Server) ServerDetailModel {
 	return ServerDetailModel{
