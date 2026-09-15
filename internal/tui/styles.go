@@ -23,3 +23,6 @@ var containerStyle = lipgloss.NewStyle().
 
 var selectedStyle = lipgloss.NewStyle().
 	Bold(true)
+
+var headerStyle = lipgloss.NewStyle().
+	Bold(true)
