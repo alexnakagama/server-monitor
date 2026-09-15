@@ -69,8 +69,13 @@ func (m *DashboardModel) loadServers() tea.Cmd {
 }
 
 func NewDashBoardModel(client *monitor.Client) DashboardModel {
+	search := textinput.New()
+	search.Placeholder = "Search servers..."
+	search.CharLimit = 50
+
 	return DashboardModel{
 		client: client,
+		search: search,
 	}
 }
 
