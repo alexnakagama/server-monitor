@@ -182,8 +182,8 @@ func (m *ServerDetailModel) View() string {
 		view += "\n"
 		view += sectionStyle.Render("NETWORK") + "\n"
 
-		view += labelStyle.Render("RX") + fmt.Sprintf("%d\n", metric.NetworkReceive)
-		view += labelStyle.Render("TX") + fmt.Sprintf("%d\n", metric.NetworkSent)
+		view += labelStyle.Render("RX") + valueStyle.Render(formatBytes(metric.NetworkReceive)) + "\n"
+		view += labelStyle.Render("TX") + valueStyle.Render(formatBytes(metric.NetworkSent)) + "\n"
 
 		view += "\n"
 		view += helpStyle.Render(
