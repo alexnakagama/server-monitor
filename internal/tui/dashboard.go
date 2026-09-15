@@ -215,35 +215,41 @@ func (m *DashboardModel) View() string {
 		return containerStyle.Render(view)
 	}
 
-	view += sectionStyle.Render("SERVERS") + "\n\n"
+	servers, statuses := m.filteredServers()
 
-	view += prefixStyle.Render("  ") +
-		nameColumnStyle.Bold(true).Render("NAME") +
-		osColumnStyle.Bold(true).Render("OS") +
-		headerStyle.Render("STATUS") +
-		"\n"
+	if len(servers) == 0 {
+		view += "No servers match your search.\n"
+	} else {
+		view += sectionStyle.Render("SERVERS") + "\n\n"
 
-	for i, server := range m.servers {
-		prefix := "  "
+		view += prefixStyle.Render("  ") +
+			nameColumnStyle.Bold(true).Render("NAME") +
+			osColumnStyle.Bold(true).Render("OS") +
+			headerStyle.Render("STATUS") +
+			"\n"
 
-		if i == m.selectedServer {
-			prefix = "> "
+		for i, server := range servers {
+			prefix := "  "
+
+			if i == m.selectedServer {
+				prefix = "> "
+			}
+
+			name := nameColumnStyle.Render(server.Name)
+			os := osColumnStyle.Render(server.OS)
+
+			status := statuses[i]
+
+			statusView := offlineStyle.Render(status)
+
+			if status == "ONLINE" {
+				statusView = onlineStyle.Render(status)
+			}
+
+			row := prefixStyle.Render(prefix) + name + os + statusView
+
+			view += row + "\n"
 		}
-
-		name := nameColumnStyle.Render(server.Name)
-		os := osColumnStyle.Render(server.OS)
-
-		status := m.statuses[i]
-
-		statusView := offlineStyle.Render(status)
-
-		if status == "ONLINE" {
-			statusView = onlineStyle.Render(status)
-		}
-
-		row := prefixStyle.Render(prefix) + name + os + statusView
-
-		view += row + "\n"
 	}
 
 	view += "\n"
