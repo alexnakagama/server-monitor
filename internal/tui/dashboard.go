@@ -24,6 +24,12 @@ type serversLoadedMessage struct {
 	statuses []string
 }
 
+func (m *DashboardModel) tick() tea.Cmd {
+	return tea.Tick(5*time.Second, func(t time.Time) tea.Msg {
+		return tickMessage{}
+	})
+}
+
 func (m *DashboardModel) loadServers() tea.Cmd {
 	return func() tea.Msg {
 		servers, err := m.client.GetServers(context.Background())
