@@ -90,20 +90,21 @@ func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m *DashboardModel) View() string {
-	view := "Server Monitor\n\n"
-	view += "Dashboard\n\n"
+	view := titleStyle.Render("SERVER MONITOR") + "\n\n"
+
+	view += sectionStyle.Render("DASHBOARD") + "\n\n"
 
 	if m.err != nil {
 		view += "Error: " + m.err.Error() + "\n"
-		return view
+		return containerStyle.Render(view)
 	}
 
 	if len(m.servers) == 0 {
 		view += "No servers found.\n"
-		return view
+		return containerStyle.Render(view)
 	}
 
-	view += "Servers:\n\n"
+	view += sectionStyle.Render("SERVERS") + "\n\n"
 
 	for i, server := range m.servers {
 		if i == m.selectedServer {
@@ -113,9 +114,8 @@ func (m *DashboardModel) View() string {
 		}
 	}
 
-	view += "\nUse ↑/↓ to select a server\n"
-	view += "Press Enter to open\n"
-	view += "Press q to quit\n"
+	view += "\n"
+	view += helpStyle.Render("[↑/↓] Navigate   [Enter] Open   [q] Quit") + "\n"
 
-	return view
+	return containerStyle.Render(view)
 }

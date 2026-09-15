@@ -20,3 +20,6 @@ var helpStyle = lipgloss.NewStyle().
 var containerStyle = lipgloss.NewStyle().
 	Border(lipgloss.RoundedBorder()).
 	Padding(1, 2)
+
+var selectedStyle = lipgloss.NewStyle().
+	Bold(true)
