@@ -26,3 +26,9 @@ var selectedStyle = lipgloss.NewStyle().
 
 var headerStyle = lipgloss.NewStyle().
 	Bold(true)
+
+var onlineStyle = lipgloss.NewStyle().
+	Foreground(lipgloss.Color("10"))
+
+var offlineStyle = lipgloss.NewStyle().
+	Foreground(lipgloss.Color("9"))
