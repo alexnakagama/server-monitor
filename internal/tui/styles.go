@@ -32,3 +32,9 @@ var onlineStyle = lipgloss.NewStyle().
 
 var offlineStyle = lipgloss.NewStyle().
 	Foreground(lipgloss.Color("9"))
+
+var nameColumnStyle = lipgloss.NewStyle().
+	Width(20)
+
+var osColumnStyle = lipgloss.NewStyle().
+	Width(10)
