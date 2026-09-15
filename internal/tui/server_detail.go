@@ -133,9 +133,17 @@ func (m *ServerDetailModel) View() string {
 	view += "\n"
 	view += sectionStyle.Render("METRICS") + "\n"
 
-	view += labelStyle.Render("CPU") + fmt.Sprintf("%.2f%%\n", metric.CPUUsage)
-	view += labelStyle.Render("Memory") + fmt.Sprintf("%.2f%%\n", metric.MemoryUsage)
-	view += labelStyle.Render("Disk") + fmt.Sprintf("%.2f%%\n", metric.DiskUsage)
+	view += labelStyle.Render("CPU") +
+		progressBar(metric.CPUUsage, 20) +
+		fmt.Sprintf(" %.2f%%\n", metric.CPUUsage)
+
+	view += labelStyle.Render("Memory") +
+		progressBar(metric.MemoryUsage, 20) +
+		fmt.Sprintf(" %.2f%%\n", metric.MemoryUsage)
+
+	view += labelStyle.Render("Disk") +
+		progressBar(metric.DiskUsage, 20) +
+		fmt.Sprintf(" %.2f%%\n", metric.DiskUsage)
 
 	view += "\n"
 	view += sectionStyle.Render("NETWORK") + "\n"
