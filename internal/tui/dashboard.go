@@ -18,6 +18,7 @@ type DashboardModel struct {
 	err            error
 	statuses       []string
 	search         textinput.Model
+	searching      bool
 }
 
 type serversLoadedMessage struct {
