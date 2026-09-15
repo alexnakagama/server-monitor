@@ -90,13 +90,14 @@ func (m *ServerDetailModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m *ServerDetailModel) View() string {
-	view := "Server Monitor\n\n"
-	view += "Server Details\n\n"
+	view := titleStyle.Render("SERVER MONITOR") + "\n\n"
 
-	view += "ID: " + strconv.Itoa(m.server.ID) + "\n"
-	view += "Name: " + m.server.Name + "\n"
-	view += "Hostname: " + m.server.Hostname + "\n"
-	view += "OS: " + m.server.OS + "\n"
+	view += sectionStyle.Render("SERVER") + "\n"
+
+	view += labelStyle.Render("ID") + valueStyle.Render(strconv.Itoa(m.server.ID)) + "\n"
+	view += labelStyle.Render("Name") + valueStyle.Render(m.server.Name) + "\n"
+	view += labelStyle.Render("Hostname") + valueStyle.Render(m.server.Hostname) + "\n"
+	view += labelStyle.Render("OS") + valueStyle.Render(m.server.OS) + "\n"
 
 	if m.err != nil {
 		view += "\nError: " + m.err.Error() + "\n"
@@ -110,16 +111,25 @@ func (m *ServerDetailModel) View() string {
 
 	metric := m.metrics[0]
 
-	view += "\nMetrics\n\n"
-	view += fmt.Sprintf("CPU: %.2f%%\n", metric.CPUUsage)
-	view += fmt.Sprintf("Memory: %.2f%%\n", metric.MemoryUsage)
-	view += fmt.Sprintf("Disk: %.2f%%\n", metric.DiskUsage)
-	view += fmt.Sprintf("Network RX: %d\n", metric.NetworkReceive)
-	view += fmt.Sprintf("Network TX: %d\n", metric.NetworkSent)
-	view += fmt.Sprintf("Last update: %s\n", metric.Timestamp.Format("15:04:05"))
+	view += "\n"
+	view += sectionStyle.Render("METRICS") + "\n"
 
-	view += "\nPress ESC to go back\n"
-	view += "Press q to quit\n"
+	view += labelStyle.Render("CPU") + fmt.Sprintf("%.2f%%\n", metric.CPUUsage)
+	view += labelStyle.Render("Memory") + fmt.Sprintf("%.2f%%\n", metric.MemoryUsage)
+	view += labelStyle.Render("Disk") + fmt.Sprintf("%.2f%%\n", metric.DiskUsage)
+
+	view += "\n"
+	view += sectionStyle.Render("NETWORK") + "\n"
+
+	view += labelStyle.Render("RX") + fmt.Sprintf("%d\n", metric.NetworkReceive)
+	view += labelStyle.Render("TX") + fmt.Sprintf("%d\n", metric.NetworkSent)
+
+	view += "\n"
+	view += helpStyle.Render(
+		"Last update: "+metric.Timestamp.Format("15:04:05"),
+	) + "\n\n"
+
+	view += helpStyle.Render("[Esc] Back   [q] Quit") + "\n"
 
 	return view
 }
