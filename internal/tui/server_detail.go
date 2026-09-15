@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"strconv"
+	"time"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
 	"github.com/alexnakagama/server-monitor/internal/monitor"
@@ -22,6 +23,8 @@ type metricsLoadedMessage struct {
 	err     error
 }
 
+type tickMessage struct{}
+
 func (m *ServerDetailModel) loadMetrics() tea.Cmd {
 	return func() tea.Msg {
 		metrics, err := m.client.GetServerMetrics(
@@ -36,7 +39,11 @@ func (m *ServerDetailModel) loadMetrics() tea.Cmd {
 	}
 }
 
-func (m *ServerDetailModel) tick() tea.Cmd {}
+func (m *ServerDetailModel) tick() tea.Cmd {
+	return tea.Tick(5*time.Second, func(t time.Time) tea.Msg {
+		return tickMessage{}
+	})
+}
 
 func NewServerDetailModel(client *monitor.Client, server model.Server) ServerDetailModel {
 	return ServerDetailModel{
