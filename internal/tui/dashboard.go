@@ -215,7 +215,7 @@ func (m *DashboardModel) View() string {
 			statusView = onlineStyle.Render(status)
 		}
 
-		row := prefix + name + os + statusView
+		row := prefixStyle.Render(prefix) + name + os + statusView
 
 		view += row + "\n"
 	}
