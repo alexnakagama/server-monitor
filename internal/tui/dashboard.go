@@ -3,6 +3,7 @@ package tui
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
 	"github.com/alexnakagama/server-monitor/internal/monitor"
@@ -18,17 +19,43 @@ type DashboardModel struct {
 }
 
 type serversLoadedMessage struct {
-	servers []model.Server
-	err     error
+	servers  []model.Server
+	err      error
+	statuses []string
 }
 
 func (m *DashboardModel) loadServers() tea.Cmd {
 	return func() tea.Msg {
 		servers, err := m.client.GetServers(context.Background())
+		if err != nil {
+			return serversLoadedMessage{
+				err: err,
+			}
+		}
+
+		statuses := make([]string, len(servers))
+
+		for i, server := range servers {
+			metric, err := m.client.GetLatestServerMetric(
+				context.Background(),
+				server.ID,
+			)
+
+			if err != nil {
+				statuses[i] = "OFFLINE"
+				continue
+			}
+
+			if time.Since(metric.Timestamp) < 30*time.Second {
+				statuses[i] = "ONLINE"
+			} else {
+				statuses[i] = "OFFLINE"
+			}
+		}
 
 		return serversLoadedMessage{
-			servers: servers,
-			err:     err,
+			servers:  servers,
+			statuses: statuses,
 		}
 	}
 }
@@ -58,6 +85,7 @@ func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 
 		m.servers = msg.servers
+		m.statuses = msg.statuses
 
 		return m, nil
 
