@@ -78,6 +78,12 @@ func (m *ServerDetailModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 
 		m.metrics = msg.metrics
+
+	case tickMessage:
+		return m, tea.Batch(
+			m.loadMetrics(),
+			m.tick(),
+		)
 	}
 
 	return m, nil
