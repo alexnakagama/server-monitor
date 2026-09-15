@@ -58,9 +58,9 @@ func progressBar(value float64, width int) string {
 	}
 
 	return fmt.Sprintf(
-		"[%s%s]",
-		strings.Repeat("█", filled),
-		strings.Repeat("░", width-filled),
+		"%s╺%s",
+		strings.Repeat("━", filled),
+		strings.Repeat("━", width-filled),
 	)
 }
 
