@@ -16,3 +16,7 @@ var valueStyle = lipgloss.NewStyle()
 
 var helpStyle = lipgloss.NewStyle().
 	Faint(true)
+
+var containerStyle = lipgloss.NewStyle().
+	Border(lipgloss.RoundedBorder()).
+	Padding(1, 2)
