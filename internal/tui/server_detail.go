@@ -118,6 +118,18 @@ func (m *ServerDetailModel) View() string {
 	view += labelStyle.Render("Hostname") + valueStyle.Render(m.server.Hostname) + "\n"
 	view += labelStyle.Render("OS") + valueStyle.Render(m.server.OS) + "\n"
 
+	status := "OFFLINE"
+
+	if len(m.metrics) > 0 {
+		lastMetric := m.metrics[0]
+
+		if time.Since(lastMetric.Timestamp) < 30*time.Second {
+			status = "ONLINE"
+		}
+	}
+
+	view += labelStyle.Render("Status") + valueStyle.Render(status) + "\n"
+
 	if m.err != nil {
 		view += "\nError: " + m.err.Error() + "\n"
 		return view
