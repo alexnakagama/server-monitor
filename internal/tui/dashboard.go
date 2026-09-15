@@ -2,6 +2,7 @@ package tui
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
 	"github.com/alexnakagama/server-monitor/internal/monitor"
@@ -107,11 +108,25 @@ func (m *DashboardModel) View() string {
 	view += sectionStyle.Render("SERVERS") + "\n\n"
 
 	for i, server := range m.servers {
+		row := fmt.Sprintf(
+			"%s%-20s %-10s",
+			"  ",
+			server.Name,
+			server.OS,
+		)
+
 		if i == m.selectedServer {
-			view += selectedStyle.Render("> "+server.Name) + "\n"
-		} else {
-			view += "  " + server.Name + "\n"
+			row = fmt.Sprintf(
+				"%s%-20s %-10s",
+				"> ",
+				server.Name,
+				server.OS,
+			)
+
+			row = selectedStyle.Render(row)
 		}
+
+		view += row + "\n"
 	}
 
 	view += "\n"
