@@ -138,42 +138,39 @@ func (m *ServerDetailModel) View() string {
 
 	if m.err != nil {
 		view += "\nError: " + m.err.Error() + "\n"
-		return view
-	}
-
-	if len(m.metrics) == 0 {
+	} else if len(m.metrics) == 0 {
 		view += "\nNo metrics found.\n"
-		return view
+	} else {
+		metric := m.metrics[0]
+
+		view += "\n"
+		view += sectionStyle.Render("METRICS") + "\n"
+
+		view += labelStyle.Render("CPU") +
+			progressBar(metric.CPUUsage, 20) +
+			fmt.Sprintf(" %.2f%%\n", metric.CPUUsage)
+
+		view += labelStyle.Render("Memory") +
+			progressBar(metric.MemoryUsage, 20) +
+			fmt.Sprintf(" %.2f%%\n", metric.MemoryUsage)
+
+		view += labelStyle.Render("Disk") +
+			progressBar(metric.DiskUsage, 20) +
+			fmt.Sprintf(" %.2f%%\n", metric.DiskUsage)
+
+		view += "\n"
+		view += sectionStyle.Render("NETWORK") + "\n"
+
+		view += labelStyle.Render("RX") + fmt.Sprintf("%d\n", metric.NetworkReceive)
+		view += labelStyle.Render("TX") + fmt.Sprintf("%d\n", metric.NetworkSent)
+
+		view += "\n"
+		view += helpStyle.Render(
+			"Last update: "+metric.Timestamp.Format("15:04:05"),
+		) + "\n"
 	}
 
-	metric := m.metrics[0]
-
 	view += "\n"
-	view += sectionStyle.Render("METRICS") + "\n"
-
-	view += labelStyle.Render("CPU") +
-		progressBar(metric.CPUUsage, 20) +
-		fmt.Sprintf(" %.2f%%\n", metric.CPUUsage)
-
-	view += labelStyle.Render("Memory") +
-		progressBar(metric.MemoryUsage, 20) +
-		fmt.Sprintf(" %.2f%%\n", metric.MemoryUsage)
-
-	view += labelStyle.Render("Disk") +
-		progressBar(metric.DiskUsage, 20) +
-		fmt.Sprintf(" %.2f%%\n", metric.DiskUsage)
-
-	view += "\n"
-	view += sectionStyle.Render("NETWORK") + "\n"
-
-	view += labelStyle.Render("RX") + fmt.Sprintf("%d\n", metric.NetworkReceive)
-	view += labelStyle.Render("TX") + fmt.Sprintf("%d\n", metric.NetworkSent)
-
-	view += "\n"
-	view += helpStyle.Render(
-		"Last update: "+metric.Timestamp.Format("15:04:05"),
-	) + "\n\n"
-
 	view += helpStyle.Render("[Esc] Back   [q] Quit") + "\n"
 
 	return containerStyle.Render(view)
