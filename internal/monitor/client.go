@@ -151,3 +151,5 @@ func (c *Client) GetServerMetrics(ctx context.Context, serverID int) ([]model.Me
 
 	return metrics, nil
 }
+
+func (c *Client) GetLatestServerMetric(ctx context.Context, serverID int) (model.Metric, error) {}
