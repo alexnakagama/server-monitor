@@ -14,6 +14,7 @@ type DashboardModel struct {
 	servers        []model.Server
 	selectedServer int
 	err            error
+	statuses       []string
 }
 
 type serversLoadedMessage struct {
