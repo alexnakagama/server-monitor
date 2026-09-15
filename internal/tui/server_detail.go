@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
@@ -45,7 +46,23 @@ func (m *ServerDetailModel) tick() tea.Cmd {
 	})
 }
 
-func progressBar(value float64, width int) string {}
+func progressBar(value float64, width int) string {
+	filled := int(value / 100 * float64(width))
+
+	if filled > width {
+		filled = width
+	}
+
+	if filled < 0 {
+		filled = 0
+	}
+
+	return fmt.Sprintf(
+		"[%s%s]",
+		strings.Repeat("█", filled),
+		strings.Repeat("░", width-filled),
+	)
+}
 
 func NewServerDetailModel(client *monitor.Client, server model.Server) ServerDetailModel {
 	return ServerDetailModel{
