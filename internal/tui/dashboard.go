@@ -198,12 +198,13 @@ func (m *DashboardModel) View() string {
 
 	for i, server := range m.servers {
 		prefix := "  "
-		name := server.Name
 
 		if i == m.selectedServer {
 			prefix = "> "
-			name = selectedStyle.Render(name)
 		}
+
+		name := nameColumnStyle.Render(server.Name)
+		os := osColumnStyle.Render(server.OS)
 
 		status := m.statuses[i]
 
@@ -213,13 +214,7 @@ func (m *DashboardModel) View() string {
 			statusView = onlineStyle.Render(status)
 		}
 
-		row := fmt.Sprintf(
-			"%s%-20s %-10s %s",
-			prefix,
-			name,
-			server.OS,
-			statusView,
-		)
+		row := prefix + name + os + statusView
 
 		view += row + "\n"
 	}
