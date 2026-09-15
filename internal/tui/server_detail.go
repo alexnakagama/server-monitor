@@ -64,6 +64,8 @@ func progressBar(value float64, width int) string {
 	)
 }
 
+func formatBytes(bytes uint64) string {}
+
 func NewServerDetailModel(client *monitor.Client, server model.Server) ServerDetailModel {
 	return ServerDetailModel{
 		client: client,
