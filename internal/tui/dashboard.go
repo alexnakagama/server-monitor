@@ -7,6 +7,7 @@ import (
 
 	"github.com/alexnakagama/server-monitor/internal/model"
 	"github.com/alexnakagama/server-monitor/internal/monitor"
+	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 )
 
@@ -16,6 +17,7 @@ type DashboardModel struct {
 	selectedServer int
 	err            error
 	statuses       []string
+	search         textinput.Model
 }
 
 type serversLoadedMessage struct {
