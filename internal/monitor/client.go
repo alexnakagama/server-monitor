@@ -152,4 +152,44 @@ func (c *Client) GetServerMetrics(ctx context.Context, serverID int) ([]model.Me
 	return metrics, nil
 }
 
-func (c *Client) GetLatestServerMetric(ctx context.Context, serverID int) (model.Metric, error) {}
+func (c *Client) GetLatestServerMetric(ctx context.Context, serverID int) (model.Metric, error) {
+	url := fmt.Sprintf("%s/metrics/server/%d", c.baseURL, serverID)
+
+	req, err := http.NewRequestWithContext(
+		ctx,
+		http.MethodGet,
+		url,
+		nil,
+	)
+	if err != nil {
+		return model.Metric{}, err
+	}
+
+	req.Header.Set("Authorization", "Bearer "+c.token)
+
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return model.Metric{}, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return model.Metric{}, fmt.Errorf(
+			"get server metrics failed with status code: %d",
+			resp.StatusCode,
+		)
+	}
+
+	var metrics []model.Metric
+
+	err = json.NewDecoder(resp.Body).Decode(&metrics)
+	if err != nil {
+		return model.Metric{}, err
+	}
+
+	if len(metrics) == 0 {
+		return model.Metric{}, fmt.Errorf("no metrics found")
+	}
+
+	return metrics[0], nil
+}
