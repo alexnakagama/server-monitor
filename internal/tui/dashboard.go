@@ -2,6 +2,7 @@ package tui
 
 import (
 	"context"
+	"strings"
 	"time"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
@@ -66,6 +67,31 @@ func (m *DashboardModel) loadServers() tea.Cmd {
 			statuses: statuses,
 		}
 	}
+}
+
+func (m *DashboardModel) filteredServers() ([]model.Server, []string) {
+	searchTerm := strings.ToLower(strings.TrimSpace(m.search.Value()))
+
+	if searchTerm == "" {
+		return m.servers, m.statuses
+	}
+
+	var servers []model.Server
+	var statuses []string
+
+	for i, server := range m.servers {
+		if !strings.Contains(
+			strings.ToLower(server.Name),
+			searchTerm,
+		) {
+			continue
+		}
+
+		servers = append(servers, server)
+		statuses = append(statuses, m.statuses[i])
+	}
+
+	return servers, statuses
 }
 
 func NewDashBoardModel(client *monitor.Client) DashboardModel {
