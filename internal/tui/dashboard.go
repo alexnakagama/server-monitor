@@ -73,7 +73,10 @@ func NewDashBoardModel(client *monitor.Client) DashboardModel {
 }
 
 func (m *DashboardModel) Init() tea.Cmd {
-	return m.loadServers()
+	return tea.Batch(
+		m.loadServers(),
+		m.tick(),
+	)
 }
 
 func quit() tea.Cmd {
