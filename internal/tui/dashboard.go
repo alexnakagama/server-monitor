@@ -2,7 +2,6 @@ package tui
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/alexnakagama/server-monitor/internal/model"
@@ -192,9 +191,11 @@ func (m *DashboardModel) View() string {
 
 	view += sectionStyle.Render("SERVERS") + "\n\n"
 
-	view += headerStyle.Render(
-		fmt.Sprintf("%-22s %-10s %-10s", "NAME", "OS", "STATUS"),
-	) + "\n"
+	view += prefixStyle.Render("  ") +
+		nameColumnStyle.Bold(true).Render("NAME") +
+		osColumnStyle.Bold(true).Render("OS") +
+		headerStyle.Render("STATUS") +
+		"\n"
 
 	for i, server := range m.servers {
 		prefix := "  "

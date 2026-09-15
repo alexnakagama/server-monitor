@@ -38,3 +38,6 @@ var nameColumnStyle = lipgloss.NewStyle().
 
 var osColumnStyle = lipgloss.NewStyle().
 	Width(10)
+
+var prefixStyle = lipgloss.NewStyle().
+	Width(2)
