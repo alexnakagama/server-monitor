@@ -45,6 +45,8 @@ func (m *ServerDetailModel) tick() tea.Cmd {
 	})
 }
 
+func progressBar(value float64, width int) string {}
+
 func NewServerDetailModel(client *monitor.Client, server model.Server) ServerDetailModel {
 	return ServerDetailModel{
 		client: client,
