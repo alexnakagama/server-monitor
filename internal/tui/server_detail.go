@@ -131,5 +131,5 @@ func (m *ServerDetailModel) View() string {
 
 	view += helpStyle.Render("[Esc] Back   [q] Quit") + "\n"
 
-	return view
+	return containerStyle.Render(view)
 }
