@@ -147,13 +147,22 @@ func (m *DashboardModel) View() string {
 			prefix = "> "
 		}
 
+		status := m.statuses[i]
+
+		statusView := offlineStyle.Render(status)
+
+		if status == "ONLINE" {
+			statusView = onlineStyle.Render(status)
+		}
+
 		row := fmt.Sprintf(
-			"%s%-20s %-10s %-10s",
+			"%s%-20s %-10s ",
 			prefix,
 			server.Name,
 			server.OS,
-			m.statuses[i],
 		)
+
+		row += statusView
 
 		if i == m.selectedServer {
 			row = selectedStyle.Render(row)
