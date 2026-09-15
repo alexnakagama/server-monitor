@@ -98,6 +98,12 @@ func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		return m, nil
 
+	case tickMessage:
+		return m, tea.Batch(
+			m.loadServers(),
+			m.tick(),
+		)
+
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "up":
