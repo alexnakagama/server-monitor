@@ -113,7 +113,27 @@ func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		)
 
 	case tea.KeyMsg:
+		if m.searching {
+			switch msg.String() {
+			case "esc":
+				m.search.Blur()
+				m.searching = false
+				return m, nil
+			}
+
+			var cmd tea.Cmd
+
+			m.search, cmd = m.search.Update(msg)
+
+			return m, cmd
+		}
+
 		switch msg.String() {
+		case "/":
+			m.searching = true
+			m.search.Focus()
+			return m, nil
+
 		case "up":
 			if m.selectedServer > 0 {
 				m.selectedServer--
