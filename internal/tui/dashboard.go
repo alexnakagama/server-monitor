@@ -26,6 +26,10 @@ type DashboardModel struct {
 	searching      bool
 }
 
+type dashboardSizeMessage struct {
+	rows int
+}
+
 type serversLoadedMessage struct {
 	servers       []model.Server
 	err           error
