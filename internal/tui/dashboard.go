@@ -19,6 +19,8 @@ type DashboardModel struct {
 	statuses       []string
 	search         textinput.Model
 	searching      bool
+	width          int
+	height         int
 }
 
 type serversLoadedMessage struct {
