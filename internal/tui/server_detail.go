@@ -86,6 +86,31 @@ func formatBytes(bytes uint64) string {
 	return fmt.Sprintf("%.2f PB", value)
 }
 
+func (m *ServerDetailModel) historyView() string {
+	view := titleStyle.Render("SERVER MONITOR") + "\n\n"
+
+	view += sectionStyle.Render("HISTORY") + "\n\n"
+
+	view += headerStyle.Render(
+		fmt.Sprintf("%-10s %-10s %-10s %-10s", "TIME", "CPU", "MEMORY", "DISK"),
+	) + "\n"
+
+	for _, metric := range m.metrics {
+		view += fmt.Sprintf(
+			"%-10s %-10.2f %-10.2f %-10.2f\n",
+			metric.Timestamp.Format("15:04:05"),
+			metric.CPUUsage,
+			metric.MemoryUsage,
+			metric.DiskUsage,
+		)
+	}
+
+	view += "\n"
+	view += helpStyle.Render("[Esc] Back") + "\n"
+
+	return containerStyle.Render(view)
+}
+
 func NewServerDetailModel(client *monitor.Client, server model.Server) ServerDetailModel {
 	return ServerDetailModel{
 		client: client,
@@ -140,6 +165,10 @@ func (m *ServerDetailModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m *ServerDetailModel) View() string {
+	if m.showHistory {
+		return m.historyView()
+	}
+
 	view := titleStyle.Render("SERVER MONITOR") + "\n\n"
 
 	view += sectionStyle.Render("SERVER") + "\n"
