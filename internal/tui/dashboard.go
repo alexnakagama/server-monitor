@@ -17,6 +17,8 @@ type DashboardModel struct {
 	client         *monitor.Client
 	servers        []model.Server
 	selectedServer int
+	scrollOffset   int
+	visibleRows    int
 	err            error
 	statuses       []string
 	latestMetrics  map[int]model.Metric
