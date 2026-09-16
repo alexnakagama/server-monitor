@@ -105,16 +105,19 @@ func (m *AppModel) View() string {
 	switch m.screen.(type) {
 	case *DashboardModel:
 		footer = "[/] Search   [↑/↓] Navigate   [Enter] Open   [Esc] Quit"
+
 	case *ServerDetailModel:
 		footer = "[H] History   [Esc] Back   [Q] Quit"
 	}
 
-	contentHeight := m.height - 4
+	contentHeight := m.height - 5
 
 	content := lipgloss.NewStyle().
 		Width(m.width - 4).
 		Height(contentHeight).
 		Render(view)
+
+	divider := strings.Repeat("─", m.width-4)
 
 	footerView := lipgloss.NewStyle().
 		Width(m.width - 4).
@@ -130,6 +133,7 @@ func (m *AppModel) View() string {
 	inside := lipgloss.JoinVertical(
 		lipgloss.Left,
 		content,
+		divider,
 		footerView,
 	)
 
