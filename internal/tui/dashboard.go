@@ -188,9 +188,7 @@ func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				}
 
 				server := servers[m.selectedServer]
-
 				detail := NewServerDetailModel(m.client, server)
-				detail.SetSize(m.width, m.height)
 
 				return &detail, detail.Init()
 			}
