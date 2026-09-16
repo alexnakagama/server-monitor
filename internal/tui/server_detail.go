@@ -108,8 +108,17 @@ func (m *ServerDetailModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, quit()
 
 		case "esc":
+			if m.showHistory {
+				m.showHistory = false
+				return m, nil
+			}
+
 			dashboard := NewDashBoardModel(m.client)
 			return &dashboard, dashboard.Init()
+
+		case "h":
+			m.showHistory = true
+			return m, nil
 		}
 
 	case metricsLoadedMessage:
