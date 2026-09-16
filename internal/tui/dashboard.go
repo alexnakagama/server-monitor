@@ -372,15 +372,5 @@ func (m *DashboardModel) View() string {
 
 	view += columns + "\n\n"
 
-	if m.searching {
-		view += helpStyle.Render(
-			"[Esc] Close search   [↑/↓] Navigate   [Enter] Open",
-		) + "\n"
-	} else {
-		view += helpStyle.Render(
-			"[/] Search   [↑/↓] Navigate   [Enter] Open   [q] Quit",
-		) + "\n"
-	}
-
 	return view
 }

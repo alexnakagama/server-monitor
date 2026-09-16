@@ -72,6 +72,8 @@ func (m *AppModel) View() string {
 				Render(headerVersion),
 		)
 
+		divider := strings.Repeat("─", m.width-2)
+
 		content := lipgloss.Place(
 			m.width,
 			m.height-5,
@@ -79,8 +81,6 @@ func (m *AppModel) View() string {
 			lipgloss.Center,
 			loginView,
 		)
-
-		divider := strings.Repeat("─", m.width-2)
 
 		footer := lipgloss.PlaceHorizontal(
 			m.width-2,
@@ -100,9 +100,38 @@ func (m *AppModel) View() string {
 
 	view := m.screen.View()
 
-	container := containerStyle.
-		Width(m.width - 2).
-		Height(m.height - 2)
+	var footer string
 
-	return container.Render(view)
+	switch m.screen.(type) {
+	case *DashboardModel:
+		footer = "[/] Search   [↑/↓] Navigate   [Enter] Open   [Esc] Quit"
+	case *ServerDetailModel:
+		footer = "[H] History   [Esc] Back   [Q] Quit"
+	}
+
+	contentHeight := m.height - 4
+
+	content := lipgloss.NewStyle().
+		Width(m.width - 4).
+		Height(contentHeight).
+		Render(view)
+
+	footerView := lipgloss.NewStyle().
+		Width(m.width - 4).
+		Align(lipgloss.Right).
+		Render(helpStyle.Render(footer))
+
+	container := lipgloss.NewStyle().
+		Width(m.width - 2).
+		Height(m.height - 2).
+		Border(lipgloss.RoundedBorder()).
+		Padding(1)
+
+	inside := lipgloss.JoinVertical(
+		lipgloss.Left,
+		content,
+		footerView,
+	)
+
+	return container.Render(inside)
 }
