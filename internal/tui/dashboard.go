@@ -43,6 +43,10 @@ func (m *DashboardModel) tick() tea.Cmd {
 	})
 }
 
+func (m *DashboardModel) SetVisibleRows(rows int) {
+	m.visibleRows = rows
+}
+
 func (m *DashboardModel) loadServers() tea.Cmd {
 	return func() tea.Msg {
 		servers, err := m.client.GetServers(context.Background())
