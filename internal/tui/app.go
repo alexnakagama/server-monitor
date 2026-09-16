@@ -1,11 +1,18 @@
 package tui
 
-import tea "github.com/charmbracelet/bubbletea"
+import (
+	"github.com/alexnakagama/server-monitor/internal/monitor"
+	tea "github.com/charmbracelet/bubbletea"
+)
 
 type AppModel struct {
 	width  int
 	height int
 	screen tea.Model
+}
+
+type dashboardMessage struct {
+	client *monitor.Client
 }
 
 func NewAppModel(screen tea.Model) AppModel {
@@ -25,6 +32,14 @@ func (m *AppModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.height = msg.Height
 
 		return m, nil
+
+	case dashboardMessage:
+		dashboard := NewDashBoardModel(msg.client)
+		dashboard.SetSize(m.width, m.height)
+
+		m.screen = &dashboard
+
+		return m, dashboard.Init()
 	}
 
 	var cmd tea.Cmd

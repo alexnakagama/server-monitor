@@ -10,9 +10,11 @@ import (
 
 func main() {
 	client := monitor.NewClient("http://localhost:8080")
-	model := tui.NewLoginModel(client)
 
-	p := tea.NewProgram(&model)
+	login := tui.NewLoginModel(client)
+	app := tui.NewAppModel(&login)
+
+	p := tea.NewProgram(&app)
 
 	if _, err := p.Run(); err != nil {
 		log.Fatal(err)
