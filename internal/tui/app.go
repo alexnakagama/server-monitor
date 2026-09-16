@@ -72,7 +72,7 @@ func (m *AppModel) View() string {
 				Render(headerVersion),
 		)
 
-		divider := strings.Repeat("─", m.width-6)
+		divider := strings.Repeat("─", m.width)
 
 		content := lipgloss.Place(
 			m.width,
