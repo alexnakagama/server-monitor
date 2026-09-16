@@ -30,6 +30,30 @@ type dashboardSizeMessage struct {
 	rows int
 }
 
+func (m *DashboardModel) updateScroll(total int) {
+	if m.visibleRows <= 0 {
+		return
+	}
+
+	if m.selectedServer < m.scrollOffset {
+		m.scrollOffset = m.selectedServer
+	}
+
+	if m.selectedServer >= m.scrollOffset+m.visibleRows {
+		m.scrollOffset = m.selectedServer - m.visibleRows + 1
+	}
+
+	maxOffset := total - m.visibleRows
+
+	if maxOffset < 0 {
+		maxOffset = 0
+	}
+
+	if m.scrollOffset > maxOffset {
+		m.scrollOffset = maxOffset
+	}
+}
+
 type serversLoadedMessage struct {
 	servers       []model.Server
 	err           error
