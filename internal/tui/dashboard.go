@@ -9,6 +9,7 @@ import (
 	"github.com/alexnakagama/server-monitor/internal/monitor"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 )
 
 type DashboardModel struct {
@@ -225,8 +226,6 @@ func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 func (m *DashboardModel) View() string {
 	view := titleStyle.Render("SERVER MONITOR") + "\n\n"
 
-	view += sectionStyle.Render("DASHBOARD") + "\n\n"
-
 	if m.err != nil {
 		view += "Error: " + m.err.Error() + "\n"
 		return view
@@ -236,52 +235,90 @@ func (m *DashboardModel) View() string {
 		view += m.search.View() + "\n\n"
 	}
 
-	if len(m.servers) == 0 {
-		view += "No servers found.\n"
-		view += "\n"
-		view += helpStyle.Render("[/] Search   [q] Quit") + "\n"
-
-		return view
-	}
-
 	servers, statuses := m.filteredServers()
 
 	if len(servers) == 0 {
-		view += "No servers match your search.\n"
-	} else {
-		view += sectionStyle.Render("SERVERS") + "\n\n"
-
-		view += prefixStyle.Render("  ") +
-			nameColumnStyle.Bold(true).Render("NAME") +
-			osColumnStyle.Bold(true).Render("OS") +
-			headerStyle.Render("STATUS") +
-			"\n"
-
-		for i, server := range servers {
-			prefix := "  "
-
-			if i == m.selectedServer {
-				prefix = "> "
-			}
-
-			name := nameColumnStyle.Render(server.Name)
-			os := osColumnStyle.Render(server.OS)
-
-			status := statuses[i]
-
-			statusView := offlineStyle.Render(status)
-
-			if status == "ONLINE" {
-				statusView = onlineStyle.Render(status)
-			}
-
-			row := prefixStyle.Render(prefix) + name + os + statusView
-
-			view += row + "\n"
-		}
+		view += "No servers found.\n"
+		return view
 	}
 
-	view += "\n"
+	// LEFT PANEL
+	left := sectionStyle.Render("SERVERS") + "\n\n"
+
+	left += prefixStyle.Render("  ") +
+		nameColumnStyle.Bold(true).Render("NAME") +
+		osColumnStyle.Bold(true).Render("OS") +
+		headerStyle.Render("STATUS") +
+		"\n"
+
+	for i, server := range servers {
+		prefix := "  "
+
+		if i == m.selectedServer {
+			prefix = "> "
+		}
+
+		status := statuses[i]
+
+		statusView := offlineStyle.Render(status)
+
+		if status == "ONLINE" {
+			statusView = onlineStyle.Render(status)
+		}
+
+		row := prefixStyle.Render(prefix) +
+			nameColumnStyle.Render(server.Name) +
+			osColumnStyle.Render(server.OS) +
+			statusView
+
+		if i == m.selectedServer {
+			row = selectedStyle.Render(row)
+		}
+
+		left += row + "\n"
+	}
+
+	// RIGHT PANEL
+	selected := servers[m.selectedServer]
+	selectedStatus := statuses[m.selectedServer]
+
+	selectedStatusView := offlineStyle.Render(selectedStatus)
+
+	if selectedStatus == "ONLINE" {
+		selectedStatusView = onlineStyle.Render(selectedStatus)
+	}
+
+	right := sectionStyle.Render("SELECTED SERVER") + "\n\n"
+
+	right += valueStyle.Render(selected.Name) + "\n\n"
+
+	right += labelStyle.Render("Status") +
+		selectedStatusView + "\n"
+
+	right += labelStyle.Render("OS") +
+		valueStyle.Render(selected.OS) + "\n"
+
+	right += labelStyle.Render("Hostname") +
+		valueStyle.Render(selected.Hostname) + "\n"
+
+	// TWO COLUMNS
+	gap := 30
+
+	leftWidth := lipgloss.Width(left)
+	rightWidth := lipgloss.Width(right)
+
+	columnWidth := leftWidth + rightWidth + gap
+
+	columns := lipgloss.JoinHorizontal(
+		lipgloss.Top,
+		left,
+		strings.Repeat(" ", gap),
+		right,
+	)
+
+	_ = columnWidth
+
+	view += columns + "\n"
 
 	if m.searching {
 		view += helpStyle.Render(

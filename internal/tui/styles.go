@@ -49,3 +49,6 @@ var errorStyle = lipgloss.NewStyle().
 
 var successStyle = lipgloss.NewStyle().
 	Foreground(lipgloss.Color("10"))
+
+var selectedStyle = lipgloss.NewStyle().
+	Bold(true)
