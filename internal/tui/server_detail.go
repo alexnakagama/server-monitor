@@ -120,6 +120,11 @@ func NewServerDetailModel(client *monitor.Client, server model.Server) ServerDet
 	}
 }
 
+func (m *ServerDetailModel) SetSize(width int, height int) {
+	m.width = width
+	m.height = height
+}
+
 func (m *ServerDetailModel) Init() tea.Cmd {
 	return tea.Batch(
 		m.loadMetrics(),
