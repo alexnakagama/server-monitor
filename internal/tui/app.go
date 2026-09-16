@@ -60,19 +60,17 @@ func (m *AppModel) View() string {
 	case *LoginModel:
 		loginView := screen.View()
 
-		header := lipgloss.NewStyle().
-			Width(m.width - 2).
-			Render(
-				lipgloss.JoinHorizontal(
-					lipgloss.Top,
-					titleStyle.Render("SERVER MONITOR"),
-					lipgloss.PlaceHorizontal(
-						m.width-2-lipgloss.Width("SERVER MONITOR"),
-						lipgloss.Right,
-						helpStyle.Render("v1.0"),
-					),
-				),
-			)
+		headerTitle := titleStyle.Render("SERVER MONITOR")
+		headerVersion := helpStyle.Render("v1.0")
+
+		header := lipgloss.JoinHorizontal(
+			lipgloss.Top,
+			headerTitle,
+			lipgloss.NewStyle().
+				Width(m.width-2-lipgloss.Width(headerTitle)).
+				Align(lipgloss.Right).
+				Render(headerVersion),
+		)
 
 		content := lipgloss.Place(
 			m.width,
