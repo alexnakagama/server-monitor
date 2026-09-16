@@ -108,11 +108,6 @@ func NewDashBoardModel(client *monitor.Client) DashboardModel {
 	}
 }
 
-func (m *DashboardModel) SetSize(width, height int) {
-	m.width = width
-	m.height = height
-}
-
 func (m *DashboardModel) Init() tea.Cmd {
 	return tea.Batch(
 		m.loadServers(),
