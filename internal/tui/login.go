@@ -110,9 +110,7 @@ func (m *LoginModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m *LoginModel) View() string {
-	view := ""
-
-	view += titleStyle.Render("LOGIN") + "\n\n"
+	view := titleStyle.Render("LOGIN") + "\n\n"
 
 	view += labelStyle.Render("Username") + "\n"
 	view += m.username.View() + "\n\n"
@@ -121,11 +119,13 @@ func (m *LoginModel) View() string {
 	view += m.password.View() + "\n\n"
 
 	if m.loading {
-		view += helpStyle.Render("Logging in...") + "\n"
+		view += helpStyle.Render("Logging in...")
 	} else if m.err != nil {
-		view += errorStyle.Render("Login failed: "+m.err.Error()) + "\n"
+		view += errorStyle.Render(
+			"Login failed: " + m.err.Error(),
+		)
 	} else {
-		view += helpStyle.Render("Press Enter to login") + "\n"
+		view += helpStyle.Render("Press Enter to login")
 	}
 
 	return loginBoxStyle.Render(view)

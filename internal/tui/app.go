@@ -1,6 +1,8 @@
 package tui
 
 import (
+	"strings"
+
 	"github.com/alexnakagama/server-monitor/internal/monitor"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
@@ -50,18 +52,55 @@ func (m *AppModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m *AppModel) View() string {
-	view := m.screen.View()
+	if m.width <= 0 || m.height <= 0 {
+		return ""
+	}
 
-	switch m.screen.(type) {
+	switch screen := m.screen.(type) {
 	case *LoginModel:
-		return lipgloss.Place(
+		loginView := screen.View()
+
+		header := lipgloss.NewStyle().
+			Width(m.width - 2).
+			Render(
+				lipgloss.JoinHorizontal(
+					lipgloss.Top,
+					titleStyle.Render("SERVER MONITOR"),
+					lipgloss.PlaceHorizontal(
+						m.width-2-lipgloss.Width("SERVER MONITOR"),
+						lipgloss.Right,
+						helpStyle.Render("v1.0"),
+					),
+				),
+			)
+
+		content := lipgloss.Place(
 			m.width,
-			m.height,
+			m.height-5,
 			lipgloss.Center,
 			lipgloss.Center,
-			view,
+			loginView,
+		)
+
+		divider := strings.Repeat("─", m.width-2)
+
+		footer := lipgloss.PlaceHorizontal(
+			m.width-2,
+			lipgloss.Right,
+			helpStyle.Render("[Q] Quit"),
+		)
+
+		return lipgloss.JoinVertical(
+			lipgloss.Left,
+			header,
+			divider,
+			content,
+			divider,
+			footer,
 		)
 	}
+
+	view := m.screen.View()
 
 	container := containerStyle.
 		Width(m.width - 2).
