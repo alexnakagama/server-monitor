@@ -24,9 +24,10 @@ type DashboardModel struct {
 }
 
 type serversLoadedMessage struct {
-	servers  []model.Server
-	err      error
-	statuses []string
+	servers       []model.Server
+	err           error
+	statuses      []string
+	latestMetrics map[int]model.Metric
 }
 
 func (m *DashboardModel) tick() tea.Cmd {
@@ -45,6 +46,7 @@ func (m *DashboardModel) loadServers() tea.Cmd {
 		}
 
 		statuses := make([]string, len(servers))
+		latestMetrics := make(map[int]model.Metric)
 
 		for i, server := range servers {
 			metric, err := m.client.GetLatestServerMetric(
@@ -57,6 +59,8 @@ func (m *DashboardModel) loadServers() tea.Cmd {
 				continue
 			}
 
+			latestMetrics[server.ID] = metric
+
 			if time.Since(metric.Timestamp) < 30*time.Second {
 				statuses[i] = "ONLINE"
 			} else {
@@ -65,8 +69,9 @@ func (m *DashboardModel) loadServers() tea.Cmd {
 		}
 
 		return serversLoadedMessage{
-			servers:  servers,
-			statuses: statuses,
+			servers:       servers,
+			statuses:      statuses,
+			latestMetrics: latestMetrics,
 		}
 	}
 }
