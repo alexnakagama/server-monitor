@@ -51,7 +51,9 @@ func (m *AppModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 func (m *AppModel) View() string {
 	view := m.screen.View()
 
-	container := containerStyle.Width(m.width - 4)
+	container := containerStyle.
+		Width(m.width - 4).
+		Height(m.height - 2)
 
 	return container.Render(view)
 }
