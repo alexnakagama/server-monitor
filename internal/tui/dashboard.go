@@ -18,9 +18,9 @@ type DashboardModel struct {
 	selectedServer int
 	err            error
 	statuses       []string
+	latestMetric   map[int]model.Metric
 	search         textinput.Model
 	searching      bool
-	latestMetric   map[int]model.Metric
 }
 
 type serversLoadedMessage struct {
