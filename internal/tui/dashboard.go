@@ -144,6 +144,7 @@ func NewDashBoardModel(client *monitor.Client) DashboardModel {
 	return DashboardModel{
 		client:        client,
 		search:        search,
+		visibleRows:   10,
 		latestMetrics: map[int]model.Metric{},
 	}
 }
