@@ -2,7 +2,6 @@ package tui
 
 import (
 	"context"
-	"fmt"
 	"strings"
 	"time"
 
@@ -20,8 +19,6 @@ type DashboardModel struct {
 	statuses       []string
 	search         textinput.Model
 	searching      bool
-	width          int
-	height         int
 }
 
 type serversLoadedMessage struct {
@@ -123,14 +120,6 @@ func quit() tea.Cmd {
 
 func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
-	case tea.WindowSizeMsg:
-		fmt.Printf("DASHBOARD WIDTH: %d\n", msg.Width)
-
-		m.width = msg.Width
-		m.height = msg.Height
-
-		return m, nil
-
 	case serversLoadedMessage:
 		if msg.err != nil {
 			m.err = msg.err
@@ -240,7 +229,7 @@ func (m *DashboardModel) View() string {
 
 	if m.err != nil {
 		view += "Error: " + m.err.Error() + "\n"
-		return containerStyle.Render(view)
+		return view
 	}
 
 	if m.searching {
@@ -252,7 +241,7 @@ func (m *DashboardModel) View() string {
 		view += "\n"
 		view += helpStyle.Render("[/] Search   [q] Quit") + "\n"
 
-		return containerStyle.Render(view)
+		return view
 	}
 
 	servers, statuses := m.filteredServers()
@@ -304,7 +293,5 @@ func (m *DashboardModel) View() string {
 		) + "\n"
 	}
 
-	container := containerStyle.Width(m.width - 4)
-
-	return container.Render(view)
+	return view
 }

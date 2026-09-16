@@ -35,7 +35,6 @@ func (m *AppModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case dashboardMessage:
 		dashboard := NewDashBoardModel(msg.client)
-		dashboard.SetSize(m.width, m.height)
 
 		m.screen = &dashboard
 
@@ -46,21 +45,13 @@ func (m *AppModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	m.screen, cmd = m.screen.Update(msg)
 
-	switch screen := m.screen.(type) {
-	case *LoginModel:
-		screen.width = m.width
-		screen.height = m.height
-
-	case *DashboardModel:
-		screen.SetSize(m.width, m.height)
-
-	case *ServerDetailModel:
-		screen.SetSize(m.width, m.height)
-	}
-
 	return m, cmd
 }
 
 func (m *AppModel) View() string {
-	return m.screen.View()
+	view := m.screen.View()
+
+	container := containerStyle.Width(m.width - 4)
+
+	return container.Render(view)
 }

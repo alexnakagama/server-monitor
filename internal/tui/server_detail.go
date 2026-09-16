@@ -18,8 +18,6 @@ type ServerDetailModel struct {
 	metrics     []model.Metric
 	err         error
 	showHistory bool
-	width       int
-	height      int
 }
 
 type metricsLoadedMessage struct {
@@ -110,9 +108,7 @@ func (m *ServerDetailModel) historyView() string {
 	view += "\n"
 	view += helpStyle.Render("[Esc] Back") + "\n"
 
-	container := containerStyle.Width(m.width - 4)
-
-	return container.Render(view)
+	return view
 }
 
 func NewServerDetailModel(client *monitor.Client, server model.Server) ServerDetailModel {
@@ -120,11 +116,6 @@ func NewServerDetailModel(client *monitor.Client, server model.Server) ServerDet
 		client: client,
 		server: server,
 	}
-}
-
-func (m *ServerDetailModel) SetSize(width int, height int) {
-	m.width = width
-	m.height = height
 }
 
 func (m *ServerDetailModel) Init() tea.Cmd {
@@ -136,12 +127,6 @@ func (m *ServerDetailModel) Init() tea.Cmd {
 
 func (m *ServerDetailModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
-	case tea.WindowSizeMsg:
-		m.width = msg.Width
-		m.height = msg.Height
-
-		return m, nil
-
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "q":
@@ -154,6 +139,7 @@ func (m *ServerDetailModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 
 			dashboard := NewDashBoardModel(m.client)
+
 			return &dashboard, dashboard.Init()
 
 		case "h":
@@ -185,7 +171,6 @@ func (m *ServerDetailModel) View() string {
 	}
 
 	view := titleStyle.Render("SERVER MONITOR") + "\n\n"
-	view += fmt.Sprintf("WIDTH: %d\n", m.width)
 
 	view += sectionStyle.Render("SERVER") + "\n"
 
@@ -254,7 +239,5 @@ func (m *ServerDetailModel) View() string {
 	view += "\n"
 	view += helpStyle.Render("[H] History   [Esc] Back   [Q] Quit") + "\n"
 
-	container := containerStyle.Width(m.width - 4)
-
-	return container.Render(view)
+	return view
 }
