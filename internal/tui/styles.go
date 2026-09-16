@@ -46,3 +46,6 @@ var loginBoxStyle = lipgloss.NewStyle().
 
 var errorStyle = lipgloss.NewStyle().
 	Foreground(lipgloss.Color("9"))
+
+var successStyle = lipgloss.NewStyle().
+	Foreground(lipgloss.Color("10"))

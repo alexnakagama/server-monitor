@@ -2,6 +2,7 @@ package tui
 
 import (
 	"context"
+	"time"
 
 	"github.com/alexnakagama/server-monitor/internal/monitor"
 	"github.com/charmbracelet/bubbles/textinput"
@@ -28,6 +29,7 @@ func (m *LoginModel) login() tea.Cmd {
 			m.username.Value(),
 			m.password.Value(),
 		)
+
 		if err != nil {
 			return loginResultMessage{err: err}
 		}
@@ -70,7 +72,12 @@ func (m *LoginModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 
 		case "enter":
+			if m.loading {
+				return m, nil
+			}
+
 			m.loading = true
+			m.loginSuccess = false
 			m.err = nil
 
 			return m, m.login()
@@ -84,11 +91,13 @@ func (m *LoginModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, nil
 		}
 
-		return m, func() tea.Msg {
+		m.loginSuccess = true
+
+		return m, tea.Tick(800*time.Millisecond, func(time.Time) tea.Msg {
 			return dashboardMessage{
 				client: m.client,
 			}
-		}
+		})
 	}
 
 	var cmd tea.Cmd
@@ -113,6 +122,8 @@ func (m *LoginModel) View() string {
 
 	if m.loading {
 		view += helpStyle.Render("Authenticating...") + "\n"
+	} else if m.loginSuccess {
+		view += successStyle.Render("Login successful") + "\n"
 	} else if m.err != nil {
 		view += errorStyle.Render(
 			"Login failed: "+m.err.Error(),
