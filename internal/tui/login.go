@@ -22,6 +22,8 @@ type loginResultMessage struct {
 	err error
 }
 
+type authenticateMessage struct{}
+
 func (m *LoginModel) login() tea.Cmd {
 	return func() tea.Msg {
 		err := m.client.Login(
@@ -80,8 +82,13 @@ func (m *LoginModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.loginSuccess = false
 			m.err = nil
 
-			return m, m.login()
+			return m, tea.Tick(100*time.Millisecond, func(time.Time) tea.Msg {
+				return authenticateMessage{}
+			})
 		}
+
+	case authenticateMessage:
+		return m, m.login()
 
 	case loginResultMessage:
 		m.loading = false
