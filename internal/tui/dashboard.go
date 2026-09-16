@@ -2,6 +2,7 @@ package tui
 
 import (
 	"context"
+	"fmt"
 	"strings"
 	"time"
 
@@ -313,6 +314,39 @@ func (m *DashboardModel) View() string {
 
 	right += labelStyle.Render("Hostname") +
 		valueStyle.Render(selected.Hostname) + "\n"
+
+	if metric, ok := m.latestMetrics[selected.ID]; ok {
+		right += "\n"
+		right += sectionStyle.Render("METRICS") + "\n\n"
+
+		right += labelStyle.Render("CPU") +
+			progressBar(metric.CPUUsage, 20) +
+			fmt.Sprintf(" %.2f%%\n", metric.CPUUsage)
+
+		right += labelStyle.Render("Memory") +
+			progressBar(metric.MemoryUsage, 20) +
+			fmt.Sprintf(" %.2f%%\n", metric.MemoryUsage)
+
+		right += labelStyle.Render("Disk") +
+			progressBar(metric.DiskUsage, 20) +
+			fmt.Sprintf(" %.2f%%\n", metric.DiskUsage)
+
+		right += "\n"
+
+		right += labelStyle.Render("RX") +
+			valueStyle.Render(formatBytes(metric.NetworkReceive)+"/s") +
+			"\n"
+
+		right += labelStyle.Render("TX") +
+			valueStyle.Render(formatBytes(metric.NetworkSent)+"/s") +
+			"\n"
+
+		right += "\n"
+
+		right += helpStyle.Render(
+			"Last update: " + metric.Timestamp.Format("15:04:05"),
+		)
+	}
 
 	// DIVIDER
 	height := max(
