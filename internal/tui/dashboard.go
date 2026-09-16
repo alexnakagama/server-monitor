@@ -20,6 +20,7 @@ type DashboardModel struct {
 	statuses       []string
 	search         textinput.Model
 	searching      bool
+	latestMetric   map[int]model.Metric
 }
 
 type serversLoadedMessage struct {
