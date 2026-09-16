@@ -38,3 +38,8 @@ var osColumnStyle = lipgloss.NewStyle().
 
 var prefixStyle = lipgloss.NewStyle().
 	Width(2)
+
+var sectionBoxStyle = lipgloss.NewStyle().
+	Border(lipgloss.RoundedBorder()).
+	Padding(0, 2).
+	MarginBottom(1)
