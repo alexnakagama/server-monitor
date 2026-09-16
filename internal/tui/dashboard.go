@@ -2,6 +2,7 @@ package tui
 
 import (
 	"context"
+	"fmt"
 	"strings"
 	"time"
 
@@ -105,6 +106,11 @@ func NewDashBoardModel(client *monitor.Client) DashboardModel {
 		client: client,
 		search: search,
 	}
+}
+
+func (m *DashboardModel) SetSize(width, height int) {
+	m.width = width
+	m.height = height
 }
 
 func (m *DashboardModel) Init() tea.Cmd {
@@ -232,6 +238,7 @@ func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m *DashboardModel) View() string {
 	view := titleStyle.Render("SERVER MONITOR") + "\n\n"
+	view += fmt.Sprintf("WIDTH: %d\n", m.width)
 
 	view += sectionStyle.Render("DASHBOARD") + "\n\n"
 
