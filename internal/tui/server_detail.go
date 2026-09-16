@@ -185,6 +185,7 @@ func (m *ServerDetailModel) View() string {
 	}
 
 	view := titleStyle.Render("SERVER MONITOR") + "\n\n"
+	view += fmt.Sprintf("WIDTH: %d\n", m.width)
 
 	view += sectionStyle.Render("SERVER") + "\n"
 
