@@ -9,13 +9,12 @@ import (
 )
 
 type LoginModel struct {
-	username textinput.Model
-	password textinput.Model
-	client   *monitor.Client
-	err      error
-	loading  bool
-	width    int
-	height   int
+	username     textinput.Model
+	password     textinput.Model
+	client       *monitor.Client
+	err          error
+	loading      bool
+	loginSuccess bool
 }
 
 type loginResultMessage struct {
@@ -59,12 +58,6 @@ func (m *LoginModel) Init() tea.Cmd {
 
 func (m *LoginModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
-	case tea.WindowSizeMsg:
-		m.width = msg.Width
-		m.height = msg.Height
-
-		return m, nil
-
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "tab":
@@ -119,13 +112,13 @@ func (m *LoginModel) View() string {
 	view += m.password.View() + "\n\n"
 
 	if m.loading {
-		view += helpStyle.Render("Logging in...")
+		view += helpStyle.Render("Authenticating...") + "\n"
 	} else if m.err != nil {
 		view += errorStyle.Render(
-			"Login failed: " + m.err.Error(),
-		)
+			"Login failed: "+m.err.Error(),
+		) + "\n"
 	} else {
-		view += helpStyle.Render("Press Enter to login")
+		view += helpStyle.Render("Press Enter to login") + "\n"
 	}
 
 	return loginBoxStyle.Render(view)
