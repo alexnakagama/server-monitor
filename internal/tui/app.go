@@ -72,7 +72,7 @@ func (m *AppModel) View() string {
 				Render(headerVersion),
 		)
 
-		divider := strings.Repeat("─", m.width-2)
+		divider := strings.Repeat("─", m.width-6)
 
 		content := lipgloss.Place(
 			m.width,
@@ -107,25 +107,24 @@ func (m *AppModel) View() string {
 		footer = "[H] History   [Esc] Back   [Q] Quit"
 	}
 
-	contentHeight := m.height - 6
+	contentHeight := m.height - 5
 
 	content := lipgloss.NewStyle().
-		Width(m.width - 4).
+		Width(m.width - 6).
 		Height(contentHeight).
 		Render(m.screen.View())
 
-	divider := strings.Repeat("─", m.width-4)
-
 	footerView := lipgloss.NewStyle().
-		Width(m.width-4).
+		Width(m.width-6).
 		Height(2).
 		Align(lipgloss.Center, lipgloss.Center).
+		BorderTop(true).
+		BorderStyle(lipgloss.NormalBorder()).
 		Render(helpStyle.Render(footer))
 
 	inside := lipgloss.JoinVertical(
 		lipgloss.Left,
 		content,
-		divider,
 		footerView,
 	)
 
