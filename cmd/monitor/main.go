@@ -14,7 +14,7 @@ func main() {
 	login := tui.NewLoginModel(client)
 	app := tui.NewAppModel(&login)
 
-	p := tea.NewProgram(&app)
+	p := tea.NewProgram(&app, tea.WithAltScreen())
 
 	if _, err := p.Run(); err != nil {
 		log.Fatal(err)
