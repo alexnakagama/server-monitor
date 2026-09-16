@@ -18,6 +18,8 @@ type ServerDetailModel struct {
 	metrics     []model.Metric
 	err         error
 	showHistory bool
+	width       int
+	height      int
 }
 
 type metricsLoadedMessage struct {
