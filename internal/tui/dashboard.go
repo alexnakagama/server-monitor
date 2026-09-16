@@ -2,6 +2,7 @@ package tui
 
 import (
 	"context"
+	"fmt"
 	"strings"
 	"time"
 
@@ -128,6 +129,8 @@ func quit() tea.Cmd {
 func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
+		fmt.Printf("DASHBOARD WIDTH: %d\n", msg.Width)
+
 		m.width = msg.Width
 		m.height = msg.Height
 

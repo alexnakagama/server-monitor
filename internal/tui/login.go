@@ -2,6 +2,7 @@ package tui
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/alexnakagama/server-monitor/internal/monitor"
 	"github.com/charmbracelet/bubbles/textinput"
@@ -60,6 +61,8 @@ func (m *LoginModel) Init() tea.Cmd {
 func (m *LoginModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
+		fmt.Printf("LOGIN WIDTH: %d\n", msg.Width)
+
 		m.width = msg.Width
 		m.height = msg.Height
 
