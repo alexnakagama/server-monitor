@@ -85,7 +85,7 @@ func (m *AppModel) View() string {
 		footer := lipgloss.PlaceHorizontal(
 			m.width-2,
 			lipgloss.Right,
-			helpStyle.Render("[Q] Quit"),
+			helpStyle.Render("[Esc] Quit"),
 		)
 
 		return lipgloss.JoinVertical(
