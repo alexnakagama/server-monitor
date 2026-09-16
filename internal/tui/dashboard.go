@@ -289,7 +289,7 @@ func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m *DashboardModel) View() string {
-	view := titleStyle.Render("SERVER MONITOR") + "\n\n"
+	view := ""
 
 	if m.err != nil {
 		view += "Error: " + m.err.Error() + "\n"
@@ -430,7 +430,10 @@ func (m *DashboardModel) View() string {
 
 	divider := lipgloss.NewStyle().
 		Foreground(lipgloss.Color("8")).
-		Render(strings.TrimSuffix(strings.Repeat("│\n", height), "\n"))
+		Render(strings.TrimSuffix(
+			strings.Repeat("│\n", height),
+			"\n",
+		))
 
 	// COLUMNS
 	sideGap := 15
