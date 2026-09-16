@@ -46,6 +46,18 @@ func (m *AppModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	m.screen, cmd = m.screen.Update(msg)
 
+	switch screen := m.screen.(type) {
+	case *LoginModel:
+		screen.width = m.width
+		screen.height = m.height
+
+	case *DashboardModel:
+		screen.SetSize(m.width, m.height)
+
+	case *ServerDetailModel:
+		screen.SetSize(m.width, m.height)
+	}
+
 	return m, cmd
 }
 
