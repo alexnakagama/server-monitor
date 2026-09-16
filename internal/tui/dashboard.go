@@ -175,6 +175,15 @@ func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		return m, nil
 
+	case dashboardSizeMessage:
+		m.visibleRows = msg.rows
+
+		if m.visibleRows < 1 {
+			m.visibleRows = 1
+		}
+
+		return m, nil
+
 	case tickMessage:
 		return m, tea.Batch(
 			m.loadServers(),
@@ -189,6 +198,7 @@ func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.search.Blur()
 				m.searching = false
 				m.selectedServer = 0
+				m.scrollOffset = 0
 
 				return m, nil
 
@@ -196,6 +206,9 @@ func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				if m.selectedServer > 0 {
 					m.selectedServer--
 				}
+
+				servers, _ := m.filteredServers()
+				m.updateScroll(len(servers))
 
 				return m, nil
 
@@ -205,6 +218,8 @@ func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				if m.selectedServer < len(servers)-1 {
 					m.selectedServer++
 				}
+
+				m.updateScroll(len(servers))
 
 				return m, nil
 
@@ -225,6 +240,7 @@ func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 			m.search, cmd = m.search.Update(msg)
 			m.selectedServer = 0
+			m.scrollOffset = 0
 
 			return m, cmd
 		}
@@ -233,6 +249,7 @@ func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "/":
 			m.searching = true
 			m.selectedServer = 0
+			m.scrollOffset = 0
 
 			cmd := m.search.Focus()
 
@@ -243,10 +260,14 @@ func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.selectedServer--
 			}
 
+			m.updateScroll(len(m.servers))
+
 		case "down":
 			if m.selectedServer < len(m.servers)-1 {
 				m.selectedServer++
 			}
+
+			m.updateScroll(len(m.servers))
 
 		case "enter":
 			if len(m.servers) == 0 {
@@ -282,11 +303,6 @@ func (m *DashboardModel) View() string {
 
 	if len(servers) == 0 {
 		view += "No servers found.\n"
-		view += "\n"
-		view += helpStyle.Render(
-			"[/] Search   [↑/↓] Navigate   [Enter] Open   [q] Quit",
-		) + "\n"
-
 		return view
 	}
 
@@ -299,7 +315,16 @@ func (m *DashboardModel) View() string {
 		headerStyle.Render("STATUS") +
 		"\n"
 
-	for i, server := range servers {
+	start := m.scrollOffset
+	end := start + m.visibleRows
+
+	if end > len(servers) {
+		end = len(servers)
+	}
+
+	for i := start; i < end; i++ {
+		server := servers[i]
+
 		prefix := "  "
 
 		if i == m.selectedServer {
@@ -390,7 +415,7 @@ func (m *DashboardModel) View() string {
 
 	divider := lipgloss.NewStyle().
 		Foreground(lipgloss.Color("8")).
-		Render(strings.Repeat("│\n", height))
+		Render(strings.TrimSuffix(strings.Repeat("│\n", height), "\n"))
 
 	// COLUMNS
 	sideGap := 15
