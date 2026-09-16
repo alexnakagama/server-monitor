@@ -301,5 +301,7 @@ func (m *DashboardModel) View() string {
 		) + "\n"
 	}
 
-	return containerStyle.Render(view)
+	container := containerStyle.Width(m.width - 4)
+
+	return container.Render(view)
 }
