@@ -82,7 +82,7 @@ func (m *LoginModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.loginSuccess = false
 			m.err = nil
 
-			return m, tea.Tick(100*time.Millisecond, func(time.Time) tea.Msg {
+			return m, tea.Tick(500*time.Millisecond, func(time.Time) tea.Msg {
 				return authenticateMessage{}
 			})
 		}
@@ -100,7 +100,7 @@ func (m *LoginModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		m.loginSuccess = true
 
-		return m, tea.Tick(800*time.Millisecond, func(time.Time) tea.Msg {
+		return m, tea.Tick(1200*time.Millisecond, func(time.Time) tea.Msg {
 			return dashboardMessage{
 				client: m.client,
 			}
