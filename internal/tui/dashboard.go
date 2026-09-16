@@ -351,6 +351,20 @@ func (m *DashboardModel) View() string {
 		left += row + "\n"
 	}
 
+	// SCROLL INDICATOR
+	shownStart := start + 1
+	shownEnd := end
+
+	indicator := fmt.Sprintf(
+		"%d–%d of %d",
+		shownStart,
+		shownEnd,
+		len(servers),
+	)
+
+	left += "\n"
+	left += helpStyle.Render(indicator)
+
 	// RIGHT PANEL
 	selected := servers[m.selectedServer]
 	selectedStatus := statuses[m.selectedServer]
