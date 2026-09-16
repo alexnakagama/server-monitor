@@ -14,6 +14,8 @@ type LoginModel struct {
 	client   *monitor.Client
 	err      error
 	loading  bool
+	width    int
+	height   int
 }
 
 type loginResultMessage struct {
@@ -57,6 +59,12 @@ func (m *LoginModel) Init() tea.Cmd {
 
 func (m *LoginModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
+	case tea.WindowSizeMsg:
+		m.width = msg.Width
+		m.height = msg.Height
+
+		return m, nil
+
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "tab":
@@ -84,8 +92,8 @@ func (m *LoginModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 
 		dashboard := NewDashBoardModel(m.client)
+		dashboard.SetSize(m.width, m.height)
 
-		// successfull login
 		return &dashboard, dashboard.Init()
 	}
 
