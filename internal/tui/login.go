@@ -64,6 +64,9 @@ func (m *LoginModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch msg.String() {
+		case "esc":
+			return m, quit()
+
 		case "tab":
 			if m.username.Focused() {
 				m.username.Blur()
