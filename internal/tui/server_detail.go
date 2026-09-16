@@ -110,7 +110,9 @@ func (m *ServerDetailModel) historyView() string {
 	view += "\n"
 	view += helpStyle.Render("[Esc] Back") + "\n"
 
-	return containerStyle.Render(view)
+	container := containerStyle.Width(m.width - 4)
+
+	return container.Render(view)
 }
 
 func NewServerDetailModel(client *monitor.Client, server model.Server) ServerDetailModel {
@@ -134,6 +136,12 @@ func (m *ServerDetailModel) Init() tea.Cmd {
 
 func (m *ServerDetailModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
+	case tea.WindowSizeMsg:
+		m.width = msg.Width
+		m.height = msg.Height
+
+		return m, nil
+
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "q":
@@ -245,5 +253,7 @@ func (m *ServerDetailModel) View() string {
 	view += "\n"
 	view += helpStyle.Render("[H] History   [Esc] Back   [Q] Quit") + "\n"
 
-	return containerStyle.Render(view)
+	container := containerStyle.Width(m.width - 4)
+
+	return container.Render(view)
 }
