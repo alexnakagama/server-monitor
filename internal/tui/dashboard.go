@@ -239,6 +239,11 @@ func (m *DashboardModel) View() string {
 
 	if len(servers) == 0 {
 		view += "No servers found.\n"
+		view += "\n"
+		view += helpStyle.Render(
+			"[/] Search   [↑/↓] Navigate   [Enter] Open   [q] Quit",
+		) + "\n"
+
 		return view
 	}
 
@@ -301,24 +306,29 @@ func (m *DashboardModel) View() string {
 	right += labelStyle.Render("Hostname") +
 		valueStyle.Render(selected.Hostname) + "\n"
 
-	// TWO COLUMNS
-	gap := 30
+	// DIVIDER
+	height := max(
+		lipgloss.Height(left),
+		lipgloss.Height(right),
+	)
 
-	leftWidth := lipgloss.Width(left)
-	rightWidth := lipgloss.Width(right)
+	divider := lipgloss.NewStyle().
+		Foreground(lipgloss.Color("8")).
+		Render(strings.Repeat("│\n", height))
 
-	columnWidth := leftWidth + rightWidth + gap
+	// COLUMNS
+	sideGap := 15
 
 	columns := lipgloss.JoinHorizontal(
 		lipgloss.Top,
 		left,
-		strings.Repeat(" ", gap),
+		strings.Repeat(" ", sideGap),
+		divider,
+		strings.Repeat(" ", sideGap),
 		right,
 	)
 
-	_ = columnWidth
-
-	view += columns + "\n"
+	view += columns + "\n\n"
 
 	if m.searching {
 		view += helpStyle.Render(
