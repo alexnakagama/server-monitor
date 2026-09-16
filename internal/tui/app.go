@@ -60,21 +60,21 @@ func (m *AppModel) View() string {
 		return ""
 	}
 
-	switch screen := m.screen.(type) {
+	headerTitle := titleStyle.Render("SERVER MONITOR")
+	headerVersion := helpStyle.Render("v1.0")
+
+	header := lipgloss.JoinHorizontal(
+		lipgloss.Top,
+		headerTitle,
+		lipgloss.NewStyle().
+			Width(m.width-2-lipgloss.Width(headerTitle)).
+			Align(lipgloss.Right).
+			Render(headerVersion),
+	)
+
+	switch m.screen.(type) {
 	case *LoginModel:
-		loginView := screen.View()
-
-		headerTitle := titleStyle.Render("SERVER MONITOR")
-		headerVersion := helpStyle.Render("v1.0")
-
-		header := lipgloss.JoinHorizontal(
-			lipgloss.Top,
-			headerTitle,
-			lipgloss.NewStyle().
-				Width(m.width-2-lipgloss.Width(headerTitle)).
-				Align(lipgloss.Right).
-				Render(headerVersion),
-		)
+		loginView := m.screen.View()
 
 		divider := strings.Repeat("─", m.width)
 
@@ -111,30 +111,27 @@ func (m *AppModel) View() string {
 		footer = "[H] History   [Esc] Back   [Q] Quit"
 	}
 
-	contentHeight := m.height - 5
+	contentHeight := m.height - 6
 
 	content := lipgloss.NewStyle().
-		Width(m.width - 6).
+		Width(m.width).
 		Height(contentHeight).
 		Render(m.screen.View())
 
+	divider := strings.Repeat("─", m.width)
+
 	footerView := lipgloss.NewStyle().
-		Width(m.width-6).
+		Width(m.width).
 		Height(2).
 		Align(lipgloss.Center, lipgloss.Center).
-		BorderTop(true).
-		BorderStyle(lipgloss.NormalBorder()).
 		Render(helpStyle.Render(footer))
 
-	inside := lipgloss.JoinVertical(
+	return lipgloss.JoinVertical(
 		lipgloss.Left,
+		header,
+		divider,
 		content,
+		divider,
 		footerView,
 	)
-
-	container := containerStyle.
-		Width(m.width - 2).
-		Height(m.height - 2)
-
-	return container.Render(inside)
 }
