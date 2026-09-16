@@ -3,6 +3,7 @@ package tui
 import (
 	"github.com/alexnakagama/server-monitor/internal/monitor"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 )
 
 type AppModel struct {
@@ -51,8 +52,19 @@ func (m *AppModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 func (m *AppModel) View() string {
 	view := m.screen.View()
 
+	switch m.screen.(type) {
+	case *LoginModel:
+		return lipgloss.Place(
+			m.width,
+			m.height,
+			lipgloss.Center,
+			lipgloss.Center,
+			view,
+		)
+	}
+
 	container := containerStyle.
-		Width(m.width - 4).
+		Width(m.width - 2).
 		Height(m.height - 2)
 
 	return container.Render(view)

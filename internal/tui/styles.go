@@ -43,3 +43,6 @@ var loginBoxStyle = lipgloss.NewStyle().
 	Border(lipgloss.RoundedBorder()).
 	Padding(1, 4).
 	Width(42)
+
+var errorStyle = lipgloss.NewStyle().
+	Foreground(lipgloss.Color("9"))
