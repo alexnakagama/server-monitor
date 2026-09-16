@@ -18,7 +18,7 @@ type DashboardModel struct {
 	selectedServer int
 	err            error
 	statuses       []string
-	latestMetric   map[int]model.Metric
+	latestMetrics  map[int]model.Metric
 	search         textinput.Model
 	searching      bool
 }
@@ -107,9 +107,9 @@ func NewDashBoardModel(client *monitor.Client) DashboardModel {
 	search.CharLimit = 50
 
 	return DashboardModel{
-		client:       client,
-		search:       search,
-		latestMetric: make(map[int]model.Metric),
+		client:        client,
+		search:        search,
+		latestMetrics: map[int]model.Metric{},
 	}
 }
 
@@ -136,6 +136,7 @@ func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		m.servers = msg.servers
 		m.statuses = msg.statuses
+		m.latestMetrics = msg.latestMetrics
 
 		return m, nil
 
