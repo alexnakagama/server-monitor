@@ -186,7 +186,9 @@ func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				}
 
 				server := servers[m.selectedServer]
+
 				detail := NewServerDetailModel(m.client, server)
+				detail.SetSize(m.width, m.height)
 
 				return &detail, detail.Init()
 			}
@@ -238,7 +240,6 @@ func (m *DashboardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m *DashboardModel) View() string {
 	view := titleStyle.Render("SERVER MONITOR") + "\n\n"
-	view += fmt.Sprintf("WIDTH: %d\n", m.width)
 
 	view += sectionStyle.Render("DASHBOARD") + "\n\n"
 
