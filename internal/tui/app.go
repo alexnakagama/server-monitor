@@ -103,12 +103,16 @@ func (m *AppModel) View() string {
 
 	var footer string
 
-	switch m.screen.(type) {
+	switch screen := m.screen.(type) {
 	case *DashboardModel:
 		footer = "[/] Search   [↑/↓] Navigate   [Enter] Open   [Esc] Quit"
 
 	case *ServerDetailModel:
-		footer = "[H] History   [Esc] Back   [Q] Quit"
+		if screen.showHistory {
+			footer = "[↑/↓] Scroll   [Esc] Back   [Q] Quit"
+		} else {
+			footer = "[H] History   [Esc] Back   [Q] Quit"
+		}
 	}
 
 	contentHeight := m.height - 6
