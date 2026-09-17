@@ -20,6 +20,7 @@ type DashboardModel struct {
 	scrollOffset   int
 	visibleRows    int
 	err            error
+	width          int
 	statuses       []string
 	latestMetrics  map[int]model.Metric
 	search         textinput.Model
@@ -28,6 +29,10 @@ type DashboardModel struct {
 
 type dashboardSizeMessage struct {
 	rows int
+}
+
+func (m *DashboardModel) SetWidth(width int) {
+	m.width = width
 }
 
 func (m *DashboardModel) updateScroll(total int) {
@@ -437,6 +442,28 @@ func (m *DashboardModel) View() string {
 
 	// COLUMNS
 	sideGap := 15
+
+	panelWidth := (m.width - (sideGap * 2) - 1) / 2
+
+	left = lipgloss.NewStyle().
+		Width(panelWidth).
+		Render(left)
+
+	right = lipgloss.NewStyle().
+		Width(panelWidth).
+		Render(right)
+
+	divider = lipgloss.NewStyle().
+		Foreground(lipgloss.Color("8")).
+		Render(
+			strings.TrimSuffix(
+				strings.Repeat("│\n", max(
+					lipgloss.Height(left),
+					lipgloss.Height(right),
+				)),
+				"\n",
+			),
+		)
 
 	columns := lipgloss.JoinHorizontal(
 		lipgloss.Top,

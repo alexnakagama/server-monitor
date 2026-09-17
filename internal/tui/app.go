@@ -35,13 +35,14 @@ func (m *AppModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.height = msg.Height
 
 		if dashboard, ok := m.screen.(*DashboardModel); ok {
-			dashboard.SetVisibleRows(m.height - 12)
+			dashboard.SetWidth(m.width)
 		}
 
 		return m, nil
 
 	case dashboardMessage:
 		dashboard := NewDashBoardModel(msg.client)
+		dashboard.SetWidth(m.width)
 
 		m.screen = &dashboard
 
