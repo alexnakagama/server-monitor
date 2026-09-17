@@ -13,11 +13,13 @@ import (
 )
 
 type ServerDetailModel struct {
-	client      *monitor.Client
-	server      model.Server
-	metrics     []model.Metric
-	err         error
-	showHistory bool
+	client        *monitor.Client
+	server        model.Server
+	metrics       []model.Metric
+	err           error
+	showHistory   bool
+	historyOffset int
+	historyRows   int
 }
 
 type metricsLoadedMessage struct {
