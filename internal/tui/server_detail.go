@@ -108,7 +108,8 @@ func (m *ServerDetailModel) historyView() string {
 	}
 
 	header := fmt.Sprintf(
-		"%-10s %-10s %-10s %-10s %-14s %-14s",
+		"%-2s%-10s %-10s %-10s %-10s %-14s %-14s",
+		"",
 		"TIME",
 		"CPU",
 		"MEMORY",
@@ -118,13 +119,20 @@ func (m *ServerDetailModel) historyView() string {
 	)
 
 	view += headerStyle.Render(header) + "\n"
-	view += strings.Repeat("─", 75) + "\n"
+	view += strings.Repeat("─", 77) + "\n"
 
 	for i := start; i < end; i++ {
 		metric := m.metrics[i]
 
+		prefix := "  "
+
+		if i == m.historySelected {
+			prefix = "> "
+		}
+
 		row := fmt.Sprintf(
-			"%-10s %-10s %-10s %-10s %-14s %-14s",
+			"%-2s%-10s %-10s %-10s %-10s %-14s %-14s",
+			prefix,
 			metric.Timestamp.Format("15:04:05"),
 			fmt.Sprintf("%.2f%%", metric.CPUUsage),
 			fmt.Sprintf("%.2f%%", metric.MemoryUsage),
@@ -132,6 +140,10 @@ func (m *ServerDetailModel) historyView() string {
 			formatBytes(metric.NetworkReceive)+"/s",
 			formatBytes(metric.NetworkSent)+"/s",
 		)
+
+		if i == m.historySelected {
+			row = selectedStyle.Render(row)
+		}
 
 		view += row + "\n"
 	}
@@ -143,6 +155,16 @@ func (m *ServerDetailModel) historyView() string {
 			"%d–%d of %d",
 			start+1,
 			end,
+			len(m.metrics),
+		),
+	)
+
+	view += "    "
+
+	view += helpStyle.Render(
+		fmt.Sprintf(
+			"Selected: %d / %d",
+			m.historySelected+1,
 			len(m.metrics),
 		),
 	)
@@ -191,21 +213,23 @@ func (m *ServerDetailModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				return m, nil
 
 			case "up":
-				if m.historyOffset > 0 {
-					m.historyOffset--
+				if m.historySelected > 0 {
+					m.historySelected--
+				}
+
+				if m.historySelected < m.historyOffset {
+					m.historyOffset = m.historySelected
 				}
 
 				return m, nil
 
 			case "down":
-				maxOffset := len(m.metrics) - m.historyRows
-
-				if maxOffset < 0 {
-					maxOffset = 0
+				if m.historySelected < len(m.metrics)-1 {
+					m.historySelected++
 				}
 
-				if m.historyOffset < maxOffset {
-					m.historyOffset++
+				if m.historySelected >= m.historyOffset+m.historyRows {
+					m.historyOffset = m.historySelected - m.historyRows + 1
 				}
 
 				return m, nil
@@ -221,6 +245,7 @@ func (m *ServerDetailModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "h":
 			m.showHistory = true
 			m.historyOffset = 0
+			m.historySelected = 0
 
 			return m, nil
 
