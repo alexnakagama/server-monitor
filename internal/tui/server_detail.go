@@ -89,26 +89,62 @@ func formatBytes(bytes uint64) string {
 }
 
 func (m *ServerDetailModel) historyView() string {
-	view := titleStyle.Render("SERVER MONITOR") + "\n\n"
+	view := ""
 
 	view += sectionStyle.Render("HISTORY") + "\n\n"
+	view += valueStyle.Render(m.server.Name) + "\n\n"
 
-	view += headerStyle.Render(
-		fmt.Sprintf("%-10s %-10s %-10s %-10s", "TIME", "CPU", "MEMORY", "DISK"),
-	) + "\n"
+	if len(m.metrics) == 0 {
+		view += helpStyle.Render("No metrics found.")
+		return view
+	}
 
-	for _, metric := range m.metrics {
-		view += fmt.Sprintf(
-			"%-10s %-10.2f %-10.2f %-10.2f\n",
+	start := m.historyOffset
+	end := start + m.historyRows
+
+	if end > len(m.metrics) {
+		end = len(m.metrics)
+	}
+
+	header := fmt.Sprintf(
+		"%-10s %-10s %-10s %-10s %-14s %-14s",
+		"TIME",
+		"CPU",
+		"MEMORY",
+		"DISK",
+		"RX",
+		"TX",
+	)
+
+	view += headerStyle.Render(header) + "\n"
+	view += strings.Repeat("─", 75) + "\n"
+
+	for i := start; i < end; i++ {
+		metric := m.metrics[i]
+
+		row := fmt.Sprintf(
+			"%-10s %-10s %-10s %-10s %-14s %-14s",
 			metric.Timestamp.Format("15:04:05"),
-			metric.CPUUsage,
-			metric.MemoryUsage,
-			metric.DiskUsage,
+			fmt.Sprintf("%.2f%%", metric.CPUUsage),
+			fmt.Sprintf("%.2f%%", metric.MemoryUsage),
+			fmt.Sprintf("%.2f%%", metric.DiskUsage),
+			formatBytes(metric.NetworkReceive)+"/s",
+			formatBytes(metric.NetworkSent)+"/s",
 		)
+
+		view += row + "\n"
 	}
 
 	view += "\n"
-	view += helpStyle.Render("[Esc] Back") + "\n"
+
+	view += helpStyle.Render(
+		fmt.Sprintf(
+			"%d–%d of %d",
+			start+1,
+			end,
+			len(m.metrics),
+		),
+	)
 
 	return view
 }
