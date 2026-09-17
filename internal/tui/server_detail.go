@@ -170,14 +170,9 @@ func (m *ServerDetailModel) View() string {
 		return m.historyView()
 	}
 
-	view := titleStyle.Render("SERVER MONITOR") + "\n\n"
+	view := ""
 
-	view += sectionStyle.Render("SERVER") + "\n"
-
-	view += labelStyle.Render("ID") + valueStyle.Render(strconv.Itoa(m.server.ID)) + "\n"
-	view += labelStyle.Render("Name") + valueStyle.Render(m.server.Name) + "\n"
-	view += labelStyle.Render("Hostname") + valueStyle.Render(m.server.Hostname) + "\n"
-	view += labelStyle.Render("OS") + valueStyle.Render(m.server.OS) + "\n"
+	// SERVER
 
 	status := "OFFLINE"
 
@@ -195,49 +190,75 @@ func (m *ServerDetailModel) View() string {
 		statusView = onlineStyle.Render(status)
 	}
 
-	view += labelStyle.Render("Status") + statusView + "\n"
+	view += valueStyle.Render(m.server.Name) +
+		strings.Repeat(" ", 5) +
+		statusView +
+		"\n\n"
 
-	if m.err != nil {
-		view += "\nError: " + m.err.Error() + "\n"
-	} else if len(m.metrics) == 0 {
-		view += "\nNo metrics found.\n"
-	} else {
+	view += labelStyle.Render("ID") +
+		valueStyle.Render(strconv.Itoa(m.server.ID)) + "\n"
+
+	view += labelStyle.Render("OS") +
+		valueStyle.Render(m.server.OS) + "\n"
+
+	view += labelStyle.Render("Hostname") +
+		valueStyle.Render(m.server.Hostname) + "\n"
+
+	if len(m.metrics) > 0 {
 		metric := m.metrics[0]
 
-		view += "\n"
-		view += sectionStyle.Render("METRICS") + "\n"
-
-		view += labelStyle.Render("CPU") +
-			progressBar(metric.CPUUsage, 20) +
-			fmt.Sprintf(" %.2f%%\n", metric.CPUUsage)
-
-		view += labelStyle.Render("Memory") +
-			progressBar(metric.MemoryUsage, 20) +
-			fmt.Sprintf(" %.2f%%\n", metric.MemoryUsage)
-
-		view += labelStyle.Render("Disk") +
-			progressBar(metric.DiskUsage, 20) +
-			fmt.Sprintf(" %.2f%%\n", metric.DiskUsage)
-
-		view += "\n"
-		view += sectionStyle.Render("NETWORK") + "\n"
-
-		view += labelStyle.Render("RX") +
-			valueStyle.Render(formatBytes(metric.NetworkReceive)+"/s") +
+		view += labelStyle.Render("Last update") +
+			valueStyle.Render(metric.Timestamp.Format("15:04:05")) +
 			"\n"
-
-		view += labelStyle.Render("TX") +
-			valueStyle.Render(formatBytes(metric.NetworkSent)+"/s") +
-			"\n"
-
-		view += "\n"
-		view += helpStyle.Render(
-			"Last update: "+metric.Timestamp.Format("15:04:05"),
-		) + "\n"
 	}
 
+	if m.err != nil {
+		view += "\n"
+		view += errorStyle.Render(
+			"Error: "+m.err.Error(),
+		) + "\n"
+
+		return view
+	}
+
+	if len(m.metrics) == 0 {
+		view += "\n"
+		view += helpStyle.Render("No metrics found.") + "\n"
+
+		return view
+	}
+
+	metric := m.metrics[0]
+
+	// METRICS
 	view += "\n"
-	view += helpStyle.Render("[H] History   [Esc] Back   [Q] Quit") + "\n"
+	view += sectionStyle.Render("METRICS") + "\n"
+	view += strings.Repeat("─", 40) + "\n\n"
+
+	view += labelStyle.Render("CPU") +
+		progressBar(metric.CPUUsage, 30) +
+		fmt.Sprintf(" %.2f%%\n", metric.CPUUsage)
+
+	view += labelStyle.Render("Memory") +
+		progressBar(metric.MemoryUsage, 30) +
+		fmt.Sprintf(" %.2f%%\n", metric.MemoryUsage)
+
+	view += labelStyle.Render("Disk") +
+		progressBar(metric.DiskUsage, 30) +
+		fmt.Sprintf(" %.2f%%\n", metric.DiskUsage)
+
+	// NETWORK
+	view += "\n"
+	view += sectionStyle.Render("NETWORK") + "\n"
+	view += strings.Repeat("─", 40) + "\n\n"
+
+	view += labelStyle.Render("RX") +
+		valueStyle.Render(formatBytes(metric.NetworkReceive)+"/s") +
+		"\n"
+
+	view += labelStyle.Render("TX") +
+		valueStyle.Render(formatBytes(metric.NetworkSent)+"/s") +
+		"\n"
 
 	return view
 }
