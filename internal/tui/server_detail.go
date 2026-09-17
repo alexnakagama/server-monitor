@@ -130,26 +130,6 @@ func (m *ServerDetailModel) Init() tea.Cmd {
 
 func (m *ServerDetailModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
-	case tea.KeyMsg:
-		switch msg.String() {
-		case "q":
-			return m, quit()
-
-		case "esc":
-			if m.showHistory {
-				m.showHistory = false
-				return m, nil
-			}
-
-			dashboard := NewDashBoardModel(m.client)
-
-			return &dashboard, dashboard.Init()
-
-		case "h":
-			m.showHistory = true
-			return m, nil
-		}
-
 	case metricsLoadedMessage:
 		if msg.err != nil {
 			m.err = msg.err
@@ -157,6 +137,64 @@ func (m *ServerDetailModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 
 		m.metrics = msg.metrics
+
+		if m.historyOffset > len(m.metrics)-m.historyRows {
+			m.historyOffset = max(0, len(m.metrics)-m.historyRows)
+		}
+
+		return m, nil
+
+	case tea.KeyMsg:
+		if m.showHistory {
+			switch msg.String() {
+			case "esc":
+				m.showHistory = false
+				m.historyOffset = 0
+
+				return m, nil
+
+			case "up":
+				if m.historyOffset > 0 {
+					m.historyOffset--
+				}
+
+				return m, nil
+
+			case "down":
+				maxOffset := len(m.metrics) - m.historyRows
+
+				if maxOffset < 0 {
+					maxOffset = 0
+				}
+
+				if m.historyOffset < maxOffset {
+					m.historyOffset++
+				}
+
+				return m, nil
+
+			case "q":
+				return m, quit()
+			}
+
+			return m, nil
+		}
+
+		switch msg.String() {
+		case "h":
+			m.showHistory = true
+			m.historyOffset = 0
+
+			return m, nil
+
+		case "esc":
+			dashboard := NewDashBoardModel(m.client)
+
+			return &dashboard, dashboard.Init()
+
+		case "q":
+			return m, quit()
+		}
 
 	case tickMessage:
 		return m, tea.Batch(
@@ -176,13 +214,12 @@ func (m *ServerDetailModel) View() string {
 	view := ""
 
 	// SERVER
-
 	status := "OFFLINE"
 
 	if len(m.metrics) > 0 {
-		lastMetric := m.metrics[0]
+		metric := m.metrics[0]
 
-		if time.Since(lastMetric.Timestamp) < 30*time.Second {
+		if time.Since(metric.Timestamp) < 30*time.Second {
 			status = "ONLINE"
 		}
 	}
@@ -193,40 +230,43 @@ func (m *ServerDetailModel) View() string {
 		statusView = onlineStyle.Render(status)
 	}
 
-	view += valueStyle.Render(m.server.Name) +
-		strings.Repeat(" ", 5) +
-		statusView +
-		"\n\n"
+	view += valueStyle.Render(m.server.Name)
+	view += strings.Repeat(" ", 8)
+	view += statusView
+	view += "\n\n"
 
 	view += labelStyle.Render("ID") +
-		valueStyle.Render(strconv.Itoa(m.server.ID)) + "\n"
+		valueStyle.Render(strconv.Itoa(m.server.ID)) +
+		"\n"
 
 	view += labelStyle.Render("OS") +
-		valueStyle.Render(m.server.OS) + "\n"
+		valueStyle.Render(m.server.OS) +
+		"\n"
 
 	view += labelStyle.Render("Hostname") +
-		valueStyle.Render(m.server.Hostname) + "\n"
+		valueStyle.Render(m.server.Hostname) +
+		"\n"
 
 	if len(m.metrics) > 0 {
-		metric := m.metrics[0]
-
 		view += labelStyle.Render("Last update") +
-			valueStyle.Render(metric.Timestamp.Format("15:04:05")) +
+			valueStyle.Render(
+				m.metrics[0].Timestamp.Format("15:04:05"),
+			) +
 			"\n"
 	}
 
 	if m.err != nil {
 		view += "\n"
 		view += errorStyle.Render(
-			"Error: "+m.err.Error(),
-		) + "\n"
+			"Error: " + m.err.Error(),
+		)
 
 		return view
 	}
 
 	if len(m.metrics) == 0 {
 		view += "\n"
-		view += helpStyle.Render("No metrics found.") + "\n"
+		view += helpStyle.Render("No metrics found.")
 
 		return view
 	}
@@ -235,8 +275,7 @@ func (m *ServerDetailModel) View() string {
 
 	// METRICS
 	view += "\n"
-	view += sectionStyle.Render("METRICS") + "\n"
-	view += strings.Repeat("─", 40) + "\n\n"
+	view += sectionStyle.Render("METRICS") + "\n\n"
 
 	view += labelStyle.Render("CPU") +
 		progressBar(metric.CPUUsage, 30) +
@@ -252,15 +291,18 @@ func (m *ServerDetailModel) View() string {
 
 	// NETWORK
 	view += "\n"
-	view += sectionStyle.Render("NETWORK") + "\n"
-	view += strings.Repeat("─", 40) + "\n\n"
+	view += sectionStyle.Render("NETWORK") + "\n\n"
 
 	view += labelStyle.Render("RX") +
-		valueStyle.Render(formatBytes(metric.NetworkReceive)+"/s") +
+		valueStyle.Render(
+			formatBytes(metric.NetworkReceive)+"/s",
+		) +
 		"\n"
 
 	view += labelStyle.Render("TX") +
-		valueStyle.Render(formatBytes(metric.NetworkSent)+"/s") +
+		valueStyle.Render(
+			formatBytes(metric.NetworkSent)+"/s",
+		) +
 		"\n"
 
 	return view
