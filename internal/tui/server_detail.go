@@ -115,8 +115,9 @@ func (m *ServerDetailModel) historyView() string {
 
 func NewServerDetailModel(client *monitor.Client, server model.Server) ServerDetailModel {
 	return ServerDetailModel{
-		client: client,
-		server: server,
+		client:      client,
+		server:      server,
+		historyRows: 10,
 	}
 }
 
