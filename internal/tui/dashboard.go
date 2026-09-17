@@ -427,6 +427,21 @@ func (m *DashboardModel) View() string {
 		)
 	}
 
+	// PANEL WIDTH
+	sideGap := 15
+
+	panelWidth := (m.width - (sideGap * 2) - 1) / 2
+
+	left = lipgloss.NewStyle().
+		Width(panelWidth).
+		Align(lipgloss.Center).
+		Render(left)
+
+	right = lipgloss.NewStyle().
+		Width(panelWidth).
+		Align(lipgloss.Center).
+		Render(right)
+
 	// DIVIDER
 	height := max(
 		lipgloss.Height(left),
@@ -435,36 +450,14 @@ func (m *DashboardModel) View() string {
 
 	divider := lipgloss.NewStyle().
 		Foreground(lipgloss.Color("8")).
-		Render(strings.TrimSuffix(
-			strings.Repeat("│\n", height),
-			"\n",
-		))
-
-	// COLUMNS
-	sideGap := 15
-
-	panelWidth := (m.width - (sideGap * 2) - 1) / 2
-
-	left = lipgloss.NewStyle().
-		Width(panelWidth).
-		Render(left)
-
-	right = lipgloss.NewStyle().
-		Width(panelWidth).
-		Render(right)
-
-	divider = lipgloss.NewStyle().
-		Foreground(lipgloss.Color("8")).
 		Render(
 			strings.TrimSuffix(
-				strings.Repeat("│\n", max(
-					lipgloss.Height(left),
-					lipgloss.Height(right),
-				)),
+				strings.Repeat("│\n", height),
 				"\n",
 			),
 		)
 
+	// COLUMNS
 	columns := lipgloss.JoinHorizontal(
 		lipgloss.Top,
 		left,
